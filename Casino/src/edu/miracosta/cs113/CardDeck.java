@@ -10,7 +10,7 @@ public class CardDeck
     private final int DECK_SIZE = 52;
 
     private String[]        cardFace  = {"Heart", "Diamond", "Club", "Spade"};       //Possible faces
-    private int[]           cardValue = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}; //11-Ace 12-Queen 13-King (No joker)
+    private int[]           cardValue = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}; //1-Ace 11-Jack  12-Queen 13-King (No joker)
     private int             numCards  = 0; //Keeps track of how many cards are in the deck (NOT "in play" or "out of play")
     private ArrayList<Card> cardsInPlay    = new ArrayList<>(); //Stores cards in play so we can add them back to the deck (or out of play)
     private ArrayList<Card> cardsOutOfPlay = new ArrayList<>(); //Stores cards out of play after a round, to be re-added to deck later
