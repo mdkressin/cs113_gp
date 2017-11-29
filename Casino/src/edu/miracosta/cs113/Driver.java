@@ -1,27 +1,26 @@
 package edu.miracosta.cs113;
 
-import java.util.Stack;
 
 public class Driver
 {
     public static void main(String[] args)
     {
     	//Some simple  tests of the deck
-        CardDeck mydeck = new CardDeck();
-        mydeck.listCards();
-        mydeck.dealHand();
-        mydeck.dealHand();
+        CardDeck deck = new CardDeck();
         
-        Card newCard = (mydeck.dealHand());
-        mydeck.putOutOfPlay(newCard);
-        mydeck.shuffleDeck();
-        Stack<Card> tempDeck = mydeck.getDeck();
-        int counter = 0;
-        for (Card c: tempDeck)
-        {
-            System.out.println(c.getValue() + " of " + c.getFace() + "s");
-            counter++;
-        }
-        System.out.println(counter); //Should bee 52, deck size
+        System.out.println("All cards:");
+        System.out.println(deck);
+        
+        System.out.println("Shuffled deck:");
+        deck.shuffle();
+        System.out.println(deck);
+        
+        System.out.println("Deal hand:");
+        deck.shuffle();
+        System.out.println(deck.deal(2));
+        
+        System.out.println("Deal flop:");
+        deck.shuffle();
+        System.out.println(deck.deal(3));
     }
 }
