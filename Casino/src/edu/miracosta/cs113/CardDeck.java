@@ -14,7 +14,7 @@ public class CardDeck
     private Card[] cards;
     
     /** The index of the next card to deal. */
-    private int nextCardIndex = 0;
+    private int cardIndex = 0;
 
     /**
      * Constructor populates the cards array with a full, ordered deck
@@ -41,14 +41,14 @@ public class CardDeck
             cards[oldIndex] = cards[newIndex];
             cards[newIndex] = tempCard;
         }
-        nextCardIndex = 0;
+        cardIndex = 0;
     }
     
     /**
      * Resets the deck without shuffling
      */
     public void reset() {
-        nextCardIndex = 0;
+        cardIndex = 0;
     }
     
     /**
@@ -57,10 +57,10 @@ public class CardDeck
      * @return  the card dealt
      */
     public Card deal() {
-        if (nextCardIndex + 1 >= DECK_SIZE) {
+        if (cardIndex + 1 >= DECK_SIZE) {
             throw new IllegalStateException("No cards left in deck");
         }
-        return cards[nextCardIndex++];
+        return cards[cardIndex++];
     }
     
     /**
@@ -80,13 +80,13 @@ public class CardDeck
         if (numCards < 1) {
             throw new IllegalArgumentException("Use deal() or ask for more than 1 card");
         }
-        if (nextCardIndex + numCards >= DECK_SIZE) {
+        if (cardIndex + numCards >= DECK_SIZE) {
             throw new IllegalStateException("No cards left in deck");
         }
         List<Card> dealtCards = new ArrayList<>();
         for (int i = 0; i < numCards; i++) {
-            dealtCards.add(cards[nextCardIndex]);
-            nextCardIndex++;
+            dealtCards.add(cards[cardIndex]);
+            cardIndex++;
         }
         return dealtCards;
     }

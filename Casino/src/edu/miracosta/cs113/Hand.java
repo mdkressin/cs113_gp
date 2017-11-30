@@ -110,7 +110,9 @@ public class Hand {
         numCards = 0;
     }
     
-    /** {@inheritDoc} */
+    /**
+     * String representation of hand
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
