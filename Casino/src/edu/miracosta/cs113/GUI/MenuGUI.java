@@ -165,7 +165,7 @@ public class MenuGUI extends JFrame
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			
+			PokerGUI game = new PokerGUI(playerName.getText(), 2);
 		}
 	}
 	
@@ -173,7 +173,7 @@ public class MenuGUI extends JFrame
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			
+			PokerGUI game = new PokerGUI(playerName.getText(), 3);
 		}
 	}
 
