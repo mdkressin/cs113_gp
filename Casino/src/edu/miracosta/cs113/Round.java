@@ -19,10 +19,12 @@ public class Round
     {
         table = new Table();
     }
+    
     public Round(Player userPlayer)
     {
         table = new Table(userPlayer);
     }
+    
     public Round(Player userPlayer, int numBots)
     {
         table = new Table(userPlayer, numBots);
