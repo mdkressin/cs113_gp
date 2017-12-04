@@ -22,7 +22,8 @@ public abstract class AbstractPokerGraph implements Graph {
 	 */
 	public AbstractPokerGraph(int numV, boolean directed)
 	{
-		
+		this.numV = numV;
+		this.isDirected = directed;
 	}
 	
 	// Accessor methods
@@ -31,9 +32,9 @@ public abstract class AbstractPokerGraph implements Graph {
 	 * @return The number of vertices
 	 */
 	@Override
-	public int getNumV() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getNumV() 
+	{
+		return numV;
 	}
 	
 	/**
@@ -41,9 +42,9 @@ public abstract class AbstractPokerGraph implements Graph {
 	 * @return true if this is a directed graph
 	 */
 	@Override
-	public boolean isDirected() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isDirected() 
+	{
+		return isDirected;
 	}
 	
 	// Other Methods
