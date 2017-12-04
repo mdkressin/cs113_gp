@@ -1,6 +1,8 @@
 package edu.miracosta.cs113;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * A ListPokerGraph is an extension of the AbstractPokerGraph abstract class that
@@ -8,6 +10,8 @@ import java.util.Iterator;
  */
 public class ListPokerGraph extends AbstractPokerGraph {
 	// Data Fields
+	/** An array of Lists to contain the edges that originate with each vertex. */
+	private List<Edge>[] edges;
 	
 	// Constructor
 	/**
@@ -17,8 +21,12 @@ public class ListPokerGraph extends AbstractPokerGraph {
 	 */
 	public ListPokerGraph(int numV, boolean directed)
 	{
-		//stub
 		super(numV,directed);
+		edges = new List[numV];
+		for (int i = 0; i < numV; i++)
+		{
+			edges[i] = new LinkedList<Edge>();
+		}
 	}
 	
 	/**
@@ -26,9 +34,15 @@ public class ListPokerGraph extends AbstractPokerGraph {
 	 * @param edge	The new edge
 	 */
 	@Override
-	public void insert(Edge edge) {
-		// TODO Auto-generated method stub
-
+	public void insert(Edge edge) 
+	{
+		edges[edge.getSource()].add(edge);
+		if (!isDirected())
+		{
+			edges[edge.getDest()].add(new Edge(edge.getDest(), 
+												edge.getSource(), 
+												edge.getWeight()));
+		}
 	}
 
 	/**
@@ -39,9 +53,18 @@ public class ListPokerGraph extends AbstractPokerGraph {
 	 * @return the edge between these two vertices
 	 */
 	@Override
-	public Edge getEdge(int source, int dest) {
-		// TODO Auto-generated method stub
-		return null;
+	public Edge getEdge(int source, int dest) 
+	{
+		Edge target = new Edge(source, dest, Double.POSITIVE_INFINITY);
+		for (Edge edge : edges[source])
+		{
+			if (edge.equals(target))
+			{
+				return edge; // Desired edge found, return it.
+			}
+		}
+		// Assert: All edges for source checked
+		return target;
 	}
 
 	/**
@@ -50,9 +73,9 @@ public class ListPokerGraph extends AbstractPokerGraph {
 	 * @return The iterator that goes through the graph starting at source
 	 */
 	@Override
-	public Iterator<Edge> edgeIterator(int source) {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterator<Edge> edgeIterator(int source) 
+	{
+		return edges[source].iterator();
 	}
 	
 	/**
@@ -62,7 +85,7 @@ public class ListPokerGraph extends AbstractPokerGraph {
 	 * @return	true if there is an edge from source to dest.
 	 */
 	public boolean isEdge(int source, int dest)
-	{//stub
-		return false;
+	{
+		return edges[source].contains(new Edge(source,dest));
 	}
 }
