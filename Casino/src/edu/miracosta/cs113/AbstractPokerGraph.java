@@ -2,6 +2,7 @@ package edu.miracosta.cs113;
 
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * Abstract base class for poker graphs.
@@ -57,7 +58,33 @@ public abstract class AbstractPokerGraph implements Graph {
 	 */
 	public void loadEdgesFromFile(Scanner scan) 
 	{
-		//stub
+		StringTokenizer tokens;
+		String line,source,dest,weight;
+		while (scan.hasNextLine())
+		{
+			line = scan.nextLine();
+			tokens = new StringTokenizer(line);
+			if (tokens.hasMoreTokens())
+			{
+				source = tokens.nextToken();
+				if (tokens.hasMoreTokens())
+				{
+					dest = tokens.nextToken();
+					if (tokens.hasMoreTokens())
+					{ // line contains optional weight
+						weight = tokens.nextToken();
+						this.insert(new Edge(Integer.parseInt(source),
+											Integer.parseInt(dest), 
+											Double.parseDouble(weight)));
+					}
+					else 
+					{ // line does not contain optional weight
+						this.insert(new Edge(Integer.parseInt(source),
+								Integer.parseInt(dest)));
+					}
+				}
+			}
+		}
 	}
 	
 	/**
