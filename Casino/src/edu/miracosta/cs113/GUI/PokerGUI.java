@@ -39,7 +39,7 @@ public class PokerGUI extends JFrame {
         /**
          * Initialize player and game variables
          */
-        humanPlayer = new Player(playerName, START_MONEY);
+        humanPlayer = new Player(playerName, START_MONEY);        
         Table table = new Table(humanPlayer, numBots);
         
         
@@ -48,9 +48,12 @@ public class PokerGUI extends JFrame {
          */
         botsPanel = new JPanel();
         botsPanel.setLayout(new GridLayout(1, numBots));
+        
         ArrayList<Player> players = table.getPlayers();
-        for(int i = 1; i < players.size(); i++) {
-        	botsPanel.add(new PlayerGUI(players.get(i)));
+        
+        for(int i = 1; i < players.size(); i++) 
+        {
+        		botsPanel.add(new PlayerGUI(players.get(i)));
         }
         
         

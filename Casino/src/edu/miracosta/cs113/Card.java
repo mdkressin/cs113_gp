@@ -3,9 +3,9 @@ package edu.miracosta.cs113;
 public class Card implements Comparable<Card> {
    
 	
-	//String representation of the value's value int value
+	//String representation of the card's value
     public static final String[] CARDS = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
-    //String representation of the value's suit int value
+    //String representation of the card's suit
     public static final String[] SUITS = { "diamonds", "clubs", "hearts", "spades" };
 
     //Value of the value
@@ -102,7 +102,7 @@ public class Card implements Comparable<Card> {
      * 			Zero if the two values have equal values
      * 
      * @param Card
-     * 			Card to compare this carad to
+     * 			Card to compare this card to
      */
     @Override
     public int compareTo(Card other) {
@@ -121,7 +121,7 @@ public class Card implements Comparable<Card> {
      * @return String
      */
     public String getFilePath() {
-    	return CARDS[value] + "_of_" + SUITS[suit] + ".png";
+    		return CARDS[this.value] + "_of_" + SUITS[this.suit] + ".png";
     }
     
 }

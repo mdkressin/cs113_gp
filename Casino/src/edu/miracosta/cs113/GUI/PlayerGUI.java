@@ -38,26 +38,27 @@ public class PlayerGUI extends JPanel {
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(DARK_GREEN);
+
 		
 		
-		if(player.getHand().getCards() != null) 
+		Card playerCard1 = player.getHand().getHoleCards()[0];
+		Card playerCard2 = player.getHand().getHoleCards()[1];
+		
+		if(playerCard1 != null) 
 		{
-			Card playerCard1 = player.getHand().getHoleCards()[0];
-			Card playerCard2 = player.getHand().getHoleCards()[1];
-			
-			BufferedImage card1Image = getCardImage(playerCard1.getFilePath());
+			String playerCard1FilePath = playerCard1.getFilePath();
+			BufferedImage card1Image = getCardImage(playerCard1FilePath);
 			card1Label = new JLabel(new ImageIcon(card1Image));
-			BufferedImage card2Image = getCardImage(playerCard2.getFilePath());
-			card2Label = new JLabel(new ImageIcon(card2Image));
+			String playerCard2FilePath = playerCard2.getFilePath();
+			BufferedImage card2Image = getCardImage(playerCard2FilePath);
+			card1Label = new JLabel(new ImageIcon(card2Image));
 		} 
 		else 
 		{
-			BufferedImage card1Image = getCardImage("card_back.png");
-			card1Label = new JLabel(new ImageIcon(card1Image));
-			BufferedImage card2Image = getCardImage("card_back.png");
-			card2Label = new JLabel(new ImageIcon(card2Image));
+			card1Label = new JLabel("?");
+			card2Label = new JLabel("?");
 		}
-		
+
 		cards = new JPanel();
 		cards.setLayout(new GridLayout(1,2));
 		cards.add(card1Label);
@@ -74,8 +75,8 @@ public class PlayerGUI extends JPanel {
 	private BufferedImage getCardImage(String cardFilePath) {
 				
 		try {
-			System.out.println("----------"+ cardFilePath);
-			return ImageIO.read(new File("./edu.miracosta.cs113.assets/" + cardFilePath));
+			//File imageFile = new File("" + cardFilePath);
+			return ImageIO.read(this.getClass().getResource(cardFilePath));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
