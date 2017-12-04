@@ -88,8 +88,9 @@ public class Edge {
 	@Override
 	public int hashCode() 
 	{
-		//stub
-		return 0;
+		String s = Integer.toString(source);
+		String d = Integer.toString(dest);
+		return s.hashCode() * d.hashCode();
 	}
 	/**
 	 * Returns a string representation of the Edge
