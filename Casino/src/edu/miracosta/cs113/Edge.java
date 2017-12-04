@@ -17,17 +17,21 @@ public class Edge {
 	 */
 	public Edge(int source, int dest)
 	{
-		
+		this.source = source;
+		this.dest = dest;
+		weight = 1.0; // signifies non-weighted graph
 	}
 	/**
-	 * Constructs an Edge from source to des. Sets the weight to w.
+	 * Constructs an Edge from source to dest. Sets the weight to w.
 	 * @param source The source vertex
 	 * @param dest The destination vertex
 	 * @param weight The weight of the edge
 	 */
 	public Edge(int source, int dest, double w)
 	{
-		
+		this.source = source;
+		this.dest = dest;
+		this.weight = w;
 	}
 	
 	// Methods
@@ -41,8 +45,16 @@ public class Edge {
 	@Override
 	public boolean equals(Object obj)
 	{
-		//stub
-		return false;
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		Edge other = (Edge) obj;
+		return (this.source == other.source) && (this.dest == other.dest);
 	}
 	/**
 	 * Returns the destination vertex
@@ -50,8 +62,7 @@ public class Edge {
 	 */
 	public int getDest()
 	{
-		//stub
-		return 0;
+		return dest;
 	}
 	/**
 	 * Returns the source vertex
@@ -59,8 +70,7 @@ public class Edge {
 	 */
 	public int getSource()
 	{
-		//stub
-		return 0;
+		return source;
 	}
 	/**
 	 * Returns the weight
@@ -68,8 +78,7 @@ public class Edge {
 	 */
 	public double getWeight()
 	{
-		//stub
-		return 0;
+		return weight;
 	}
 	/**
 	 * Returns the hash code for an edge. The hash code depends only on the source
@@ -84,12 +93,11 @@ public class Edge {
 	}
 	/**
 	 * Returns a string representation of the Edge
-	 * @return The string representation fo the Edge
+	 * @return The string representation of the Edge
 	 */
 	@Override
 	public String toString() 
 	{
-		//stub
-		return "";
+		return "Edge from vertex " + source + " to vertex " + dest;
 	}
 }
