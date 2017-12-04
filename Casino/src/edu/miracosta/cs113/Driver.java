@@ -22,5 +22,8 @@ public class Driver
         System.out.println("Deal flop:");
         deck.shuffle();
         System.out.println(deck.deal(3));
+
+        Round round = new Round();
+        round.playRound();
     }
 }
