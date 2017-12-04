@@ -11,7 +11,8 @@ public class MenuGUI extends JFrame
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 450;
 	
-	private static final Color DARK_GREEN = new Color(0,128,0);
+	private static final Color DARK_GREEN = new Color(30, 130, 76);
+	
 	//JPanels
 	private JPanel text;
 	private JPanel namePanel;

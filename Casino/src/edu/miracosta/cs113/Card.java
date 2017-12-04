@@ -4,9 +4,9 @@ public class Card implements Comparable<Card> {
    
 	
 	//String representation of the value's value int value
-    public static final String[] CARDS = { "2", "3", "4", "5", "6", "7", "8", "9", "Ten", "Jack", "Queen", "King", "Ace"};
+    public static final String[] CARDS = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
     //String representation of the value's suit int value
-    public static final String[] SUITS = { "Diamonds", "Clubs", "Hearts", "Spades" };
+    public static final String[] SUITS = { "diamonds", "clubs", "hearts", "spades" };
 
     //Value of the value
     private final int value;
@@ -113,6 +113,15 @@ public class Card implements Comparable<Card> {
     @Override
     public String toString() {
         return CARDS[value] + " of " + SUITS[suit];
+    }
+    
+    /**
+     * Get formatted file path for the corresponding image asset for this card
+     * 
+     * @return String
+     */
+    public String getFilePath() {
+    	return CARDS[value] + "_of_" + SUITS[suit] + ".png";
     }
     
 }

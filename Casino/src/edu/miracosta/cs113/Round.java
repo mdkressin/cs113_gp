@@ -6,13 +6,14 @@ import java.util.Scanner;
 public class Round
 {
     private int pot = 0;
-    private ArrayList<Player>  inactivePlayers = new ArrayList<Player>();
-    private ArrayList<Player> activePlayers = new ArrayList<Player>();
+    private ArrayList<Player>  playersOut = new ArrayList<Player>(); //unnecessary
+    private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Card>    cardsInPlay = new ArrayList<Card>();
     private Player lastPlayerInCycle;
     private Player currentPlayer;
     private int currentPlayerIndex;
-    private Table table;
+    
+    private Table table; //Table shouldn't be here
 
     //Constructors
     public Round()
@@ -28,6 +29,10 @@ public class Round
     public Round(Player userPlayer, int numBots)
     {
         table = new Table(userPlayer, numBots);
+    }
+    
+    public Round(ArrayList<Player> players) {
+    	this.players = players;
     }
 
     public void playRound()
@@ -58,7 +63,7 @@ public class Round
      */
     private void startRound()
     {
-        for (Player p : activePlayers)
+        for (Player p : players)
         {
             Hand currentHand = p.getHand();
             currentHand.addCard(table.getDeck().deal());
@@ -70,30 +75,30 @@ public class Round
      */
     private void resetRound()
     {
-        activePlayers.clear();
+        players.clear();
         for (Player p : table.getPlayers())
         {
-            activePlayers.add(p);
+            players.add(p);
         }
         //Resetting list of active players and cards in play
-        inactivePlayers.clear();
+        playersOut.clear();
         cardsInPlay.clear();
         //Resetting the current and last-in-cycle players
-        currentPlayer = activePlayers.get(0);
+        currentPlayer = players.get(0);
         currentPlayerIndex = 0;
-        lastPlayerInCycle = activePlayers.get(activePlayers.size() - 1);
+        lastPlayerInCycle = players.get(players.size() - 1);
     }
 
     /**
      * Cycles through each player to see if they want to call, fold, or raise their bet
-     * Keeps track of who the current player is and their index in activePlayers
+     * Keeps track of who the current player is and their index in players
      */
     private void cyclePlayers()
     {
         boolean cyclingPlayers = true;
         while (cyclingPlayers)
         {
-            System.out.println("Amount of active players: " + activePlayers.size());
+            System.out.println("Amount of active players: " + players.size());
             System.out.println("Current player's index: " + currentPlayerIndex);
             System.out.println("Current player: " + currentPlayer.getName());
             System.out.println("Last player in cycle: " + lastPlayerInCycle.getName());
@@ -102,18 +107,18 @@ public class Round
             {
                 System.out.println("Last player in cycle");
                 cyclingPlayers = false;
-                playerChoice(activePlayers.get(currentPlayerIndex));
+                playerChoice(players.get(currentPlayerIndex));
             }
-            else if (currentPlayerIndex == (activePlayers.size() - 1))
+            else if (currentPlayerIndex == (players.size() - 1))
             {
                 System.out.println("Last player in list");
-                playerChoice(activePlayers.get(currentPlayerIndex));
+                playerChoice(players.get(currentPlayerIndex));
                 //currentPlayerIndex = 0;
             }
             else
             {
                 System.out.println("No issues");
-                playerChoice(activePlayers.get(currentPlayerIndex));
+                playerChoice(players.get(currentPlayerIndex));
             }
             moveToNextPlayer();
         }
@@ -135,8 +140,8 @@ public class Round
         else if (playerChoice == 2)
         {
             p.playerFolds();
-            inactivePlayers.add(p);
-            activePlayers.remove(p);
+            playersOut.add(p);
+            players.remove(p);
         }
         else if (playerChoice == 3)
         {
@@ -155,13 +160,13 @@ public class Round
         {
             currentPlayerIndex++;
         }
-        if (currentPlayerIndex > (activePlayers.size() - 1))
+        if (currentPlayerIndex > (players.size() - 1))
         {
             System.out.println("RESET CURRENT PLAYER INDEX TO 0");
             currentPlayerIndex = 0;
         }
         System.out.println("CURRENT PLAYER INDEX: " + currentPlayerIndex);
-        currentPlayer = activePlayers.get(currentPlayerIndex);
+        currentPlayer = players.get(currentPlayerIndex);
     }
 
     /**

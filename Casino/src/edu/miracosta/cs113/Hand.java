@@ -5,6 +5,9 @@ public class Hand {
     //Array of cards in the hand
     private Card[] cards = new Card[7];
     
+    //Hole cards are the first two cards 
+    private Card[] holeCards = new Card[2];
+    
     /** The current number of cards in this hand. */
     private int numCards = 0;
     
@@ -55,6 +58,13 @@ public class Hand {
             throw new IllegalArgumentException("Null card");
         }
         
+        /**
+         * If this card is one of the first 2 cards, add to holeCards array (used for GUI)
+         */
+        if(numCards < 2) {
+        	holeCards[numCards] = card;
+        }
+        
         int index = -1;
         for (int i = 0; i < numCards; i++) {
             if (card.compareTo(cards[i]) > 0) {
@@ -101,6 +111,15 @@ public class Hand {
      */
     public Card[] getCards() {
         return cards;
+    }
+    
+    /**
+     * Get the holeCards (first two cards the player is dealt).
+     *
+     * @return Card array with the first two cards
+     */
+    public Card[] getHoleCards() {
+        return holeCards;
     }
     
     /**
