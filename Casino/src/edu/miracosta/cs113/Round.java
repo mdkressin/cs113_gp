@@ -6,19 +6,28 @@ import java.util.Scanner;
 public class Round
 {
     private int pot = 0;
-    private ArrayList<Player>  playersOut = new ArrayList<Player>(); //unnecessary
-    private ArrayList<Player> players = new ArrayList<Player>();
-    private ArrayList<Card>    cardsInPlay = new ArrayList<Card>();
+
+    public ArrayList<Player> players = new ArrayList<Player>();
+    
+    private ArrayList<Card> cardsInPlay = new ArrayList<Card>();
+    
     private Player lastPlayerInCycle;
+    
     private Player currentPlayer;
+    
     private int currentPlayerIndex;
     
-    private Table table; //Table shouldn't be here
+    private Table table;
 
     //Constructors
     public Round()
     {
         table = new Table();
+    }
+    
+    public Round(Table table)
+    {
+        this.table = table;
     }
     
     public Round(Player userPlayer)
@@ -29,10 +38,6 @@ public class Round
     public Round(Player userPlayer, int numBots)
     {
         table = new Table(userPlayer, numBots);
-    }
-    
-    public Round(ArrayList<Player> players) {
-    	this.players = players;
     }
 
     public void playRound()
@@ -61,7 +66,7 @@ public class Round
     /**
      * Gives each player 2 cards to start with
      */
-    private void startRound()
+    public void startRound()
     {
         for (Player p : players)
         {
@@ -81,7 +86,7 @@ public class Round
             players.add(p);
         }
         //Resetting list of active players and cards in play
-        playersOut.clear();
+
         cardsInPlay.clear();
         //Resetting the current and last-in-cycle players
         currentPlayer = players.get(0);
@@ -140,7 +145,7 @@ public class Round
         else if (playerChoice == 2)
         {
             p.playerFolds();
-            playersOut.add(p);
+
             players.remove(p);
         }
         else if (playerChoice == 3)
@@ -191,5 +196,19 @@ public class Round
     private void river()
     {
         cardsInPlay.add(table.getDeck().deal());
+    }
+    
+    /**
+     * Get cards on the board
+     */
+    public ArrayList<Card> getCardsInPlay() {
+    		return cardsInPlay;
+    }
+    
+    /**
+     * Get cards on the board
+     */
+    public int getPot() {
+    		return pot;
     }
 }

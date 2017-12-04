@@ -65,18 +65,41 @@ public class PlayerGUI extends JPanel {
 		cards.add(card2Label);
 		
 		name = new JLabel(player.getName());
-		money = new JLabel(player.getMoney() + "");
+		money = new JLabel("$" + player.getMoney() + "");
 		
 		this.add(cards);
 		this.add(name);
 		this.add(money);
 	}
 	
+	public void dealHand(Player player, boolean isBot) {
+		
+		if(isBot) 
+		{
+			BufferedImage backCardImage = getCardImage("card_back.png");
+			card1Label = new JLabel(new ImageIcon(backCardImage));
+			card2Label = new JLabel(new ImageIcon(backCardImage));
+
+		} 
+		else 
+		{
+			Card playerCard1 = player.getHand().getHoleCards()[0];
+			Card playerCard2 = player.getHand().getHoleCards()[1];
+			
+			String playerCard1FilePath = playerCard1.getFilePath();
+			BufferedImage card1Image = getCardImage(playerCard1FilePath);
+			card1Label = new JLabel(new ImageIcon(card1Image));
+			String playerCard2FilePath = playerCard2.getFilePath();
+			BufferedImage card2Image = getCardImage(playerCard2FilePath);
+			card2Label = new JLabel(new ImageIcon(card2Image));
+		}
+	}
+	
 	private BufferedImage getCardImage(String cardFilePath) {
 				
 		try {
-			//File imageFile = new File("" + cardFilePath);
-			return ImageIO.read(this.getClass().getResource(cardFilePath));
+			File imageFile = new File("" + cardFilePath);
+			return ImageIO.read(imageFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

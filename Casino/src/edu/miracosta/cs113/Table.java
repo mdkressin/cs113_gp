@@ -48,6 +48,10 @@ public class Table
             botNumber++;
         }
     }
+    
+    public void newRound() {
+    		Round round = new Round(this);
+    }
 
     //Getters
     public CardDeck getDeck()
