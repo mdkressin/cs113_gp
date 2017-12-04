@@ -10,11 +10,26 @@ public class MatrixPokerGraph extends AbstractPokerGraph {
 	/**
 	 * Creates an Iterator object for MatrixPokerGraph to use on arrays
 	 */
-	private class Iter
-	{//stub
+	private class Iter implements Iterator<Edge>
+	{
+
+		@Override
+		public boolean hasNext() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public Edge next() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 	}
+	
 	// Data Fields
+	/** A two-dimensional array that represents the graph. */
+	private double[][] edges;
 	
 	// Constructor
 	/**
@@ -24,8 +39,8 @@ public class MatrixPokerGraph extends AbstractPokerGraph {
 	 */
 	public MatrixPokerGraph(int numV, boolean directed)
 	{
-		//stub
 		super(numV,directed);
+		edges = new double[numV][numV];
 	}
 	/**
 	 * Insert a new edge into the graph
