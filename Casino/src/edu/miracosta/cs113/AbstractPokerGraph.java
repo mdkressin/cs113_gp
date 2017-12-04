@@ -74,7 +74,21 @@ public abstract class AbstractPokerGraph implements Graph {
 	 */
 	public static Graph createGraph(Scanner scan, boolean isDirected, String type)
 	{
-		//stub
-		return null;
+		int numV = scan.nextInt();
+		AbstractPokerGraph returnValue = null;
+		if (type.equalsIgnoreCase("Matrix")) 
+		{
+			returnValue = new MatrixPokerGraph(numV, isDirected);
+		}
+		else if (type.equalsIgnoreCase("List"))
+		{
+			returnValue = new ListPokerGraph(numV, isDirected);
+		}
+		else 
+		{
+			throw new IllegalArgumentException();
+		}
+		returnValue.loadEdgesFromFile(scan);
+		return returnValue;
 	}
 }
