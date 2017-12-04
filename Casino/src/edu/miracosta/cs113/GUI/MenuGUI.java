@@ -11,10 +11,23 @@ public class MenuGUI extends JFrame
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 450;
 	
+	private static final Color DARK_GREEN = new Color(0,128,0);
+	//JPanels
+	private JPanel text;
+	private JPanel namePanel;
+	private JPanel numBotsPanel;
+	
+	//Labels
 	private JLabel title;
 	private JLabel groupMembers;
+	private JLabel numBotsLabel;
+	private JLabel playerNameLabel;
 	
-	//Launch game buttons
+	
+	//Text field
+	private JTextField playerName;
+	
+	//Launch game numBotsPanel
 	private JButton onePlayerButton;
 	private JButton twoPlayerButton;
 	private JButton threePlayerButton;
@@ -32,7 +45,7 @@ public class MenuGUI extends JFrame
 		setTitle("CS113 Texas Hold 'Em");
 		Container menu = getContentPane();
 		setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
-		menu.setBackground(new Color(0,128,0)); //dark green
+		menu.setBackground(DARK_GREEN);
 		
 		/**
 		 * Labels
@@ -41,22 +54,40 @@ public class MenuGUI extends JFrame
 		title.setFont(new Font("serif", Font.BOLD, 48));
 		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setForeground(Color.white);
-		title.setBorder(new EmptyBorder(10, 10, 10, 10));
+		title.setBorder(new EmptyBorder(5, 5, 5, 5));
 		groupMembers = new JLabel("by Kyle Johnson, Matthew Kressin, and Eric Thompson", SwingConstants.CENTER);
 		groupMembers.setFont(new Font("Gill Sans MT", Font.BOLD, 24));
 		groupMembers.setHorizontalAlignment(JLabel.CENTER);
 		groupMembers.setForeground(Color.white);
-		groupMembers.setBorder(new EmptyBorder(10, 10, 10, 10));
+		groupMembers.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
 		
 		/**
-		 * Buttons
+		 * Player name
 		 */
+		playerNameLabel = new JLabel("Your name");
+		playerNameLabel.setFont(new Font("Gill Sans MT", Font.BOLD, 12));
+		playerNameLabel.setHorizontalAlignment(JLabel.CENTER);
+		playerNameLabel.setForeground(Color.white);
+		playerName = new JTextField();
+		
+		
+		/**
+		 * numBotsPanel
+		 */
+		numBotsLabel = new JLabel("Number of Bots");
+		numBotsLabel.setFont(new Font("Gill Sans MT", Font.BOLD, 12));
+		numBotsLabel.setHorizontalAlignment(JLabel.CENTER);
+		numBotsLabel.setForeground(Color.white);
+		
 		onePlayerButton = new JButton("1 Player");
 		onePlayerButton.setFont(new Font("Gill Sans MT", Font.BOLD, 14));
 		onePlayerButton.setBackground(new Color(236, 240, 241));
+		
 		twoPlayerButton = new JButton("2 Players");
 		twoPlayerButton.setFont(new Font("Gill Sans MT", Font.BOLD, 14));
 		twoPlayerButton.setBackground(new Color(236, 240, 241));
+		
 		threePlayerButton = new JButton("3 Players");
 		threePlayerButton.setFont(new Font("Gill Sans MT", Font.BOLD, 14));
 		threePlayerButton.setBackground(new Color(236, 240, 241));
@@ -78,23 +109,40 @@ public class MenuGUI extends JFrame
 		
 		
 		/**
-		 * Format buttons
+		 * Format panels
 		 */
-		JPanel buttons = new JPanel();
-		buttons.setBackground(new Color(0,128,0)); //dark green
-		buttons.setLayout(new GridLayout(1,3));
-		buttons.setBorder(new EmptyBorder(20, 20, 20, 20));
+		text = new JPanel();
+		text.setLayout(new GridLayout(3,1));
+		text.setBackground(DARK_GREEN);
+		
+		namePanel = new JPanel();
+		namePanel.setLayout(new GridLayout(1,4));
+		namePanel.setBackground(DARK_GREEN); 
+		namePanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+		numBotsPanel = new JPanel();
+		numBotsPanel.setLayout(new GridLayout(1,4));
+		numBotsPanel.setBackground(DARK_GREEN); 
+		numBotsPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
 		
 		/**
 		 * Add to window
 		 */
-		menu.add(title);
-		menu.add(groupMembers);
-		buttons.add(onePlayerButton);
-		buttons.add(twoPlayerButton);
-		buttons.add(threePlayerButton);
-		menu.add(buttons);
+		text.add(title);
+		text.add(groupMembers);
+		
+		namePanel.add(playerNameLabel);
+		namePanel.add(playerName);
+		
+		numBotsPanel.add(numBotsLabel);
+		numBotsPanel.add(onePlayerButton);
+		numBotsPanel.add(twoPlayerButton);
+		numBotsPanel.add(threePlayerButton);
+		
+		menu.add(text);
+		menu.add(namePanel);
+		menu.add(numBotsPanel);
 		
 		/**
 		 * Show window
@@ -108,7 +156,7 @@ public class MenuGUI extends JFrame
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			
+			PokerGUI game = new PokerGUI(playerName.getText(), 1);
 		}
 	}
 	
