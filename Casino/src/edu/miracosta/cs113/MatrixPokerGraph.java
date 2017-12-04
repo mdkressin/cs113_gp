@@ -12,7 +12,14 @@ public class MatrixPokerGraph extends AbstractPokerGraph {
 	 */
 	private class Iter implements Iterator<Edge>
 	{
-
+		Iter()
+		{
+			
+		}
+		Iter(int index)
+		{
+			
+		}
 		@Override
 		public boolean hasNext() {
 			// TODO Auto-generated method stub
@@ -72,8 +79,7 @@ public class MatrixPokerGraph extends AbstractPokerGraph {
 	 */
 	@Override
 	public Iterator<Edge> edgeIterator(int source) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Iter(source);
 	}
 	
 	/**
