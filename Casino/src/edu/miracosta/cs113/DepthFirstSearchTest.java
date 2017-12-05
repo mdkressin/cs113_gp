@@ -10,6 +10,7 @@ import org.junit.Test;
  * 3.			insert edges to create graph
  * 4.			use depth-first search
  * 5.			compare result with expected result
+ * 6.			test differences between directed and undirected graphs
  *
  */
 public class DepthFirstSearchTest {
