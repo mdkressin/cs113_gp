@@ -78,7 +78,7 @@ public class Round
     /**
      * Sets all players to "active" again, clears the cards in play, and resets the current/last players
      */
-    private void resetRound()
+    public void resetRound()
     {
         players.clear();
         for (Player p : table.getPlayers())
@@ -98,7 +98,7 @@ public class Round
      * Cycles through each player to see if they want to call, fold, or raise their bet
      * Keeps track of who the current player is and their index in players
      */
-    private void cyclePlayers()
+    public void cyclePlayers()
     {
         boolean cyclingPlayers = true;
         while (cyclingPlayers)
@@ -133,7 +133,7 @@ public class Round
      * Has the player make a choice of calling, folding, raising, or checking
      * @param p The player to get the choice from
      */
-    private void playerChoice(Player p)
+    public void playerChoice(Player p)
     {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("1. Call, 2. Fold, or 3. Raise?");
@@ -177,7 +177,7 @@ public class Round
     /**
      * Places initial 3 cards in the center of the table
      */
-    private void flop()
+    public void flop()
     {
         cardsInPlay.add(table.getDeck().deal());
         cardsInPlay.add(table.getDeck().deal());
@@ -186,14 +186,14 @@ public class Round
     /**
      * Places fourth card on table
      */
-    private void turn()
+    public void turn()
     {
         cardsInPlay.add(table.getDeck().deal());
     }
     /**
      * Places fifth and final card on the table
      */
-    private void river()
+    public void river()
     {
         cardsInPlay.add(table.getDeck().deal());
     }

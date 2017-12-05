@@ -17,7 +17,7 @@ import edu.miracosta.cs113.Table;
 /**
  * The game's main GUI componenet
  * 
- *      		 ___	   ___		 ___	   ___
+ *      	 ___   ___		 ___   ___
  * 	   		|   | |   |		|   | |   |
  * 	   		| ? | | ? |		| ? | | ? |			<--- botsPanel
  * 	   		|___| |___|		|___| |___|
@@ -74,7 +74,9 @@ public class PokerGUI extends JFrame {
         table = new Table(humanPlayer, numBots);
         
         
-        // Show the frame.
+        /**
+         * Show frame
+         */
         setSize(800, 450);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -82,17 +84,50 @@ public class PokerGUI extends JFrame {
         /**
          * Start game
          */
-		runRound();
+		play();
     }
     
-    public void runRound() {
+    public void play() {
+    	
+    	//Infinite loop for now
+    	while(true) {
     		Round round = new Round(table);
-    		drawTable(round);
+    		
+    		System.out.println("New round starting");
+            round.resetRound();
+    		redrawTable(round);
+    		
+            System.out.println("Initial deal");
+            round.startRound();
+    		redrawTable(round);
+            round.cyclePlayers();
+            
+            System.out.println("flop");
+            round.flop();
+    		redrawTable(round);
+            round.cyclePlayers();
+
+            System.out.println("turn");
+            round.turn();
+    		redrawTable(round);
+            round.cyclePlayers();
+
+            System.out.println("river");
+            round.river();
+    		redrawTable(round);
+            round.cyclePlayers();
+            System.out.println("Round over");
+    	}
     }
     
-    public void drawTable(Round round) {
+    /**
+     * Redraws all dyanmic elements (cards on the table, pot, player money, etc)
+     * 
+     * @param round
+     */
+    public void redrawTable(Round round) {
     		
-    	 	/**
+    	/**
          * Bot panel (top)
          */
         botsPanel = new JPanel();

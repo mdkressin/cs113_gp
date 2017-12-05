@@ -1,5 +1,6 @@
 package edu.miracosta.cs113.GUI;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -39,24 +40,21 @@ public class PlayerGUI extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(DARK_GREEN);
 
-		
+		card1Label = new JLabel("");
+		card2Label = new JLabel("");
 		
 		Card playerCard1 = player.getHand().getHoleCards()[0];
 		Card playerCard2 = player.getHand().getHoleCards()[1];
 		
 		if(playerCard1 != null) 
 		{
-			String playerCard1FilePath = playerCard1.getFilePath();
-			BufferedImage card1Image = getCardImage(playerCard1FilePath);
-			card1Label = new JLabel(new ImageIcon(card1Image));
-			String playerCard2FilePath = playerCard2.getFilePath();
-			BufferedImage card2Image = getCardImage(playerCard2FilePath);
-			card1Label = new JLabel(new ImageIcon(card2Image));
+			setCardImage(playerCard1.getFilePath(), card1Label);
+			setCardImage(playerCard2.getFilePath(), card2Label);
 		} 
 		else 
 		{
-			card1Label = new JLabel("?");
-			card2Label = new JLabel("?");
+			setCardImage("card_back.png", card1Label);
+			setCardImage("card_back.png", card2Label);
 		}
 
 		cards = new JPanel();
@@ -76,34 +74,24 @@ public class PlayerGUI extends JPanel {
 		
 		if(isBot) 
 		{
-			BufferedImage backCardImage = getCardImage("card_back.png");
-			card1Label = new JLabel(new ImageIcon(backCardImage));
-			card2Label = new JLabel(new ImageIcon(backCardImage));
-
+			setCardImage("card_back.png", card1Label);
+			setCardImage("card_back.png", card2Label);
 		} 
 		else 
 		{
 			Card playerCard1 = player.getHand().getHoleCards()[0];
 			Card playerCard2 = player.getHand().getHoleCards()[1];
 			
-			String playerCard1FilePath = playerCard1.getFilePath();
-			BufferedImage card1Image = getCardImage(playerCard1FilePath);
-			card1Label = new JLabel(new ImageIcon(card1Image));
-			String playerCard2FilePath = playerCard2.getFilePath();
-			BufferedImage card2Image = getCardImage(playerCard2FilePath);
-			card2Label = new JLabel(new ImageIcon(card2Image));
+			setCardImage(playerCard1.getFilePath(), card1Label);
+			setCardImage(playerCard2.getFilePath(), card2Label);
+
 		}
 	}
 	
-	private BufferedImage getCardImage(String cardFilePath) {
-				
-		try {
-			File imageFile = new File("" + cardFilePath);
-			return ImageIO.read(imageFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+	private void setCardImage(String cardFilePath, JLabel label) 
+	{	
+		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(145,100, Image.SCALE_DEFAULT));
+		label.setIcon(imageIcon);
 		
 	}
 	
