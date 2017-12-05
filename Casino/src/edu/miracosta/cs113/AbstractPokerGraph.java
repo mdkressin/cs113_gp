@@ -163,6 +163,33 @@ public abstract class AbstractPokerGraph implements Graph {
 				}
 			}
 		}
+		/**
+		 * Construct the depth-first search of a Graph selecting the start vertices
+		 * in the specified order. The first vertex visited is order[0]
+		 * @param graph	The graph
+		 * @param order	The array giving the order in which the start vertices
+		 * 				should be selected
+		 */
+		public DepthFirstSearch(Graph graph, int[] order)
+		{
+			this.graph = graph;
+			int n = graph.getNumV();
+			parent = new int[n];
+			visited = new boolean[n];
+			discoveryOrder = new int[n];
+			finishOrder = new int[n];
+			for (int i = 0; i < n; i++)
+			{
+				parent[i] = -1;
+			}
+			for (int i = 0; i < n; i++)
+			{
+				if (!visited[order[i]])
+				{
+					depthFirstSearch(order[i]);
+				}
+			}
+		}
 		
 		/**
 		 * Recursively depth-first search the graph starting at vertex current.
