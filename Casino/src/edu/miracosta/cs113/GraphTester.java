@@ -15,7 +15,13 @@ import org.junit.Test;
  * 8.			insert Edge objects into the ListPokerGraph
  * 9.		test method insert in MatrixPokerGraph
  * 10.			repeat steps 6-8 for MatrixPokerGraph
- * 11.
+ * 11.	test method getEdge
+ * 12.		test method getEdge in ListPokerGraph
+ * 13.			instantiate ListPokerGraph object
+ * 14.			insert Edges into graph
+ * 15.			getEdges from graph and check to see if they're correct
+ * 16.		test method getEdge in MatrixPokerGraph
+ * 17.			repeat steps 13-15 for MatrixPokerGraph
  *
  */
 public class GraphTester {
@@ -58,6 +64,24 @@ public class GraphTester {
 		Assert.assertTrue(((ListPokerGraph) list).getEdge(2, 4).equals(edge2));
 		Assert.assertTrue(((ListPokerGraph) list).isEdge(4,6));
 		Assert.assertTrue(((ListPokerGraph) list).getEdge(4, 6).equals(edge3));	
+	}
+	@Test
+	public void testListPokerGraphGetEdge()
+	{
+		AbstractPokerGraph list = new ListPokerGraph(7,false);
+		Edge edge1 = new Edge(0,2);
+		Edge edge2 = new Edge(2,4);
+		Edge edge3 = new Edge(4,6);
+		
+		list.insert(edge1);
+		list.insert(edge2);
+		list.insert(edge3);
+		
+		Edge e1 = list.getEdge(edge1.getSource(), edge1.getDest());
+		Assert.assertTrue(edge1.equals(e1));
+		Edge e2 = list.getEdge(edge2.getSource(), edge2.getDest());
+		Edge e3 = list.getEdge(edge3.getSource(), edge3.getDest());
+		Assert.assertTrue(edge2.equals(e2) && edge3.equals(e3));
 	}
 	@Test
 	public void testCreateGraph() {
