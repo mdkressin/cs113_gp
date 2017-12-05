@@ -103,4 +103,14 @@ public class DepthFirstSearch
 		/* Mark current finished. */ 
 		finishOrder[finishIndex++] = current;
 	}
-} // end of DepthFirstSearch inner class
+	
+	// Accessors
+	public int[] getDiscoveryOrder()
+	{
+		return discoveryOrder;
+	}
+	public int[] getFinishOrder()
+	{
+		return finishOrder;
+	}
+}
