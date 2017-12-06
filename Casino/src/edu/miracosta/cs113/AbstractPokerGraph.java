@@ -118,4 +118,6 @@ public abstract class AbstractPokerGraph implements Graph {
 		returnValue.loadEdgesFromFile(scan);
 		return returnValue;
 	}
+	
+	
 }

@@ -2,6 +2,7 @@ package edu.miracosta.cs113;
 
 import org.junit.Assert;
 import org.junit.Test;
+import java.util.Iterator;
 
 /**
  * Algorithm to test graph implementation
@@ -29,6 +30,13 @@ import org.junit.Test;
  * 22.			check with edges in graph and edges not in the graph
  * 23.		test method isEdge in MatrixPokerGraph
  * 24.			repeat steps 20-22 for MatrixPokerGraph
+ * 25.	test method edgeIterator
+ * 26.		test method edgeIterator in ListPokerGraph
+ * 27.			instantiate ListPokerGraph object
+ * 28.			insert edges into graph
+ * 29.			test to see if iterator iterates through graph
+ * 30.		test method edgeIterator in MatrixPokerGraph
+ * 31.			repeat steps 27-29 for MatrixPokerGraph
  *
  */
 public class GraphTester {
@@ -111,6 +119,34 @@ public class GraphTester {
 		Assert.assertFalse(((ListPokerGraph) list).isEdge(0, 6));
 		Assert.assertFalse(((ListPokerGraph) list).isEdge(2, 6));
 		Assert.assertFalse(((ListPokerGraph) list).isEdge(0, 4));
+	}
+	@Test 			//will come back to later
+	public void testListPokerGraphEdgeIterator()
+	{
+		AbstractPokerGraph list = new ListPokerGraph(7,false);
+		Edge edge1 = new Edge(0,2);
+		Edge edge2 = new Edge(2,4);
+		Edge edge3 = new Edge(4,6);
+		Edge edge4 = new Edge(2,8);
+		Edge edge5 = new Edge(4,10);
+		Edge edge6 = new Edge(0,12);
+		Edge edge7 = new Edge(6,10);
+		
+		list.insert(edge1);
+		list.insert(edge2);
+		list.insert(edge3);
+		
+		Iterator<Edge> iter = list.edgeIterator(0);
+		Edge[] edges = new Edge[7];
+		int i = 0;
+		while (iter.hasNext())
+		{
+			edges[i] = iter.next();
+			System.out.println(edges[i].toString());
+			System.out.println(i);
+			i++;
+		}
+		
 	}
 	@Test
 	public void testCreateGraph() {
