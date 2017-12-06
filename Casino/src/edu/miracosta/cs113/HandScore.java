@@ -2,7 +2,7 @@ package edu.miracosta.cs113;
 
 public class HandScore
 {
-    //Score values
+    //Score value
     private int score;
     private final int PAIR            = 12;
     private final int THREE_OF_A_KIND = 47;
