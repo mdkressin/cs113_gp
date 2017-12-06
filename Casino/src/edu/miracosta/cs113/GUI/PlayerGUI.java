@@ -90,9 +90,8 @@ public class PlayerGUI extends JPanel {
 	
 	private void setCardImage(String cardFilePath, JLabel label) 
 	{	
-		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(145,100, Image.SCALE_DEFAULT));
+		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
 		label.setIcon(imageIcon);
-		
 	}
 	
 }

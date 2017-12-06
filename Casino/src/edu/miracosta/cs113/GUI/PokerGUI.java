@@ -127,6 +127,8 @@ public class PokerGUI extends JFrame {
      */
     public void redrawTable(Round round) {
     		
+    	getContentPane().removeAll();
+    	
     	/**
          * Bot panel (top)
          */
@@ -138,7 +140,7 @@ public class PokerGUI extends JFrame {
         
         for(int i = 1; i < players.size(); i++) 
         {
-        		botsPanel.add(new PlayerGUI(players.get(i)));
+        	botsPanel.add(new PlayerGUI(players.get(i)));
         }
         
         /**
@@ -148,9 +150,13 @@ public class PokerGUI extends JFrame {
         dealerPanel.setBackground(DARK_GREEN);
         dealerPanel.setLayout(new FlowLayout());
         dealerPanel.add(new JLabel("$" + round.getPot()));
+        
         for(Card c : round.getCardsInPlay()) 
         {
+        	if(c != null)
+        	{
         		dealerPanel.add(new JLabel(new ImageIcon(getCardImage(c.getFilePath()))));
+        	}
         }
         
         
@@ -172,10 +178,16 @@ public class PokerGUI extends JFrame {
       	this.add(userPanel);
     }
     
+    private void setCardImage(String cardFilePath, JLabel label) 
+	{	
+		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+		label.setIcon(imageIcon);
+	}
+    
     private BufferedImage getCardImage(String cardFilePath) {
 		
 		try {
-			File imageFile = new File("" + cardFilePath);
+			File imageFile = new File("src/edu/miracosta/cs113/assets/" + cardFilePath);
 			return ImageIO.read(imageFile);
 		} catch (IOException e) {
 			e.printStackTrace();
