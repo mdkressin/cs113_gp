@@ -22,22 +22,21 @@ public class Driver
         System.out.println("Deal flop:");
         deck.shuffle();
         System.out.println(deck.deal(3));
-        
+
         //Testing the HandScore's sorting method
         System.out.println();
         System.out.println("Sorting cards");
         CardDeck newdeck = new CardDeck();
         HandScore score = new HandScore();
-        //Hand unsortedHand = new Hand();
         Card[] unsortedCards = new Card[7];
         for (int i = 0; i < unsortedCards.length; i++)
         {
             unsortedCards[i] = deck.deal();
         }
 
-        score.calculateScore(unsortedCards);
+        System.out.println(score.calculateScore(unsortedCards));
 
-        Round round = new Round();
-        round.playRound();
+        //Round round = new Round();
+        //round.playRound();
     }
 }

@@ -2,6 +2,7 @@ package edu.miracosta.cs113;
 
 public class HandScore
 {
+    //Score values
     private int score;
     private final int PAIR            = 12;
     private final int THREE_OF_A_KIND = 47;
@@ -10,19 +11,23 @@ public class HandScore
     private final int FULL_HOUSE      = 159;
     private final int FOUR_OF_A_KIND  = 182;
 
+    //Amounts needed for a type of hand
     private final int NUM_FOR_STRAIGHT = 5;
     private final int NUM_FOR_FLUSH    = 5;
 
+    //Counters for detecting types of hands
     private int numDuplicates;
     private int numInRow;
     private int numSameFace;
 
+    //Counters for types of hands
     private int numFourOfKind;
     private int flush;
     private int straight;
     private int numThreeOfKind;
     private int numPairs;
 
+    //Default constructor
     public HandScore()
     {
         this.numFourOfKind  = 0;
@@ -35,7 +40,6 @@ public class HandScore
         this.numInRow       = 0;
         this.numSameFace    = 0;
     }
-
     /**
      * Calls methods to organize the cards, and detect any valuable hands
      * @param cards Cards to be checked
@@ -43,6 +47,7 @@ public class HandScore
      */
     public int calculateScore(Card[] cards)
     {
+        resetValues();
         Card[] tempHand;
         tempHand = sortHand(cards);
         for (Card c : tempHand)
@@ -53,9 +58,54 @@ public class HandScore
         detectDuplicates(tempHand);
         detectStraight(tempHand);
         detectFlush(tempHand);
-        return 0;
+        return getScore(cards);
     }
+    /**
+     * Adds up the total score based on all counters and the cards' values
+     * @param cards cards to cycle through for adding values up
+     * @return The total score
+     */
+    private int getScore(Card[] cards)
+    {
+        System.out.println("NumPairs: " + numPairs);
+        System.out.println("NumThreeOfKind: " + numThreeOfKind);
+        System.out.println("NumFourOfKind: " + numFourOfKind);
+        System.out.println("Straight: " + straight);
+        System.out.println("Flush: " + flush);
+        score = 0;
+        score += numFourOfKind  * FOUR_OF_A_KIND;
+        score += flush          * FLUSH;
+        score += straight       * STRAIGHT;
+        if ((numThreeOfKind > 0) && (numPairs > 0))
+        {
+        	score += FULL_HOUSE;
+        }
+        else
+        {
+        	score += numThreeOfKind * THREE_OF_A_KIND;
+            score += numPairs       * PAIR;
+        }
+        for (int i = 0; (i < cards.length); i++)
+        {
+            score += cards[i].getValue();
+        }
+        return score;
+    }
+    /**
+     * Resets all counters to 0
+     */
+    private void resetValues()
+    {
+        this.numFourOfKind  = 0;
+        this.flush          = 0;
+        this.straight       = 0;
+        this.numThreeOfKind = 0;
+        this.numPairs       = 0;
 
+        this.numDuplicates  = 0;
+        this.numInRow       = 0;
+        this.numSameFace    = 0;
+    }
     /**
      * Uses a bubble sort to put an array of cards in order
      * @param cards Cards to organize
@@ -64,7 +114,6 @@ public class HandScore
     public Card[] sortHand(Card[] cards)
     {
         Card[] tempCards;
-        //Card[] cards = hand.getCards();
         int endIndex = (cards.length - 1);
         boolean sorted = false;
         while (!sorted)
@@ -85,7 +134,6 @@ public class HandScore
         tempCards = cards;
         return tempCards;
     }
-
     /**
      * Counts the amount of equal cards and then determines if its a pair, three of a kind, or four
      * of a kind
@@ -96,7 +144,6 @@ public class HandScore
         Card previousCard = null;
         for (int i = 0; i < (cards.length); i++)
         {
-            System.out.println("Card in detectDuplicates: " +cards[i].toString() + " INDEX " + i);
             //Checking if the previous and current cards are equal
             if (previousCard == null)
             {
@@ -118,11 +165,7 @@ public class HandScore
             //Checking numInRow for any pairs
             previousCard = cards[i];
         }
-        System.out.println("NumPairs: " + numPairs);
-        System.out.println("NumThreeOfKind: " + numThreeOfKind);
-        System.out.println("NumFourOfKind: " + numFourOfKind);
     }
-
     /**
      * Helper method for detectDuplicates which checks the value of numDuplicates and increments
      * the counters for pairs, three of a kind, and four of a kind if needed
@@ -142,7 +185,6 @@ public class HandScore
             numPairs++;
         }
     }
-
     /**
      * Searched for 5 cards in a row, increments the count for straight if it finds one
      * @param cards Cards to check
@@ -173,8 +215,6 @@ public class HandScore
             }
             previousCard = c;
         }
-        System.out.println("Straight: " + straight);
-        System.out.println("NumInRow: " + numInRow);
         if (straight > 0)
         {
             return true;
@@ -184,7 +224,6 @@ public class HandScore
             return false;
         }
     }
-
     /**
      * Checks for 5 cards of the same suit
      * @param cards The cards to check
@@ -217,8 +256,6 @@ public class HandScore
                 flush = 1;
             }
         }
-        System.out.println("Flush: " + flush);
-        System.out.println("Same face: " + numSameFace);
         if (flush > 0)
         {
             return true;
@@ -229,3 +266,4 @@ public class HandScore
         }
     }
 }
+
