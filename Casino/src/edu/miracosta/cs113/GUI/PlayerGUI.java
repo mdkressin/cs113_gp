@@ -3,6 +3,8 @@ package edu.miracosta.cs113.GUI;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,7 +37,7 @@ public class PlayerGUI extends JPanel {
 	private JLabel name;
 	private JLabel money;
 
-	public PlayerGUI(Player player) {
+	public PlayerGUI(Player player, boolean isBot) {
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(DARK_GREEN);
@@ -48,13 +50,13 @@ public class PlayerGUI extends JPanel {
 		
 		if(playerCard1 != null) 
 		{
-			setCardImage(playerCard1.getFilePath(), card1Label);
-			setCardImage(playerCard2.getFilePath(), card2Label);
+			setCardImage(playerCard1.getFilePath(), card1Label, isBot);
+			setCardImage(playerCard2.getFilePath(), card2Label, isBot);
 		} 
 		else 
 		{
-			setCardImage("card_back.png", card1Label);
-			setCardImage("card_back.png", card2Label);
+			setCardImage("card_back.png", card1Label, isBot);
+			setCardImage("card_back.png", card2Label, isBot);
 		}
 
 		cards = new JPanel();
@@ -63,35 +65,37 @@ public class PlayerGUI extends JPanel {
 		cards.add(card2Label);
 		
 		name = new JLabel(player.getName());
+		formatLabel(name, new Font("Gill Sans MT", Font.PLAIN, 12), new Color(255,255,255));
+		
 		money = new JLabel("$" + player.getMoney() + "");
+		formatLabel(money, new Font("Gill Sans MT", Font.PLAIN, 16), new Color(255,255,255));
 		
 		this.add(cards);
 		this.add(name);
 		this.add(money);
 	}
 	
-	public void dealHand(Player player, boolean isBot) {
-		
-		if(isBot) 
-		{
-			setCardImage("card_back.png", card1Label);
-			setCardImage("card_back.png", card2Label);
-		} 
-		else 
-		{
-			Card playerCard1 = player.getHand().getHoleCards()[0];
-			Card playerCard2 = player.getHand().getHoleCards()[1];
-			
-			setCardImage(playerCard1.getFilePath(), card1Label);
-			setCardImage(playerCard2.getFilePath(), card2Label);
-
-		}
-	}
 	
-	private void setCardImage(String cardFilePath, JLabel label) 
+	private void formatLabel(JLabel label, Font font, Color fontColor) {
+		label.setFont(font);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setForeground(fontColor);
+		//label.setBorder(new EmptyBorder(5, 5, 5, 5));
+	}
+
+
+	private void setCardImage(String cardFilePath, JLabel label, boolean isBot) 
 	{	
-		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
-		label.setIcon(imageIcon);
+		if(isBot)
+		{
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/card_back.png").getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+			label.setIcon(imageIcon);
+		}
+		else
+		{
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+			label.setIcon(imageIcon);
+		}
 	}
 	
 }

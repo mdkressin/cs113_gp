@@ -15,9 +15,9 @@ import edu.miracosta.cs113.Round;
 import edu.miracosta.cs113.Table;
 
 /**
- * The game's main GUI componenet
+ * The game's main GUI component
  * 
- *      	 ___   ___		 ___   ___
+ *      	     ___   ___		 ___   ___
  * 	   		|   | |   |		|   | |   |
  * 	   		| ? | | ? |		| ? | | ? |			<--- botsPanel
  * 	   		|___| |___|		|___| |___|
@@ -68,7 +68,7 @@ public class PokerGUI extends JFrame {
         setLayout(new GridLayout(3,1));
 
         /**
-         * Initialize player and game variables
+         * Initialize player and table variables
          */
         humanPlayer = new Player(playerName, START_MONEY);        
         table = new Table(humanPlayer, numBots);
@@ -89,47 +89,50 @@ public class PokerGUI extends JFrame {
     
     public void play() {
     	
-    	//Infinite loop for now
-    	while(true) {
     		Round round = new Round(table);
     		
-    		System.out.println("New round starting");
-            round.resetRound();
-    		redrawTable(round);
-    		
-            System.out.println("Initial deal");
-            round.startRound();
-    		redrawTable(round);
-            round.cyclePlayers();
-            
-            System.out.println("flop");
-            round.flop();
-    		redrawTable(round);
-            round.cyclePlayers();
-
-            System.out.println("turn");
-            round.turn();
-    		redrawTable(round);
-            round.cyclePlayers();
-
-            System.out.println("river");
-            round.river();
-    		redrawTable(round);
-            round.cyclePlayers();
-            System.out.println("Round over");
-    	}
+	    	//Infinite loop for now, todo: stop when user money < 0
+	    	while(true) {
+	    		
+	    		System.out.println("New round starting");
+	    		round.resetRound();
+	    		redrawTable(round);
+	    		
+			System.out.println("Initial deal");
+			//Give each player two cards
+			round.startRound();
+			redrawTable(round);
+			
+			round.cyclePlayers();
+	            
+	            System.out.println("flop");
+	            round.flop();
+	    		redrawTable(round);
+	            round.cyclePlayers();
+	
+	            System.out.println("turn");
+	            round.turn();
+	    		redrawTable(round);
+	            round.cyclePlayers();
+	
+	            System.out.println("river");
+	            round.river();
+	    		redrawTable(round);
+	            round.cyclePlayers();
+	            System.out.println("Round over");
+	    	}
     }
     
     /**
-     * Redraws all dyanmic elements (cards on the table, pot, player money, etc)
+     * Redraws all dynamic elements (cards on the table, pot, player money, etc)
      * 
      * @param round
      */
     public void redrawTable(Round round) {
     		
-    	getContentPane().removeAll();
+    		getContentPane().removeAll();
     	
-    	/**
+    		/**
          * Bot panel (top)
          */
         botsPanel = new JPanel();
@@ -140,7 +143,7 @@ public class PokerGUI extends JFrame {
         
         for(int i = 1; i < players.size(); i++) 
         {
-        	botsPanel.add(new PlayerGUI(players.get(i)));
+        		botsPanel.add(new PlayerGUI(players.get(i), true));
         }
         
         /**
@@ -153,10 +156,10 @@ public class PokerGUI extends JFrame {
         
         for(Card c : round.getCardsInPlay()) 
         {
-        	if(c != null)
-        	{
-        		dealerPanel.add(new JLabel(new ImageIcon(getCardImage(c.getFilePath()))));
-        	}
+	        	if(c != null)
+	        	{
+	        		dealerPanel.add(new JLabel(new ImageIcon(getCardImage(c.getFilePath()))));
+	        	}
         }
         
         
@@ -166,7 +169,7 @@ public class PokerGUI extends JFrame {
         userPanel = new JPanel();
         userPanel.setBackground(DARK_GREEN);
         userPanel.setLayout(new FlowLayout());
-        userPanel.add(new PlayerGUI(humanPlayer));
+        userPanel.add(new PlayerGUI(humanPlayer, false));
         userPanel.add(new JButton("Call/Check"));
         userPanel.add(new JButton("Fold"));
         userPanel.add(new JButton("Raise"));
