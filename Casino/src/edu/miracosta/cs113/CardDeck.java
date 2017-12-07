@@ -19,11 +19,14 @@ public class CardDeck
     /**
      * Constructor populates the cards array with a full, ordered deck
      */
-    public CardDeck() {
+    public CardDeck() 
+    {
         cards = new Card[DECK_SIZE];
         int index = 0;
-        for (int suit = 3; suit >= 0; suit--) {
-            for (int value = 12; value >= 0 ; value--) {
+        for (int suit = 3; suit >= 0; suit--) 
+        {
+            for (int value = 12; value >= 0 ; value--) 
+            {
                 cards[index] = new Card(value, suit);
                 index++;
             }
@@ -33,9 +36,12 @@ public class CardDeck
     /**
      * Shuffles the deck.
      */
-    public void shuffle() {
+    public void shuffle() 
+    {
     	Random random = new Random();
-        for (int oldIndex = 0; oldIndex < DECK_SIZE; oldIndex++) {
+    	
+        for (int oldIndex = 0; oldIndex < DECK_SIZE; oldIndex++) 
+        {
             int newIndex = random.nextInt(DECK_SIZE);
             Card tempCard = cards[oldIndex];
             cards[oldIndex] = cards[newIndex];
@@ -57,7 +63,8 @@ public class CardDeck
      * @return  the card dealt
      */
     public Card deal() {
-        if (cardIndex + 1 >= DECK_SIZE) {
+        if (cardIndex + 1 >= DECK_SIZE) 
+        {
             throw new IllegalStateException("No cards left in deck");
         }
         return cards[cardIndex++];

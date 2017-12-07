@@ -6,41 +6,39 @@ public class Table
 {
 	private static final String[] BOT_NAMES = {"Kyle", "Matt", "Eric"};
 
-    private final int DEFAULT_NUM_BOTS = 2;
-
-    private int botNumber = 0;
     private int bigBlind;
     private int smallBlind;
     
-    CardDeck deck = new CardDeck();
+    CardDeck deck;
     
     private Player userPlayer;
     
     ArrayList<Player> players = new ArrayList<Player>();
 
-    //Constructors
-    public Table()
-    {
-        userPlayer = new Player();
-        deck.shuffle();
-        initializePlayers(userPlayer, DEFAULT_NUM_BOTS);
-    }
-    public Table(Player userPlayer)
-    {
-        this.userPlayer = userPlayer;
-        deck.shuffle();
-        initializePlayers(userPlayer, DEFAULT_NUM_BOTS);
-    }
+    /**
+     * Constructor creates a new Table with the human player,
+     * bots, and initializes table variables
+     * 
+     * @param userPlayer Human Player
+     * @param numBots Number of bots to create and add to table
+     */
     public Table(Player userPlayer, int numBots)
     {
         this.userPlayer = userPlayer;
+        deck = new CardDeck();
         deck.shuffle();
         initializePlayers(userPlayer, numBots);
+        
         bigBlind = 0;
         smallBlind = players.size() - 1;
     }
 
-    //Helper Methods
+    /**
+     * Add the human player and create bots for the table
+     * 
+     * @param userPlayer Human Player
+     * @param numBots Number of bots to create and add to table
+     */
     private void initializePlayers(Player userPlayer, int numBots)
     {
         players.add(userPlayer);
@@ -48,12 +46,7 @@ public class Table
         for (int i = 0; i < numBots; i++)
         {
             players.add(new Player(BOT_NAMES[i], 500, true));
-            botNumber++;
         }
-    }
-    
-    public void newRound() {
-    		Round round = new Round(this);
     }
 
     //Getters

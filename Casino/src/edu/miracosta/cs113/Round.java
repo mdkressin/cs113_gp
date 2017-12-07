@@ -19,31 +19,19 @@ public class Round
     
     private Table table;
 
-    //Constructors
-    public Round()
-    {
-        table = new Table();
-        pot = 0;
-    }
-    
+    /**
+     * Create a new round with constants from passed Table
+     * 
+     * @param table
+     */
     public Round(Table table)
     {
-    		this.table = table;
+    	this.table = table;
+    	
         pot = 0;
         
         //TODO: add Blind logic, right now it is always 0
         index = table.getBigBlind();
-    }
-    
-    public Round(Player userPlayer)
-    {
-    		table = new Table(userPlayer);
-    		pot = 0;
-    }
-    
-    public Round(Player userPlayer, int numBots)
-    {
-        table = new Table(userPlayer, numBots);
     }
 
     /**
@@ -59,7 +47,7 @@ public class Round
      */
     public void setLastBet(int amount) 
     {
-    		lastBet = amount;
+    	lastBet = amount;
     }
     
     /**
@@ -71,11 +59,29 @@ public class Round
     }
     
     /**
+     * Set the last better
+     * 
+     * @param player Player who raised last
+     */
+    public void setLastBetter(Player player) 
+    {
+    	lastBetter = player;
+    }
+    
+    /**
+     * Get the last better
+     */
+    public Player getLastBetter() 
+    {
+		return lastBetter;
+    }
+    
+    /**
      * Add amount to the pot
      */
     public void addToPot(int amount) 
     {
-    		pot += amount;
+    	pot += amount;
     }
     
     /**
@@ -83,7 +89,7 @@ public class Round
      */
     public int getPot() 
     {
-    		return pot;
+    	return pot;
     }
 
     /**
@@ -109,6 +115,11 @@ public class Round
         }
     }
     
+    /**
+     * Call when player raises with new amount
+     * 
+     * @param amount New last bet value
+     */
     public void raise(int amount) {
     	setLastBet(amount);
     	lastBetter = players.get(index);
@@ -176,6 +187,6 @@ public class Round
      * Get cards on the board
      */
     public ArrayList<Card> getCardsInPlay() {
-    		return cardsInPlay;
+    	return cardsInPlay;
     }
 }

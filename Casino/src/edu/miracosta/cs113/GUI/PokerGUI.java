@@ -142,7 +142,7 @@ public class PokerGUI extends JFrame {
         dealerPanel = new JPanel();
         dealerPanel.setBackground(DARK_GREEN);
         dealerPanel.setLayout(new FlowLayout());
-        dealerPanel.add(new JLabel("$" + round.getPot()));
+        dealerPanel.add(new JLabel("Pot: $" + round.getPot()));
         
         for(Card c : round.getCardsInPlay()) 
         {
@@ -197,7 +197,7 @@ public class PokerGUI extends JFrame {
                 playerChoice(round, 1);
                 
                 try {
-					cycleBots(round);
+					cyclePlayers(round);
 				} catch (Exception error) {
 					error.printStackTrace();
 				}
@@ -207,34 +207,41 @@ public class PokerGUI extends JFrame {
     }
     
     /**
-     * Iterates through each bot 
+     * Iterates through each player 
      * @throws Exception 
      */
-    public void cycleBots(Round round) throws Exception
+    public void cyclePlayers(Round round) throws Exception
     {
-    		ArrayList<Player> players = round.players;
-    		int index = round.getIndex();
-    		
-    		//Iterate through all bots
-    		while(players.get(index).isBot())
-    		{
-    			//Pause for 1 second, better user experience than instant move
+		ArrayList<Player> players = round.players;
+		int index = round.getIndex();
+		
+		while(players.get(index) != round.getLastBetter()) 
+		{
+			
+			//If the current player is a bot, run bot decision process
+			if(players.get(index).isBot())
+			{
+				//Pause for 1 second, better user experience than instant move
 				pause(1000);
 				
 				//TODO: Make decision based on strength of hand
 				//For now, bot calls/checks no matter what
-				playerChoice(round, 1);			
-				
-				//Alter resulting round variables from human or bot actions
-				
-				round.moveToNextPlayer();
-    		}
+				playerChoice(round, 1);				
+			}
+			else
+			{
+				//If it's the human player, get out of this loop and wait for their move
+				break;
+			}
+			
+			round.moveToNextPlayer();
+		}
     }
 
 	/**
 	 * Has the player make a choice of calling, folding, raising, or checking
 	 * 
-	 * @param player The player that made the choice
+	 * @param round The round choice was made
 	 * @param choice The choice
 	 * 					1 -> Call/Check
 	 * 					2 -> Fold
@@ -244,15 +251,15 @@ public class PokerGUI extends JFrame {
 	{
 		Player player = round.players.get(round.getIndex());
 		
-	    if (choice == 1)
+	    if (choice == 1) //Call
 	    {
-	    		player.call(round.getLastBet());
+	    	player.call(round.getLastBet());
 	    }
-	    else if (choice == 2)
+	    else if (choice == 2) //Fold
 	    {
-	    		player.fold();
+	    	player.fold();
 	    }
-	    else if (choice == 3)
+	    else if (choice == 3) //Raise
 	    {
 	        /*
 	        int playerBet = ;
