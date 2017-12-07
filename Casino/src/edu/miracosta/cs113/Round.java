@@ -101,15 +101,18 @@ public class Round
      */
     public void moveToNextPlayer()
     {
+    		System.out.println("Moving to next player... index: " + index);
 		//Move to next player
 		index++;
 		
 		//If new index is out of bounds, set to 0
-		if (index > (players.size() - 1))
+		if (this.index > (players.size() - 1))
         {
-            index = 0;
+            this.index = 0;
         }
     		
+		System.out.println("Moved to next player... index: " + index);
+
     	//If this player folded, recursively call this method to move to the next player
         if (players.get(index).hasFolded())
         {
@@ -124,6 +127,7 @@ public class Round
      */
     public void raise(int amount) 
     {
+    		players.get(index).bet(amount);
 	    	setLastBet(amount);
 	    	lastBetter = players.get(index);
     }
@@ -210,7 +214,7 @@ public class Round
     	
         for (Player player : players)
         {
-            player.resetStatus();
+            player.reset();
         }
         
         //Reset cards in play
@@ -225,9 +229,21 @@ public class Round
     }
     
     /**
+     * Reset raised and called after each stage
+     */
+	public void stageReset() 
+	{
+		for(Player player : players)
+		{
+			player.resetStatus();
+		}
+		
+	}
+    
+    /**
      * Get cards on the board
      */
     public ArrayList<Card> getCardsInPlay() {
-    	return cardsInPlay;
+    		return cardsInPlay;
     }
 }

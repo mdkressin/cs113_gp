@@ -21,7 +21,7 @@ public class Player
 
 	private boolean hasFolded;
 	private boolean hasCalled;
-	private boolean hasChecked;
+	private boolean hasRaised;
 	
 	public Player()
 	{
@@ -74,16 +74,27 @@ public class Player
      */
     public void bet(int amount) {
     		money = money - amount;
+    		hasRaised = true;
     }
 
+    
 	/**
-	 * Resets fold, call, and check status of player to false
+	 * Reset player turn variables
 	 */
 	public void resetStatus() {
-		hand.removeAllCards();
-		hasFolded = false;
 		hasCalled = false;
-		hasChecked = false;
+		hasRaised = false;
+	}
+	
+	/**
+	 * Clear hand and reset variable
+	 */
+	public void reset() 
+	{
+		hasCalled = false;
+		hasRaised = false;
+		hasFolded = false;
+		hand.removeAllCards();
 	}
 
 	public Hand getHand()
@@ -125,12 +136,12 @@ public class Player
 		return hasCalled;
 	}
 	/**
-	 * Returns whether the player has folded.
+	 * Return whether or not the player has raised this round
 	 *
-	 * @return "Checked" status
+	 * @return "Raised" status
 	 */
-	public boolean hasChecked() {
-		return hasChecked;
+	public boolean hasRaised() {
+		return hasRaised;
 	}
     
     
