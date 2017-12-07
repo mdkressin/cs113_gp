@@ -25,7 +25,7 @@ import edu.miracosta.cs113.Table;
  * 		  		Bot1			    Bot2
  * 		 	   $Money 		   $Money
  * 
- *      			 ___	   ___   ___	   ___
+ *				 ___   ___   ___   ___
  * 	   			|   | |   | |   | |   |
  * 	   			| 7 | | J | | Q | | 3 |				<--- dealerPanel
  * 	   			|___| |___| |___| |___|
@@ -37,7 +37,8 @@ import edu.miracosta.cs113.Table;
  *        Name
  *       $Money
  */
-public class PokerGUI extends JFrame {
+public class PokerGUI extends JFrame 
+{
 	
 	private static final Color DARK_GREEN = new Color(30, 130, 76);
 	
@@ -46,11 +47,17 @@ public class PokerGUI extends JFrame {
     
     private final Player humanPlayer;
     private final Table table;
+    
+    private Round round;
 
     //Panels
     private JPanel botsPanel;
     private JPanel dealerPanel;
     private JPanel userPanel;
+    
+    private JButton callBtn;
+    private JButton foldBtn;
+    private JButton raiseBtn;
     
 
     /**
@@ -63,30 +70,37 @@ public class PokerGUI extends JFrame {
         getContentPane().setBackground(DARK_GREEN);
         setLayout(new GridLayout(3,1));
 
-        /**
-         * Initialize player and table variables
-         */
+        //Initialize player and table variables
         humanPlayer = new Player(playerName, START_MONEY, false);        
         table = new Table(humanPlayer, numBots);
+        round = new Round(table);
         
+        //Instantiate panels with default styling
+    	botsPanel = createPanel();
+    	dealerPanel = createPanel();
+    	userPanel = createPanel();
+
         
-        /**
-         * Show frame
-         */
+        //Create and set listeners on control buttons
+        callBtn = new JButton("Call");
+        setListener(callBtn, 1);
+        foldBtn = new JButton("Fold");
+        setListener(foldBtn, 2);
+        raiseBtn = new JButton("Raise");
+        setListener(raiseBtn, 3);
+        
+        //Show frame
         setSize(800, 450);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		System.out.print("Table and human created, calling play()");
-        /**
-         * Start game
-         */
+		System.out.println("Table and human created, calling play()");
+		
+		//Start game
 		play();
     }
-    
-    public void play() {
-    	
-		Round round = new Round(table);
+
+	public void play() {
 
     		
     	//Infinite loop for now, TODO: stop when user money < 0
@@ -122,15 +136,11 @@ public class PokerGUI extends JFrame {
      */
     public void redrawTable(Round round) {
     		
-    	getContentPane().removeAll();
+    	botsPanel.removeAll();
+    	dealerPanel.removeAll();
+    	userPanel.removeAll();
     	
-    	/**
-         * Bot panel (top)
-         */
-        botsPanel = new JPanel();
-        botsPanel.setBackground(DARK_GREEN);
-        botsPanel.setLayout(new FlowLayout());
-        
+    	//Bots panel
         ArrayList<Player> players = round.players;
         
         for(int i = 1; i < players.size(); i++) 
@@ -138,12 +148,7 @@ public class PokerGUI extends JFrame {
         	botsPanel.add(new PlayerGUI(players.get(i), true));
         }
         
-        /**
-         * Dealer panel (middle)
-         */
-        dealerPanel = new JPanel();
-        dealerPanel.setBackground(DARK_GREEN);
-        dealerPanel.setLayout(new FlowLayout());
+        //Dealer panel
         dealerPanel.add(new JLabel("Pot: $" + round.getPot()));
         
         for(Card c : round.getCardsInPlay()) 
@@ -157,16 +162,13 @@ public class PokerGUI extends JFrame {
         }
         
         
-        /**
-         * User panel (bottom)
-         */
-        userPanel = new JPanel();
-        userPanel.setBackground(DARK_GREEN);
-        userPanel.setLayout(new FlowLayout());
+        //User panel
         userPanel.add(new PlayerGUI(humanPlayer, false));
-        userPanel.add(setCallButton(round));
-        userPanel.add(new JButton("Fold"));
-        userPanel.add(new JButton("Raise"));
+        //Edit buttons
+        editControlButtons();
+        userPanel.add(callBtn);
+        userPanel.add(foldBtn);
+        userPanel.add(raiseBtn);
 
         
         //Add all game GUI elements to window
@@ -176,45 +178,10 @@ public class PokerGUI extends JFrame {
     }
     
     /**
-     * Set up the correct label and listener for "Call" button
-     * 
-     * @param round
-     * @return JButton
-     */
-    public JButton setCallButton(Round round)
-    {
-    	JButton callBtn;
-        
-        if(round.getLastBet() == 0) 
-        {
-        	callBtn = new JButton("Check");
-        } 
-        else 
-        {
-        	callBtn = new JButton("Call $" + round.getLastBet());
-        }
-        
-        callBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	
-                playerChoice(round, 1);
-                
-                try {
-					cyclePlayers(round);
-				} catch (Exception error) {
-					error.printStackTrace();
-				}
-            }
-        });
-        return callBtn;
-    }
-    
-    /**
      * Iterates through each player 
      * @throws Exception 
      */
-    public void cyclePlayers(Round round) throws Exception
+    public void cyclePlayers() throws Exception
     {
 		ArrayList<Player> players = round.players;
 		int index = round.getIndex();
@@ -274,9 +241,69 @@ public class PokerGUI extends JFrame {
 	        round.raise(50);
 	    }
 	}
+	
+	/**
+     * Sets a listener on passed button
+     * 
+     * @param button Button to set listener on
+     * @param action Corresponding integer for button action
+     * 					1 - Call
+     * 					2 - Fold
+     * 					3 - Raise
+     */
+    public void setListener(JButton button, int action)
+    {
+    	button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	//Call player choice
+                playerChoice(round, 1);
+                
+                try {
+					cyclePlayers();
+				} catch (Exception error) {
+					error.printStackTrace();
+				}
+            }
+        });
+    }
+    
+    /**
+     * Change text for control buttons
+     */
+    private void editControlButtons() 
+    {
+    	if(round.getLastBet() == 0) 
+        {
+    		callBtn.setText("Check");
+        } 
+        else 
+        {
+        	callBtn.setText("Call $" + round.getLastBet());
+        }
+	}
+    
+    /**
+     * Helper method creates new JPanel with default styling
+     * 
+     * @return new JPanel
+     */
+	private JPanel createPanel() {
+    	
+    	JPanel newPanel = new JPanel();
+    	newPanel.setBackground(DARK_GREEN);
+    	newPanel.setLayout(new FlowLayout());
+    	
+    	return newPanel;
+	}
 
-    
-    
+	/**
+	 * Pause program for passed time
+	 * 
+	 * @param milliseconds Time to pause
+	 * @throws Exception
+	 */
     public void pause(int milliseconds) throws Exception
     {
         ActionListener taskPerformer = new ActionListener() {
@@ -296,17 +323,5 @@ public class PokerGUI extends JFrame {
 	{	
 		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
 		label.setIcon(imageIcon);
-	}
-    
-    private BufferedImage getCardImage(String cardFilePath) {
-		
-		try {
-			File imageFile = new File("src/edu/miracosta/cs113/assets/" + cardFilePath);
-			return ImageIO.read(imageFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
 	}
 }
