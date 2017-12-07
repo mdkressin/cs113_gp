@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import edu.miracosta.cs113.Card;
 import edu.miracosta.cs113.Player;
-import edu.miracosta.cs113.Table;
 
 /**
  * GUI for each player
@@ -89,16 +88,16 @@ public class PlayerGUI extends JPanel {
 		{
 			if(hasFolded)
 			{
-				ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/card_back_faded.png").getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+				ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/card_back_faded.png").getImage().getScaledInstance(80,100, Image.SCALE_DEFAULT));
 				label.setIcon(imageIcon);
 			} else {
-				ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/card_back.png").getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+				ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/card_back.png").getImage().getScaledInstance(80,100, Image.SCALE_DEFAULT));
 				label.setIcon(imageIcon);
 			}
 		}
 		else
 		{
-			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(80,100, Image.SCALE_DEFAULT));
 			label.setIcon(imageIcon);
 		}
 		

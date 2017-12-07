@@ -122,9 +122,10 @@ public class Round
      * 
      * @param amount New last bet value
      */
-    public void raise(int amount) {
-    	setLastBet(amount);
-    	lastBetter = players.get(index);
+    public void raise(int amount) 
+    {
+	    	setLastBet(amount);
+	    	lastBetter = players.get(index);
     }
     
     /**
@@ -149,8 +150,8 @@ public class Round
     public void flop()
     {
     	System.out.println("\nInside flop()");
-
-    	Card tableCard1 = table.getDeck().deal();
+    	
+    		Card tableCard1 = table.getDeck().deal();
         cardsInPlay.add(tableCard1);
         addToAllHands(tableCard1);
         
@@ -170,9 +171,9 @@ public class Round
      */
     public void turn()
     {
-    	System.out.println("\nInside turn()");
-    	
-    	Card tableCard4 = table.getDeck().deal();
+	    	System.out.println("\nInside turn()");
+		    	
+	    	Card tableCard4 = table.getDeck().deal();
         cardsInPlay.add(tableCard4);
         addToAllHands(tableCard4);
         
@@ -184,9 +185,9 @@ public class Round
      */
     public void river()
     {
-    	System.out.println("\nInside river()");
-
-    	Card tableCard5 = table.getDeck().deal();
+	    	System.out.println("\nInside river()");
+	    		
+	    	Card tableCard5 = table.getDeck().deal();
         cardsInPlay.add(tableCard5);
         addToAllHands(tableCard5);
         

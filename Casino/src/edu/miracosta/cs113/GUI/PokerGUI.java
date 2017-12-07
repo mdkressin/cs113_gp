@@ -64,6 +64,7 @@ public class PokerGUI extends JFrame
     private JButton callBtn;
     private JButton foldBtn;
     private JButton raiseBtn;
+    private JTextField raiseInput;
     
     private PlayerGUI[] botGUIs;
     
@@ -73,7 +74,8 @@ public class PokerGUI extends JFrame
     /**
      * Constructor.
      */
-    public PokerGUI(String playerName, int numBots) {
+    public PokerGUI(String playerName, int numBots) 
+    {
     	
         setTitle("CS113 Texas Hold Em");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -120,11 +122,16 @@ public class PokerGUI extends JFrame
         raiseBtn = new JButton("Raise");
         setListener(raiseBtn, 3);
         
+        	raiseInput = new JTextField("$      ");
+        	raiseInput.setBackground(DARK_GREEN);
+        	raiseInput.setForeground(Color.WHITE);
+        
         //Add human GUI and control buttons to user panel
         userPanel.add(humanGUI);
         userPanel.add(callBtn);
         userPanel.add(foldBtn);
         userPanel.add(raiseBtn);
+        userPanel.add(raiseInput);
        
         //Add all panels
         add(botsPanel);
@@ -276,7 +283,15 @@ public class PokerGUI extends JFrame
 			round.moveToNextPlayer();
 			updateGUI();
 		}
-
+		
+		for(int k = 0; k < players.size(); k++)
+		{
+			if(!players.get(k).hasFolded())
+			{
+				players.get(k).bet(round.getLastBet());
+			}
+		}
+		updateGUI();
 		nextStage();
     }
 
@@ -303,11 +318,10 @@ public class PokerGUI extends JFrame
 	    }
 	    else if (choice == 3) //Raise
 	    {
-	        /*
-	        int playerBet = ;
+	    	
+	    		//TODO: if playerBet is lower than lastBet, throw error and dialog
+	    		int playerBet = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
 	        round.raise(playerBet);
-	        */
-	        round.raise(50);
 	    }
 	    
 	    updateGUI();
@@ -329,7 +343,7 @@ public class PokerGUI extends JFrame
             public void actionPerformed(ActionEvent e) {
             	
             	//Call player choice
-                playerChoice(round, 1);
+                playerChoice(round, action);
                 
                 try {
 					cyclePlayers();
@@ -392,7 +406,7 @@ public class PokerGUI extends JFrame
     
     private void setCardImage(String cardFilePath, JLabel label) 
 	{	
-		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(80,100, Image.SCALE_DEFAULT));
 		label.setIcon(imageIcon);
 	}
     
