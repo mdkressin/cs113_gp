@@ -49,15 +49,25 @@ public class PokerGUI extends JFrame
     private final Table table;
     
     private Round round;
+    private int stage;
 
     //Panels
     private JPanel botsPanel;
     private JPanel dealerPanel;
     private JPanel userPanel;
     
+    //Dealer Labels
+    private JLabel potLabel;
+    private JLabel[] dealerCardLabels;
+
+    
     private JButton callBtn;
     private JButton foldBtn;
     private JButton raiseBtn;
+    
+    private PlayerGUI[] botGUIs;
+    
+    private PlayerGUI humanGUI;
     
 
     /**
@@ -79,7 +89,27 @@ public class PokerGUI extends JFrame
     	botsPanel = createPanel();
     	dealerPanel = createPanel();
     	userPanel = createPanel();
-
+    	
+    	//Instantiate Bot GUI's
+    	botGUIs = new PlayerGUI[numBots];
+    	for(int i = 1; i < round.players.size(); i++) 
+        {
+    		botGUIs[i-1] = new PlayerGUI(round.players.get(i), true);
+        	botsPanel.add(botGUIs[i-1]);
+        }
+    	
+    	//Instantiate dealer labels
+    	potLabel = new JLabel("Pot: $0");
+    	dealerPanel.add(potLabel);
+    	dealerCardLabels = new JLabel[5];
+    	for(int d = 0; d < 5; d++)
+    	{
+    		dealerCardLabels[d] = new JLabel("");
+    	}
+    	
+    	
+    	//Instantiate human GUI
+    	humanGUI = new PlayerGUI(humanPlayer, false);
         
         //Create and set listeners on control buttons
         callBtn = new JButton("Call");
@@ -89,6 +119,17 @@ public class PokerGUI extends JFrame
         raiseBtn = new JButton("Raise");
         setListener(raiseBtn, 3);
         
+        //Add human GUI and control buttons to user panel
+        userPanel.add(humanGUI);
+        userPanel.add(callBtn);
+        userPanel.add(foldBtn);
+        userPanel.add(raiseBtn);
+       
+        //Add all panels
+        add(botsPanel);
+      	add(dealerPanel);
+      	add(userPanel);
+      	
         //Show frame
         setSize(800, 450);
 		setVisible(true);
@@ -97,85 +138,91 @@ public class PokerGUI extends JFrame
 		System.out.println("Table and human created, calling play()");
 		
 		//Start game
-		play();
+		newRound();
+
     }
 
-	public void play() {
-
-    		
-    	//Infinite loop for now, TODO: stop when user money < 0
-    	while(true) {
-    		
-    		round.resetRound();
-    		//redrawTable(round);
-    		
-			//Give each player two cards
-			round.startRound();
-			
-			//Redraw table after all players have cards, waits for user input
-			redrawTable(round);
-			
-			//After user input and betting is over, show flop() and redraw
-            round.flop();
-    		redrawTable(round);
-    		
-			//After user input and betting is over, show turn() and redraw
-            round.turn();
-    		redrawTable(round);
-
-			//After user input and betting is over, show river() and redraw
-            round.river();
-    		redrawTable(round);
+    public void nextStage() 
+    {
+    	stage++;
+    	switch (stage) 
+    	{
+	        case 1:  round.flop();
+					 updateGUI();
+	                 break;
+	        case 2:  round.turn();
+					 updateGUI();
+	                 break;
+	        case 3:  round.river();
+					 updateGUI();
+	                 break;
     	}
+    	updateGUI();
+    }
+    
+	public void newRound() 
+	{	
+		updateGUI();
+		stage = 0;
+		round.startRound();
+		updateGUI();
+    	//TODO: loop, stop when user money < 0
+    	//	    while(true) {}
+		//newRound();
     }
    
     /**
-     * Redraws all dynamic elements (cards on the table, pot, player money, etc)
-     * 
-     * @param round
+     * Updates all dynamic elements (cards on the table, pot, player money, etc)
      */
-    public void redrawTable(Round round) {
+    public void updateGUI() {
     		
-    	botsPanel.removeAll();
-    	dealerPanel.removeAll();
-    	userPanel.removeAll();
-    	
     	//Bots panel
-        ArrayList<Player> players = round.players;
-        
-        for(int i = 1; i < players.size(); i++) 
-        {
-        	botsPanel.add(new PlayerGUI(players.get(i), true));
-        }
+        updateBotsPanel();
         
         //Dealer panel
-        dealerPanel.add(new JLabel("Pot: $" + round.getPot()));
-        
-        for(Card c : round.getCardsInPlay()) 
-        {
-        	if(c != null)
-        	{
-        		JLabel newCardLabel = new JLabel("");
-        		setCardImage(c.getFilePath(), newCardLabel);
-        		dealerPanel.add(newCardLabel);
-        	}
-        }
-        
+        updateDealerPanel();
         
         //User panel
-        userPanel.add(new PlayerGUI(humanPlayer, false));
-        //Edit buttons
-        editControlButtons();
-        userPanel.add(callBtn);
-        userPanel.add(foldBtn);
-        userPanel.add(raiseBtn);
-
-        
-        //Add all game GUI elements to window
-      	this.add(botsPanel);
-      	this.add(dealerPanel);
-      	this.add(userPanel);
+        updateUserPanel();
     }
+    
+    /**
+     * Updates the PlayerGUI for each bot
+     */
+    private void updateBotsPanel() 
+    {
+    	//Iterate through each bot
+    	for(int i = 1; i < round.players.size(); i++) 
+        {
+    		botGUIs[i-1].update(round.players.get(i));
+        }
+	}
+    
+    /**
+     * Update PlayerGUI for human user and control button labels
+     */
+    private void updateUserPanel() 
+    {
+    	humanGUI.update(round.players.get(0));
+    	editControlButtons();
+    }
+
+    /**
+     * Updates the pot and cards shown of dealer panel
+     */
+	public void updateDealerPanel() 
+    {
+    	potLabel.setText("Pot: $" + round.getPot());
+    	
+    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
+    	ArrayList<Card> dealerCards = round.getCardsInPlay();
+    	
+    	for(int i = 0; i < dealerCards.size(); i++)
+    	{
+    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
+    	}
+    }
+	
     
     /**
      * Iterates through each player 
@@ -197,9 +244,10 @@ public class PokerGUI extends JFrame
 				pause(1000);
 				
 				//TODO: Make decision based on strength of hand
-				//For now, bot calls/checks no matter what
+				//	    For now, bot calls/checks no matter what
 				System.out.println("bot: " + players.get(index).getName() + " called");
 				playerChoice(round, 1);
+				updateGUI();
 			}
 			else
 			{
@@ -208,7 +256,10 @@ public class PokerGUI extends JFrame
 			}
 			
 			round.moveToNextPlayer();
+			updateGUI();
 		}
+
+		nextStage();
     }
 
 	/**
@@ -240,6 +291,8 @@ public class PokerGUI extends JFrame
 	        */
 	        round.raise(50);
 	    }
+	    
+	    updateGUI();
 	}
 	
 	/**

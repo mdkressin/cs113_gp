@@ -101,6 +101,35 @@ public class PlayerGUI extends JPanel {
 			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
 			label.setIcon(imageIcon);
 		}
+		
+		label.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 5, DARK_GREEN));
+		label.setBackground(DARK_GREEN);
+	}
+
+
+	/**
+	 * Update the player GUI with up to date player variables
+	 * 
+	 * @param player
+	 */
+	public void update(Player player) 
+	{
+		money.setText("$" + player.getMoney() + "");
+		
+		Card playerCard1 = player.getHand().getHoleCards()[0];
+		Card playerCard2 = player.getHand().getHoleCards()[1];
+		
+		if(playerCard1 != null) 
+		{
+			setCardImage(playerCard1.getFilePath(), card1Label, player.isBot(), player.hasFolded());
+			setCardImage(playerCard2.getFilePath(), card2Label, player.isBot(), player.hasFolded());
+		} 
+		else 
+		{
+			setCardImage("card_back.png", card1Label, player.isBot(), player.hasFolded());
+			setCardImage("card_back.png", card2Label, player.isBot(), player.hasFolded());
+		}
+
 	}
 	
 }
