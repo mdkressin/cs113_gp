@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import edu.miracosta.cs113.Bot;
 import edu.miracosta.cs113.Card;
 import edu.miracosta.cs113.Player;
 import edu.miracosta.cs113.Round;
@@ -53,11 +52,6 @@ public class PokerGUI extends JFrame {
     private JPanel dealerPanel;
     private JPanel userPanel;
     
-    //Player components
-    private JButton call;
-    private JButton fold;
-    private JButton raise;
-    
 
     /**
      * Constructor.
@@ -97,31 +91,25 @@ public class PokerGUI extends JFrame {
 	    	while(true) {
 	    		
 	    		round.resetRound();
-	    		redrawTable(round);
+	    		//redrawTable(round);
 	    		
-			//Give each player two cards
-			round.startRound();
-			
-			//Redraw table after all players have cards
-			redrawTable(round);
-			
-			cycleBots(round);
-	            
-	            System.out.println("flop");
+				//Give each player two cards
+				round.startRound();
+				
+				//Redraw table after all players have cards, waits for user input
+				redrawTable(round);
+				
+				//After user input and betting is over, show flop() and redraw
 	            round.flop();
 	    		redrawTable(round);
-	            round.cycleBots();
-	
-	            System.out.println("turn");
+	    		
+				//After user input and betting is over, show turn() and redraw
 	            round.turn();
 	    		redrawTable(round);
-	            round.cycleBots();
 	
-	            System.out.println("river");
+				//After user input and betting is over, show river() and redraw
 	            round.river();
 	    		redrawTable(round);
-	            round.cycleBots();
-	            System.out.println("Round over");
 	    	}
     }
    
@@ -132,9 +120,9 @@ public class PokerGUI extends JFrame {
      */
     public void redrawTable(Round round) {
     		
-    		getContentPane().removeAll();
+    	getContentPane().removeAll();
     	
-    		/**
+    	/**
          * Bot panel (top)
          */
         botsPanel = new JPanel();
@@ -145,7 +133,7 @@ public class PokerGUI extends JFrame {
         
         for(int i = 1; i < players.size(); i++) 
         {
-        		botsPanel.add(new PlayerGUI(players.get(i), true));
+        	botsPanel.add(new PlayerGUI(players.get(i), true));
         }
         
         /**
@@ -158,10 +146,10 @@ public class PokerGUI extends JFrame {
         
         for(Card c : round.getCardsInPlay()) 
         {
-	        	if(c != null)
-	        	{
-	        		dealerPanel.add(new JLabel(new ImageIcon(getCardImage(c.getFilePath()))));
-	        	}
+        	if(c != null)
+        	{
+        		dealerPanel.add(new JLabel(new ImageIcon(getCardImage(c.getFilePath()))));
+        	}
         }
         
         
@@ -172,7 +160,7 @@ public class PokerGUI extends JFrame {
         userPanel.setBackground(DARK_GREEN);
         userPanel.setLayout(new FlowLayout());
         userPanel.add(new PlayerGUI(humanPlayer, false));
-        userPanel.add(new JButton("Call/Check"));
+        userPanel.add(setCallButton(round));
         userPanel.add(new JButton("Fold"));
         userPanel.add(new JButton("Raise"));
 
@@ -181,6 +169,41 @@ public class PokerGUI extends JFrame {
       	this.add(botsPanel);
       	this.add(dealerPanel);
       	this.add(userPanel);
+    }
+    
+    /**
+     * Set up the correct label and listener for "Call" button
+     * 
+     * @param round
+     * @return JButton
+     */
+    public JButton setCallButton(Round round)
+    {
+    	JButton callBtn;
+        
+        if(round.getLastBet() == 0) 
+        {
+        	callBtn = new JButton("Check");
+        } 
+        else 
+        {
+        	callBtn = new JButton("Call $" + round.getLastBet());
+        }
+        
+        callBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+                playerChoice(round, 1);
+                
+                try {
+					cycleBots(round);
+				} catch (Exception error) {
+					error.printStackTrace();
+				}
+            }
+        });
+        return callBtn;
     }
     
     /**
@@ -196,15 +219,15 @@ public class PokerGUI extends JFrame {
     		while(players.get(index).isBot())
     		{
     			//Pause for 1 second, better user experience than instant move
-			pause(1000);
-			
-			//TODO: Make decision based on strength of hand
-			//For now, bot calls/checks no matter what
-			playerChoice(players.get(index), round, 1);			
-			
-			//Alter resulting round variables from human or bot actions
-			
-			round.moveToNextPlayer();
+				pause(1000);
+				
+				//TODO: Make decision based on strength of hand
+				//For now, bot calls/checks no matter what
+				playerChoice(round, 1);			
+				
+				//Alter resulting round variables from human or bot actions
+				
+				round.moveToNextPlayer();
     		}
     }
 
@@ -217,8 +240,10 @@ public class PokerGUI extends JFrame {
 	 * 					2 -> Fold
 	 * 					3 -> Raise			
 	 */
-	public void playerChoice(Player player, Round round, int choice)
+	public void playerChoice(Round round, int choice)
 	{
+		Player player = round.players.get(round.getIndex());
+		
 	    if (choice == 1)
 	    {
 	    		player.call(round.getLastBet());
@@ -229,10 +254,11 @@ public class PokerGUI extends JFrame {
 	    }
 	    else if (choice == 3)
 	    {
-	        //System.out.println("Enter amount to raise by:");
+	        /*
 	        int playerBet = ;
-	        player.bet(playerBet);
-	        lastBetter = player; //So it keeps looping until we reach the last player who raised
+	        round.raise(playerBet);
+	        */
+	        round.raise(100);
 	    }
 	}
 
@@ -253,11 +279,6 @@ public class PokerGUI extends JFrame {
         //Thread.sleep(milliseconds);
     }
     
-    private void setCardImage(String cardFilePath, JLabel label) 
-	{	
-		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
-		label.setIcon(imageIcon);
-	}
     
     private BufferedImage getCardImage(String cardFilePath) {
 		

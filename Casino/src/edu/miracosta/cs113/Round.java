@@ -93,20 +93,25 @@ public class Round
      */
     public void moveToNextPlayer()
     {
-    		//Move to next player
-    		index++;
-    		
-    		//If new index is out of bounds, reset to 0
-    		if (index > (players.size() - 1))
+		//Move to next player
+		index++;
+		
+		//If new index is out of bounds, reset to 0
+		if (index > (players.size() - 1))
         {
             index = 0;
         }
     		
-    		//If this player folded, recursively call this method again
+    	//If this player folded, recursively call this method again
         if (players.get(index).hasFolded())
         {
             moveToNextPlayer();
         }
+    }
+    
+    public void raise(int amount) {
+    	setLastBet(amount);
+    	lastBetter = players.get(index);
     }
     
     /**
@@ -123,7 +128,7 @@ public class Round
     }
     
     /**
-     * Reset all players, clear the cards on the table, and reset index
+     * Reset all players, clear the cards on the table, and resets index
      */
     public void resetRound()
     {
@@ -132,78 +137,16 @@ public class Round
             player.resetStatus();
         }
         
-        //Resetting list of active players and cards in play
-
+        //Reset cards in play
         cardsInPlay.clear();
+        
 
+        //TODO: uncomment once flow works for first deck
+        //table.getDeck().shuffle();
+        
         //TODO big blind logic
         index = 0;
     }
-
-    /**
-     * Cycles through each player to see if they want to call, fold, or raise their bet
-     * Keeps track of who the current player is and their index in players
-    
-    public void cyclePlayers()
-    {
-        boolean cyclingPlayers = true;
-        while (cyclingPlayers)
-        {
-            System.out.println("Amount of active players: " + players.size());
-            System.out.println("Current player's index: " + index);
-            System.out.println("Current player: " + currentPlayer.getName());
-            System.out.println("Last player in cycle: " + lastBetter.getName());
-
-            if (currentPlayer == lastBetter)
-            {
-                System.out.println("Last player in cycle");
-                cyclingPlayers = false;
-                playerChoice(players.get(index));
-            }
-            else if (index == (players.size() - 1))
-            {
-                System.out.println("Last player in list");
-                playerChoice(players.get(index));
-                //index = 0;
-            }
-            else
-            {
-                System.out.println("No issues");
-                playerChoice(players.get(index));
-            }
-            moveToNextPlayer();
-        }
-    }
-     */
-
-    /**
-     * Has the player make a choice of calling, folding, raising, or checking
-     * 
-     * @param player The player that made the choice
-     * @param choice The choice
-     * 					1 -> Call/Check
-     * 					2 -> Fold
-     * 					3 -> Raise			
-    public void playerChoice(Player player, int choice)
-    {
-        if (choice == 1)
-        {
-        		
-        }
-        else if (choice == 2)
-        {
-        		player.fold();
-            players.remove(player);
-        }
-        else if (choice == 3)
-        {
-            //System.out.println("Enter amount to raise by:");
-            int playerBet = ;
-            player.bet(playerBet);
-            lastBetter = player; //So it keeps looping until we reach the last player who raised
-        }
-    }
-    */
 
     /**
      * Places initial 3 cards in the center of the table
