@@ -1,7 +1,6 @@
 package edu.miracosta.cs113;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Round
 {
@@ -105,13 +104,13 @@ public class Round
 		//Move to next player
 		index++;
 		
-		//If new index is out of bounds, reset to 0
+		//If new index is out of bounds, set to 0
 		if (index > (players.size() - 1))
         {
             index = 0;
         }
     		
-    	//If this player folded, recursively call this method again
+    	//If this player folded, recursively call this method to move to the next player
         if (players.get(index).hasFolded())
         {
             moveToNextPlayer();
@@ -162,6 +161,8 @@ public class Round
         Card tableCard3 = table.getDeck().deal();
         cardsInPlay.add(tableCard3);
         addToAllHands(tableCard3);
+        
+        System.out.println("Cards on the table: " + cardsInPlay);
     }
     
     /**
@@ -174,6 +175,8 @@ public class Round
     	Card tableCard4 = table.getDeck().deal();
         cardsInPlay.add(tableCard4);
         addToAllHands(tableCard4);
+        
+        System.out.println("Cards on the table: " + cardsInPlay);
     }
     
     /**
@@ -186,6 +189,8 @@ public class Round
     	Card tableCard5 = table.getDeck().deal();
         cardsInPlay.add(tableCard5);
         addToAllHands(tableCard5);
+        
+        System.out.println("Cards on the table: " + cardsInPlay);
     }
     
     public void addToAllHands(Card card) 
@@ -201,6 +206,7 @@ public class Round
      */
     public void resetRound()
     {
+    	
         for (Player player : players)
         {
             player.resetStatus();

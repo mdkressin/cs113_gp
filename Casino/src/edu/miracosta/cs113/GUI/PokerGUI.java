@@ -102,9 +102,10 @@ public class PokerGUI extends JFrame
     	potLabel = new JLabel("Pot: $0");
     	dealerPanel.add(potLabel);
     	dealerCardLabels = new JLabel[5];
-    	for(int d = 0; d < 5; d++)
+    	for(int j = 0; j < 5; j++)
     	{
-    		dealerCardLabels[d] = new JLabel("");
+    		dealerCardLabels[j] = new JLabel("");
+    		dealerPanel.add(dealerCardLabels[j]);
     	}
     	
     	
@@ -148,28 +149,33 @@ public class PokerGUI extends JFrame
     	switch (stage) 
     	{
 	        case 1:  round.flop();
-					 updateGUI();
 	                 break;
 	        case 2:  round.turn();
-					 updateGUI();
 	                 break;
 	        case 3:  round.river();
-					 updateGUI();
 	                 break;
+	        case 4:  endRound();
+	        		 break;
     	}
     	updateGUI();
     }
     
 	public void newRound() 
 	{	
-		updateGUI();
 		stage = 0;
 		round.startRound();
 		updateGUI();
     	//TODO: loop, stop when user money < 0
-    	//	    while(true) {}
-		//newRound();
     }
+	
+	public void endRound()
+	{
+		//TODO: show cards, find winner, and award winnings logic
+		stage = 0;
+		round.resetRound();
+		resetGUI();
+		newRound();
+	}
    
     /**
      * Updates all dynamic elements (cards on the table, pot, player money, etc)
@@ -184,6 +190,17 @@ public class PokerGUI extends JFrame
         
         //User panel
         updateUserPanel();
+    }
+    
+    /**
+     * Clear GUI elements for new round
+     */
+    public void resetGUI() 
+    {
+    	for(int j = 0; j < 5; j++)
+    	{
+    		dealerCardLabels[j].setIcon(null);
+    	}
     }
     
     /**
@@ -226,6 +243,7 @@ public class PokerGUI extends JFrame
     
     /**
      * Iterates through each player 
+     * 
      * @throws Exception 
      */
     public void cyclePlayers() throws Exception
@@ -376,5 +394,10 @@ public class PokerGUI extends JFrame
 	{	
 		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
 		label.setIcon(imageIcon);
+	}
+    
+    private void clearCardImage(JLabel label) 
+	{	
+		label.setIcon(null);
 	}
 }
