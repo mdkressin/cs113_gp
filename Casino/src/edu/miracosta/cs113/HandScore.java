@@ -2,7 +2,7 @@ package edu.miracosta.cs113;
 
 public class HandScore
 {
-    //Score value
+    //Score values
     private int score;
     private final int PAIR            = 12;
     private final int THREE_OF_A_KIND = 47;
@@ -14,6 +14,10 @@ public class HandScore
     //Amounts needed for a type of hand
     private final int NUM_FOR_STRAIGHT = 5;
     private final int NUM_FOR_FLUSH    = 5;
+
+    //Keeps track of the highest card value for these types of hands
+    private int straightHighCardValue;
+    private int flushHighCardValue;
 
     //Counters for detecting types of hands
     private int numDuplicates;
@@ -27,9 +31,14 @@ public class HandScore
     private int numThreeOfKind;
     private int numPairs;
 
+    private Card cardToAddToScore;
+
     //Default constructor
     public HandScore()
     {
+        this.straightHighCardValue = 0;
+        this.flushHighCardValue    = 0;
+
         this.numFourOfKind  = 0;
         this.flush          = 0;
         this.straight       = 0;
@@ -67,27 +76,26 @@ public class HandScore
      */
     private int getScore(Card[] cards)
     {
-        System.out.println("NumPairs: " + numPairs);
+        System.out.println("NumPairs: "       + numPairs);
         System.out.println("NumThreeOfKind: " + numThreeOfKind);
-        System.out.println("NumFourOfKind: " + numFourOfKind);
-        System.out.println("Straight: " + straight);
-        System.out.println("Flush: " + flush);
-        score = 0;
-        score += numFourOfKind  * FOUR_OF_A_KIND;
-        score += flush          * FLUSH;
-        score += straight       * STRAIGHT;
+        System.out.println("NumFourOfKind: "  + numFourOfKind);
+        System.out.println("Straight: "       + straight);
+        System.out.println("Flush: "          + flush);
+        score += numFourOfKind   * FOUR_OF_A_KIND;
+        score += (flush          * FLUSH)    + flushHighCardValue;
+        score += (straight       * STRAIGHT) + straightHighCardValue;
         if ((numThreeOfKind > 0) && (numPairs > 0))
         {
-        	score += FULL_HOUSE;
+            score += FULL_HOUSE;
         }
         else
         {
-        	score += numThreeOfKind * THREE_OF_A_KIND;
-            score += numPairs       * PAIR;
+            score += numThreeOfKind  * THREE_OF_A_KIND;
+            score += numPairs        * PAIR;
         }
-        for (int i = 0; (i < cards.length); i++)
+        if (score <= 0)
         {
-            score += cards[i].getValue();
+            score += cards[(cards.length - 1)].getValue();
         }
         return score;
     }
@@ -96,6 +104,10 @@ public class HandScore
      */
     private void resetValues()
     {
+        this.straightHighCardValue = 0;
+        this.flushHighCardValue    = 0;
+
+        this.score          = 0;
         this.numFourOfKind  = 0;
         this.flush          = 0;
         this.straight       = 0;
@@ -144,6 +156,7 @@ public class HandScore
         Card previousCard = null;
         for (int i = 0; i < (cards.length); i++)
         {
+            cardToAddToScore = cards[i];
             //Checking if the previous and current cards are equal
             if (previousCard == null)
             {
@@ -175,14 +188,17 @@ public class HandScore
         if (numDuplicates == 4)
         {
             numFourOfKind++;
+            score += cardToAddToScore.getValue();
         }
         else if (numDuplicates == 3)
         {
             numThreeOfKind++;
+            score += cardToAddToScore.getValue();
         }
         else if (numDuplicates == 2)
         {
             numPairs++;
+            score += cardToAddToScore.getValue();
         }
     }
     /**
@@ -200,11 +216,11 @@ public class HandScore
             {
                 numInRow = 1;
             }
-            else if (previousCard.getValue() == (c.getValue() + 1))
+            else if (previousCard.getValue() == (c.getValue() - 1))
             {
                 numInRow++;
             }
-            else if (previousCard.getValue() != (c.getValue() + 1))
+            else if ((previousCard.getValue() != (c.getValue() - 1)) && (previousCard.getValue() != c.getValue()))
             {
                 numInRow = 1;
             }
@@ -212,6 +228,7 @@ public class HandScore
             if (numInRow >= NUM_FOR_STRAIGHT)
             {
                 straight = 1;
+                straightHighCardValue = c.getValue();
             }
             previousCard = c;
         }
@@ -254,6 +271,7 @@ public class HandScore
             if (numSameFace >= NUM_FOR_FLUSH)
             {
                 flush = 1;
+                flushHighCardValue = cards[i].getValue();
             }
         }
         if (flush > 0)
