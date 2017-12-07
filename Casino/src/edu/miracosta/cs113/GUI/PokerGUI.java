@@ -152,19 +152,22 @@ public class PokerGUI extends JFrame
 
     public void nextStage() 
     {
-    	stage++;
-    	switch (stage) 
-    	{
-	        case 1:  round.flop();
-	                 break;
-	        case 2:  round.turn();
-	                 break;
-	        case 3:  round.river();
-	                 break;
-	        case 4:  endRound();
-	        		 break;
-    	}
-    	updateGUI();
+    		round.setLastBet(0);
+    		round.stageReset();
+    		
+	    	stage++;
+	    	switch (stage) 
+	    	{
+		        case 1:  round.flop();
+		                 break;
+		        case 2:  round.turn();
+		                 break;
+		        case 3:  round.river();
+		                 break;
+		        case 4:  endRound();
+		        		 break;
+	    	}
+	    	updateGUI();
     }
     
 	public void newRound() 
@@ -236,15 +239,15 @@ public class PokerGUI extends JFrame
      */
 	public void updateDealerPanel() 
     {
-    	potLabel.setText("Pot: $" + round.getPot());
-    	
-    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
-    	ArrayList<Card> dealerCards = round.getCardsInPlay();
-    	
-    	for(int i = 0; i < dealerCards.size(); i++)
-    	{
-    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
-    	}
+	    	potLabel.setText("Pot: $" + round.getPot());
+	    	
+	    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
+	    	ArrayList<Card> dealerCards = round.getCardsInPlay();
+	    	
+	    	for(int i = 0; i < dealerCards.size(); i++)
+	    	{
+	    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
+	    	}
     }
 	
     
@@ -256,22 +259,26 @@ public class PokerGUI extends JFrame
     public void cyclePlayers() throws Exception
     {
 		ArrayList<Player> players = round.players;
-		int index = round.getIndex();
 		
-		while(players.get(index) != round.getLastBetter()) 
+		System.out.println("\nStarted cycling players --- start index: " + round.getIndex());
+		
+		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
-			index = round.getIndex();
+			int currentIndex = round.getIndex();
+			Player currentPlayer = players.get(currentIndex);
+			
+			System.out.println("Current player: " + currentPlayer.getName() + " ---- index: " + currentIndex);
 			
 			//If the current player is a bot, run bot decision process
-			if(players.get(index).isBot())
+			if(currentPlayer.isBot())
 			{
 				//Pause for 1 second, better user experience than instant move
 				pause(1000);
 				
 				//TODO: Make decision based on strength of hand
 				//	    For now, bot calls/checks no matter what
-				System.out.println("bot: " + players.get(index).getName() + " called");
-				playerChoice(round, 1);
+				System.out.println("bot: " + currentPlayer.getName() + " called");
+				playerChoice(1);
 				updateGUI();
 			}
 			else
@@ -279,18 +286,14 @@ public class PokerGUI extends JFrame
 				//If it's the human player, get out of this loop and wait for their move
 				break;
 			}
+		    round.moveToNextPlayer();
+
 			
-			round.moveToNextPlayer();
 			updateGUI();
 		}
 		
-		for(int k = 0; k < players.size(); k++)
-		{
-			if(!players.get(k).hasFolded())
-			{
-				players.get(k).bet(round.getLastBet());
-			}
-		}
+		System.out.println("\nStopped cycling players");
+		
 		updateGUI();
 		nextStage();
     }
@@ -304,17 +307,17 @@ public class PokerGUI extends JFrame
 	 * 					2 -> Fold
 	 * 					3 -> Raise			
 	 */
-	public void playerChoice(Round round, int choice)
+	public void playerChoice(int choice)
 	{
 		Player player = round.players.get(round.getIndex());
 		
 	    if (choice == 1) //Call
 	    {
-	    	player.call(round.getLastBet());
+	    		player.call(round.getLastBet());
 	    }
 	    else if (choice == 2) //Fold
 	    {
-	    	player.fold();
+	    		player.fold();
 	    }
 	    else if (choice == 3) //Raise
 	    {
@@ -323,7 +326,6 @@ public class PokerGUI extends JFrame
 	    		int playerBet = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
 	        round.raise(playerBet);
 	    }
-	    
 	    updateGUI();
 	}
 	
@@ -338,13 +340,14 @@ public class PokerGUI extends JFrame
      */
     public void setListener(JButton button, int action)
     {
-    	button.addActionListener(new ActionListener() {
+    		button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
             	//Call player choice
-                playerChoice(round, action);
-                
+                playerChoice(action);
+                round.moveToNextPlayer();
+                updateGUI();
                 try {
 					cyclePlayers();
 				} catch (Exception error) {
@@ -401,7 +404,7 @@ public class PokerGUI extends JFrame
         timer.setRepeats(false);
         timer.start();
 
-        //Thread.sleep(milliseconds);
+        Thread.sleep(milliseconds);
     }
     
     private void setCardImage(String cardFilePath, JLabel label) 
