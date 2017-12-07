@@ -72,7 +72,7 @@ public class PokerGUI extends JFrame {
         /**
          * Initialize player and table variables
          */
-        humanPlayer = new Player(playerName, START_MONEY);        
+        humanPlayer = new Player(playerName, START_MONEY, false);        
         table = new Table(humanPlayer, numBots);
         
         
@@ -93,37 +93,38 @@ public class PokerGUI extends JFrame {
     	
     		Round round = new Round(table);
     		
-	    	//Infinite loop for now, todo: stop when user money < 0
+	    	//Infinite loop for now, TODO: stop when user money < 0
 	    	while(true) {
 	    		
-	    		System.out.println("New round starting");
 	    		round.resetRound();
 	    		redrawTable(round);
 	    		
-			System.out.println("Initial deal");
 			//Give each player two cards
 			round.startRound();
+			
+			//Redraw table after all players have cards
 			redrawTable(round);
-			round.cyclePlayers();
+			
+			cycleBots(round);
 	            
 	            System.out.println("flop");
 	            round.flop();
 	    		redrawTable(round);
-	            round.cyclePlayers();
+	            round.cycleBots();
 	
 	            System.out.println("turn");
 	            round.turn();
 	    		redrawTable(round);
-	            round.cyclePlayers();
+	            round.cycleBots();
 	
 	            System.out.println("river");
 	            round.river();
 	    		redrawTable(round);
-	            round.cyclePlayers();
+	            round.cycleBots();
 	            System.out.println("Round over");
 	    	}
     }
-    
+   
     /**
      * Redraws all dynamic elements (cards on the table, pot, player money, etc)
      * 
@@ -183,99 +184,62 @@ public class PokerGUI extends JFrame {
     }
     
     /**
-     * Cycles through each player to see if they want to call, fold, or raise their bet
-     * Keeps track of who the current player is and their index in players
+     * Iterates through each bot 
+     * @throws Exception 
      */
-    public void cyclePlayers(Round round)
+    public void cycleBots(Round round) throws Exception
     {
     		ArrayList<Player> players = round.players;
+    		int index = round.getIndex();
     		
-        //Iterate through each player at the table
-        for(int i = 0; i < players.size(); i++) 
-        {
-        	
-        		//Skip the player if they have folded
-    			if(players.get(i).hasFolded()) 
-    			{
-    				i++;
-    			}
-    			
-    			//If the player is a bot
-    			if(players.get(i).isBot()) 
-    			{
-    				//Pause for 1 second, better user experience than instant move
-    				pause(1000);
-    				
-    				
-    				players.get(i).
-    			}
-    			
-    			
-        }
-        
-        
-        boolean cyclingPlayers = true;
-        
-       
-        
-        while (cyclingPlayers)
-        {
-            System.out.println("Amount of active players: " + players.size());
-            System.out.println("Current player's index: " + currentPlayerIndex);
-            System.out.println("Current player: " + currentPlayer.getName());
-            System.out.println("Last player in cycle: " + lastPlayerInCycle.getName());
-
-            if (currentPlayer == lastPlayerInCycle)
-            {
-                System.out.println("Last player in cycle");
-                cyclingPlayers = false;
-                playerChoice(players.get(currentPlayerIndex));
-            }
-            else if (currentPlayerIndex == (players.size() - 1))
-            {
-                System.out.println("Last player in list");
-                playerChoice(players.get(currentPlayerIndex));
-                //currentPlayerIndex = 0;
-            }
-            else
-            {
-                System.out.println("No issues");
-                playerChoice(players.get(currentPlayerIndex));
-            }
-            moveToNextPlayer();
-        }
+    		//Iterate through all bots
+    		while(players.get(index).isBot())
+    		{
+    			//Pause for 1 second, better user experience than instant move
+			pause(1000);
+			
+			//TODO: Make decision based on strength of hand
+			//For now, bot calls/checks no matter what
+			playerChoice(players.get(index), round, 1);			
+			
+			//Alter resulting round variables from human or bot actions
+			
+			round.moveToNextPlayer();
+    		}
     }
 
-    /**
-     * Has the player make a choice of calling, folding, raising, or checking
-     * @param p The player to get the choice from
-     */
-    public void playerChoice(Player p)
+	/**
+	 * Has the player make a choice of calling, folding, raising, or checking
+	 * 
+	 * @param player The player that made the choice
+	 * @param choice The choice
+	 * 					1 -> Call/Check
+	 * 					2 -> Fold
+	 * 					3 -> Raise			
+	 */
+	public void playerChoice(Player player, Round round, int choice)
+	{
+	    if (choice == 1)
+	    {
+	    		player.call(round.getLastBet());
+	    }
+	    else if (choice == 2)
+	    {
+	    		player.fold();
+	    }
+	    else if (choice == 3)
+	    {
+	        //System.out.println("Enter amount to raise by:");
+	        int playerBet = ;
+	        player.bet(playerBet);
+	        lastBetter = player; //So it keeps looping until we reach the last player who raised
+	    }
+	}
+
+    
+    
+    public void pause(int milliseconds) throws Exception
     {
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("1. Call, 2. Fold, or 3. Raise?");
-        int playerChoice = keyboard.nextInt();
-        if (playerChoice == 1)
-        {
-
-        }
-        else if (playerChoice == 2)
-        {
-            p.playerFolds();
-
-            players.remove(p);
-        }
-        else if (playerChoice == 3)
-        {
-            System.out.println("Enter amount to raise by:");
-            int playerBet = keyboard.nextInt();
-            p.bet(playerBet);
-            lastPlayerInCycle = p; //So it keeps looping until we reach the last player who raised
-        }
-    }
-    
-    
-    public void pause(int milliseconds) throws Exception{
         ActionListener taskPerformer = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

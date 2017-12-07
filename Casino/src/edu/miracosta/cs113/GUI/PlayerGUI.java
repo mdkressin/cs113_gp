@@ -49,13 +49,13 @@ public class PlayerGUI extends JPanel {
 		
 		if(playerCard1 != null) 
 		{
-			setCardImage(playerCard1.getFilePath(), card1Label, isBot);
-			setCardImage(playerCard2.getFilePath(), card2Label, isBot);
+			setCardImage(playerCard1.getFilePath(), card1Label, isBot, player.hasFolded());
+			setCardImage(playerCard2.getFilePath(), card2Label, isBot, player.hasFolded());
 		} 
 		else 
 		{
-			setCardImage("card_back.png", card1Label, isBot);
-			setCardImage("card_back.png", card2Label, isBot);
+			setCardImage("card_back.png", card1Label, isBot, player.hasFolded());
+			setCardImage("card_back.png", card2Label, isBot, player.hasFolded());
 		}
 
 		cards = new JPanel();
@@ -83,12 +83,18 @@ public class PlayerGUI extends JPanel {
 	}
 
 
-	private void setCardImage(String cardFilePath, JLabel label, boolean isBot) 
+	private void setCardImage(String cardFilePath, JLabel label, boolean isBot, boolean hasFolded) 
 	{	
 		if(isBot)
 		{
-			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/card_back.png").getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
-			label.setIcon(imageIcon);
+			if(hasFolded)
+			{
+				ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/card_back_faded.png").getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+				label.setIcon(imageIcon);
+			} else {
+				ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/card_back.png").getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+				label.setIcon(imageIcon);
+			}
 		}
 		else
 		{

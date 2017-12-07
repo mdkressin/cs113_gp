@@ -5,17 +5,17 @@ import java.util.Scanner;
 
 public class Round
 {
-    private int pot = 0;
+    private int pot;
 
     public ArrayList<Player> players = new ArrayList<Player>();
     
     private ArrayList<Card> cardsInPlay = new ArrayList<Card>();
     
-    private Player lastPlayerInCycle;
+    private Player lastBetter;
+            
+    private int index;
     
-    private Player currentPlayer;
-    
-    private int currentPlayerIndex;
+    private int lastBet;
     
     private Table table;
 
@@ -23,16 +23,22 @@ public class Round
     public Round()
     {
         table = new Table();
+        pot = 0;
     }
     
     public Round(Table table)
     {
-        this.table = table;
+    		this.table = table;
+        pot = 0;
+        
+        //TODO: add Blind logic, right now it is always 0
+        index = table.getBigBlind();
     }
     
     public Round(Player userPlayer)
     {
-        table = new Table(userPlayer);
+    		table = new Table(userPlayer);
+    		pot = 0;
     }
     
     public Round(Player userPlayer, int numBots)
@@ -40,29 +46,69 @@ public class Round
         table = new Table(userPlayer, numBots);
     }
 
-    public void playRound()
+    /**
+     * Get index <- current player index
+     */
+    public int getIndex() 
     {
-        System.out.println("New round starting");
-        resetRound();
-        System.out.println();
-        System.out.println("Initial deal");
-        startRound();
-        cyclePlayers();
-        System.out.println();
-        System.out.println("flop");
-        flop();
-        cyclePlayers();
-        System.out.println();
-        System.out.println("turn");
-        turn();
-        cyclePlayers();
-        System.out.println();
-        System.out.println("river");
-        river();
-        cyclePlayers();
-        System.out.println("Round over");
+		return index;
+    }
+    
+    /**
+     * Set the last bet amount
+     */
+    public void setLastBet(int amount) 
+    {
+    		lastBet = amount;
+    }
+    
+    /**
+     * Get the last bet
+     */
+    public int getLastBet() 
+    {
+		return lastBet;
+    }
+    
+    /**
+     * Add amount to the pot
+     */
+    public void addToPot(int amount) 
+    {
+    		pot += amount;
+    }
+    
+    /**
+     * Get the pot
+     */
+    public int getPot() 
+    {
+    		return pot;
     }
 
+    /**
+     * Move to the next player
+     * 
+     * TODO examine infinite recursion case when all players have folded
+     */
+    public void moveToNextPlayer()
+    {
+    		//Move to next player
+    		index++;
+    		
+    		//If new index is out of bounds, reset to 0
+    		if (index > (players.size() - 1))
+        {
+            index = 0;
+        }
+    		
+    		//If this player folded, recursively call this method again
+        if (players.get(index).hasFolded())
+        {
+            moveToNextPlayer();
+        }
+    }
+    
     /**
      * Gives each player 2 cards to start with
      */
@@ -75,104 +121,89 @@ public class Round
             currentHand.addCard(table.getDeck().deal());
         }
     }
+    
     /**
-     * Sets all players to "active" again, clears the cards in play, and resets the current/last players
+     * Reset all players, clear the cards on the table, and reset index
      */
     public void resetRound()
     {
-        players.clear();
-        for (Player p : table.getPlayers())
+        for (Player player : players)
         {
-            players.add(p);
+            player.resetStatus();
         }
+        
         //Resetting list of active players and cards in play
 
         cardsInPlay.clear();
-        //Resetting the current and last-in-cycle players
-        currentPlayer = players.get(0);
-        currentPlayerIndex = 0;
-        lastPlayerInCycle = players.get(players.size() - 1);
+
+        //TODO big blind logic
+        index = 0;
     }
 
     /**
      * Cycles through each player to see if they want to call, fold, or raise their bet
      * Keeps track of who the current player is and their index in players
-     */
+    
     public void cyclePlayers()
     {
         boolean cyclingPlayers = true;
         while (cyclingPlayers)
         {
             System.out.println("Amount of active players: " + players.size());
-            System.out.println("Current player's index: " + currentPlayerIndex);
+            System.out.println("Current player's index: " + index);
             System.out.println("Current player: " + currentPlayer.getName());
-            System.out.println("Last player in cycle: " + lastPlayerInCycle.getName());
+            System.out.println("Last player in cycle: " + lastBetter.getName());
 
-            if (currentPlayer == lastPlayerInCycle)
+            if (currentPlayer == lastBetter)
             {
                 System.out.println("Last player in cycle");
                 cyclingPlayers = false;
-                playerChoice(players.get(currentPlayerIndex));
+                playerChoice(players.get(index));
             }
-            else if (currentPlayerIndex == (players.size() - 1))
+            else if (index == (players.size() - 1))
             {
                 System.out.println("Last player in list");
-                playerChoice(players.get(currentPlayerIndex));
-                //currentPlayerIndex = 0;
+                playerChoice(players.get(index));
+                //index = 0;
             }
             else
             {
                 System.out.println("No issues");
-                playerChoice(players.get(currentPlayerIndex));
+                playerChoice(players.get(index));
             }
             moveToNextPlayer();
         }
     }
+     */
 
     /**
      * Has the player make a choice of calling, folding, raising, or checking
-     * @param p The player to get the choice from
-     */
-    public void playerChoice(Player p)
+     * 
+     * @param player The player that made the choice
+     * @param choice The choice
+     * 					1 -> Call/Check
+     * 					2 -> Fold
+     * 					3 -> Raise			
+    public void playerChoice(Player player, int choice)
     {
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("1. Call, 2. Fold, or 3. Raise?");
-        int playerChoice = keyboard.nextInt();
-        if (playerChoice == 1)
+        if (choice == 1)
         {
-
+        		
         }
-        else if (playerChoice == 2)
+        else if (choice == 2)
         {
-            p.playerFolds();
-
-            players.remove(p);
+        		player.fold();
+            players.remove(player);
         }
-        else if (playerChoice == 3)
+        else if (choice == 3)
         {
-            System.out.println("Enter amount to raise by:");
-            int playerBet = keyboard.nextInt();
-            p.bet(playerBet);
-            lastPlayerInCycle = p; //So it keeps looping until we reach the last player who raised
+            //System.out.println("Enter amount to raise by:");
+            int playerBet = ;
+            player.bet(playerBet);
+            lastBetter = player; //So it keeps looping until we reach the last player who raised
         }
     }
-    /**
-     * Moves on to the next player
-     */
-    private void moveToNextPlayer()
-    {
-        if (!currentPlayer.hasFolded()) //If they haven't been removed from active players the index moves up
-        {
-            currentPlayerIndex++;
-        }
-        if (currentPlayerIndex > (players.size() - 1))
-        {
-            System.out.println("RESET CURRENT PLAYER INDEX TO 0");
-            currentPlayerIndex = 0;
-        }
-        System.out.println("CURRENT PLAYER INDEX: " + currentPlayerIndex);
-        currentPlayer = players.get(currentPlayerIndex);
-    }
+    */
 
     /**
      * Places initial 3 cards in the center of the table
@@ -203,12 +234,5 @@ public class Round
      */
     public ArrayList<Card> getCardsInPlay() {
     		return cardsInPlay;
-    }
-    
-    /**
-     * Get cards on the board
-     */
-    public int getPot() {
-    		return pot;
     }
 }

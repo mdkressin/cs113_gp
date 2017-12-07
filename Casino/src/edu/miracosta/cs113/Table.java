@@ -36,6 +36,8 @@ public class Table
         this.userPlayer = userPlayer;
         deck.shuffle();
         initializePlayers(userPlayer, numBots);
+        bigBlind = 0;
+        smallBlind = players.size() - 1;
     }
 
     //Helper Methods
