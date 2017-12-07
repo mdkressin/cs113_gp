@@ -77,6 +77,7 @@ public class PokerGUI extends JFrame {
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		System.out.print("Table and human created, calling play()");
         /**
          * Start game
          */
@@ -85,32 +86,33 @@ public class PokerGUI extends JFrame {
     
     public void play() {
     	
-    		Round round = new Round(table);
+		Round round = new Round(table);
+
     		
-	    	//Infinite loop for now, TODO: stop when user money < 0
-	    	while(true) {
-	    		
-	    		round.resetRound();
-	    		//redrawTable(round);
-	    		
-				//Give each player two cards
-				round.startRound();
-				
-				//Redraw table after all players have cards, waits for user input
-				redrawTable(round);
-				
-				//After user input and betting is over, show flop() and redraw
-	            round.flop();
-	    		redrawTable(round);
-	    		
-				//After user input and betting is over, show turn() and redraw
-	            round.turn();
-	    		redrawTable(round);
-	
-				//After user input and betting is over, show river() and redraw
-	            round.river();
-	    		redrawTable(round);
-	    	}
+    	//Infinite loop for now, TODO: stop when user money < 0
+    	while(true) {
+    		
+    		round.resetRound();
+    		//redrawTable(round);
+    		
+			//Give each player two cards
+			round.startRound();
+			
+			//Redraw table after all players have cards, waits for user input
+			redrawTable(round);
+			
+			//After user input and betting is over, show flop() and redraw
+            round.flop();
+    		redrawTable(round);
+    		
+			//After user input and betting is over, show turn() and redraw
+            round.turn();
+    		redrawTable(round);
+
+			//After user input and betting is over, show river() and redraw
+            round.river();
+    		redrawTable(round);
+    	}
     }
    
     /**
@@ -129,7 +131,7 @@ public class PokerGUI extends JFrame {
         botsPanel.setBackground(DARK_GREEN);
         botsPanel.setLayout(new FlowLayout());
         
-        ArrayList<Player> players = table.getPlayers();
+        ArrayList<Player> players = round.players;
         
         for(int i = 1; i < players.size(); i++) 
         {
@@ -148,7 +150,9 @@ public class PokerGUI extends JFrame {
         {
         	if(c != null)
         	{
-        		dealerPanel.add(new JLabel(new ImageIcon(getCardImage(c.getFilePath()))));
+        		JLabel newCardLabel = new JLabel("");
+        		setCardImage(c.getFilePath(), newCardLabel);
+        		dealerPanel.add(newCardLabel);
         	}
         }
         
@@ -217,6 +221,7 @@ public class PokerGUI extends JFrame {
 		
 		while(players.get(index) != round.getLastBetter()) 
 		{
+			index = round.getIndex();
 			
 			//If the current player is a bot, run bot decision process
 			if(players.get(index).isBot())
@@ -226,7 +231,8 @@ public class PokerGUI extends JFrame {
 				
 				//TODO: Make decision based on strength of hand
 				//For now, bot calls/checks no matter what
-				playerChoice(round, 1);				
+				System.out.println("bot: " + players.get(index).getName() + " called");
+				playerChoice(round, 1);
 			}
 			else
 			{
@@ -265,7 +271,7 @@ public class PokerGUI extends JFrame {
 	        int playerBet = ;
 	        round.raise(playerBet);
 	        */
-	        round.raise(100);
+	        round.raise(50);
 	    }
 	}
 
@@ -286,6 +292,11 @@ public class PokerGUI extends JFrame {
         //Thread.sleep(milliseconds);
     }
     
+    private void setCardImage(String cardFilePath, JLabel label) 
+	{	
+		ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/" + cardFilePath).getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT));
+		label.setIcon(imageIcon);
+	}
     
     private BufferedImage getCardImage(String cardFilePath) {
 		

@@ -3,19 +3,23 @@ package edu.miracosta.cs113;
 public class Hand {
     
     //Array of cards in the hand
-    private Card[] cards = new Card[7];
+    private Card[] cards;
     
     //Hole cards are the first two cards 
+    /* TODO: After deciding if keeping hands sorted is necessary, if
+     *       not necassary remove holeCards array and just use 0, 1
+     */
     private Card[] holeCards = new Card[2];
     
     /** The current number of cards in this hand. */
     private int numCards = 0;
     
     /**
-     * Empty constructor
+     * Empty constructor creates an empty array 
+     * for cards
      */
     public Hand() {
-        // Empty implementation.
+    	cards = new Card[7];
     }
     
     /**
@@ -54,6 +58,7 @@ public class Hand {
      *             If the card is null.
      */
     public void addCard(Card card) {
+    	
         if (card == null) {
             throw new IllegalArgumentException("Null card");
         }
@@ -65,6 +70,12 @@ public class Hand {
         	holeCards[numCards] = card;
         }
         
+        /**
+         * Dont sort
+         *
+         * TODO: determine if sorting is required or helpful,
+         * 		 if not, remove this block
+         
         int index = -1;
         for (int i = 0; i < numCards; i++) {
             if (card.compareTo(cards[i]) > 0) {
@@ -80,6 +91,10 @@ public class Hand {
             cards[index] = card;
             numCards++;
         }
+        */
+        
+        cards[numCards] = card;
+        numCards++;
     }
     
     /**

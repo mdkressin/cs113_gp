@@ -7,7 +7,7 @@ public class Round
 {
     private int pot;
 
-    public ArrayList<Player> players = new ArrayList<Player>();
+    public ArrayList<Player> players;
     
     private ArrayList<Card> cardsInPlay = new ArrayList<Card>();
     
@@ -28,7 +28,10 @@ public class Round
     {
     	this.table = table;
     	
+    	players = table.players;
+    	
         pot = 0;
+        
         
         //TODO: add Blind logic, right now it is always 0
         index = table.getBigBlind();
@@ -130,12 +133,67 @@ public class Round
      */
     public void startRound()
     {
+    	System.out.println("\nInside startRound()");
+    	
         for (Player p : players)
         {
-            Hand currentHand = p.getHand();
-            currentHand.addCard(table.getDeck().deal());
-            currentHand.addCard(table.getDeck().deal());
+        	p.addToHand(table.getDeck().deal());
+        	p.addToHand(table.getDeck().deal());
+
+            System.out.println("Gave " + p.getHand() + " to " + p.getName());
         }
+    }
+
+    /**
+     * Places initial 3 cards in the center of the table
+     */
+    public void flop()
+    {
+    	System.out.println("\nInside flop()");
+
+    	Card tableCard1 = table.getDeck().deal();
+        cardsInPlay.add(tableCard1);
+        addToAllHands(tableCard1);
+        
+        Card tableCard2 = table.getDeck().deal();
+        cardsInPlay.add(tableCard2);
+        addToAllHands(tableCard2);
+        
+        Card tableCard3 = table.getDeck().deal();
+        cardsInPlay.add(tableCard3);
+        addToAllHands(tableCard3);
+    }
+    
+    /**
+     * Places fourth card on table
+     */
+    public void turn()
+    {
+    	System.out.println("\nInside turn()");
+    	
+    	Card tableCard4 = table.getDeck().deal();
+        cardsInPlay.add(tableCard4);
+        addToAllHands(tableCard4);
+    }
+    
+    /**
+     * Places fifth and final card on the table
+     */
+    public void river()
+    {
+    	System.out.println("\nInside river()");
+
+    	Card tableCard5 = table.getDeck().deal();
+        cardsInPlay.add(tableCard5);
+        addToAllHands(tableCard5);
+    }
+    
+    public void addToAllHands(Card card) 
+    {
+    	for(int i = 0; i < players.size(); i++) 
+    	{
+    		players.get(i).addToHand(card);
+    	}
     }
     
     /**
@@ -157,30 +215,6 @@ public class Round
         
         //TODO big blind logic
         index = 0;
-    }
-
-    /**
-     * Places initial 3 cards in the center of the table
-     */
-    public void flop()
-    {
-        cardsInPlay.add(table.getDeck().deal());
-        cardsInPlay.add(table.getDeck().deal());
-        cardsInPlay.add(table.getDeck().deal());
-    }
-    /**
-     * Places fourth card on table
-     */
-    public void turn()
-    {
-        cardsInPlay.add(table.getDeck().deal());
-    }
-    /**
-     * Places fifth and final card on the table
-     */
-    public void river()
-    {
-        cardsInPlay.add(table.getDeck().deal());
     }
     
     /**

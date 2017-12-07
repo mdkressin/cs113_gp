@@ -1,6 +1,8 @@
 package edu.miracosta.cs113;
 
-public class Player {
+
+public class Player 
+{
 	//Constants
 	private final String DEFAULT_NAME = "Default";
 	private final int DEFAULT_MONEY = 500;
@@ -42,6 +44,15 @@ public class Player {
 	}
 
 	/**
+	 * Add a card to the player's hand
+	 * 
+	 * @param card Card to add
+	 */
+	public void addToHand(Card card) {
+		hand.addCard(card);
+	}
+	
+	/**
 	 * Sets player's status to "folded"
 	 */
 	public void fold() {
@@ -69,6 +80,7 @@ public class Player {
 	 * Resets fold, call, and check status of player to false
 	 */
 	public void resetStatus() {
+		hand.removeAllCards();
 		hasFolded = false;
 		hasCalled = false;
 		hasChecked = false;

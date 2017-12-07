@@ -14,7 +14,7 @@ public class CardDeck
     private Card[] cards;
     
     /** The index of the next card to deal. */
-    private int cardIndex = 0;
+    private int cardIndex;
 
     /**
      * Constructor populates the cards array with a full, ordered deck
@@ -22,13 +22,13 @@ public class CardDeck
     public CardDeck() 
     {
         cards = new Card[DECK_SIZE];
-        int index = 0;
+        int cardIndex = 0;
         for (int suit = 3; suit >= 0; suit--) 
         {
             for (int value = 12; value >= 0 ; value--) 
             {
-                cards[index] = new Card(value, suit);
-                index++;
+                cards[cardIndex] = new Card(value, suit);
+                cardIndex++;
             }
         }
     }
@@ -62,7 +62,8 @@ public class CardDeck
      *
      * @return  the card dealt
      */
-    public Card deal() {
+    public Card deal() 
+    {
         if (cardIndex + 1 >= DECK_SIZE) 
         {
             throw new IllegalStateException("No cards left in deck");
