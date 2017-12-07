@@ -46,7 +46,7 @@ public class PokerGUI extends JFrame
     private static final int BIG_BLIND = 10; 
     private static final int START_MONEY = 500;
    
-    private final int BOT_THRESHOLD = 25;
+    private final int BOT_THRESHOLD = 10;
     
     private final Player humanPlayer;
     private final Table table;
@@ -282,9 +282,8 @@ public class PokerGUI extends JFrame
 				//	    For now, bot calls/checks no matter what
 				HandScore score = new HandScore();
 				System.out.println("bot: " + currentPlayer.getName() + " called");
-				Card[] tempCardArray = currentPlayer.getHand().getCards();
-				int botScore = score.calculateScore(tempCardArray);
-				if (botScore < BOT_THRESHOLD - 10)
+				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
+				if (botScore < BOT_THRESHOLD/2)
 				{
 					playerChoice(2);
 				}
