@@ -7,7 +7,7 @@ public class Hand {
     
     //Hole cards are the first two cards 
     /* TODO: After deciding if keeping hands sorted is necessary, if
-     *       not necassary remove holeCards array and just use 0, 1
+     *       not necessary remove holeCards array and just use 0, 1
      */
     private Card[] holeCards = new Card[2];
     

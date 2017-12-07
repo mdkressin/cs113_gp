@@ -119,5 +119,51 @@ public abstract class AbstractPokerGraph implements Graph {
 		return returnValue;
 	}
 	
-	
+	/**
+	 * Generate a graph of all possible hands based off the passed in hand
+	 * @param currentHand	The hand that hand possibilities will be based on
+	 * @param graph	The graph to build
+	 * @return	a graph containing possible hand combinations
+	 */
+	public static Graph createGraph(Graph graph, Hand currentHand) 
+	{
+		Edge edge = new Edge(0,0);
+		/* Create a deck to calculate hand possibilities .*/
+		CardDeck deck = new CardDeck();
+		Card[] handCards = currentHand.getCards();
+		/* The current number of cards in the hand. */
+		int handSize = currentHand.size();
+		/* Holds a reference to a card drawn from the deck. */
+		Card card;
+		try 
+		{
+			while (true)
+			{ // will exist once the deck runs out of cards by throwing an exception
+				Hand possibleHand = new Hand();
+				card = deck.deal();
+				boolean newCard = true;
+				int i = 0;
+				while (newCard && i < handSize)
+				{ // make sure card is not already in the hand
+					if (card.equals(handCards[i]))
+					{
+						newCard = false;
+					}
+					i++;
+				}
+				if (newCard)
+				{
+					for (Card c : handCards)
+					{
+						possibleHand.addCard(c);
+					}
+					possibleHand.addCard(card);
+					
+				}
+			}
+		} catch (IllegalStateException e) 
+		{ // gone through all possibilities from deck
+			return graph;
+		}
+	}
 }

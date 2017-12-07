@@ -73,6 +73,7 @@ public class DepthFirstSearchTest {
 		list.insert(new Edge(2,9));
 		list.insert(new Edge(2,8));
 		list.insert(new Edge(1,4));
+		list.insert(new Edge(1,6));
 		list.insert(new Edge(1,7));
 		list.insert(new Edge(4,5));
 		
@@ -87,15 +88,16 @@ public class DepthFirstSearchTest {
 		
 		// directed graph
 		AbstractPokerGraph list2 = new ListPokerGraph(10,true);
-		list2.insert(new Edge(0,3));
-		list2.insert(new Edge(0,1));
-		list2.insert(new Edge(3,2));
-		list2.insert(new Edge(1,2));
-		list2.insert(new Edge(2,9));
-		list2.insert(new Edge(2,8));
-		list2.insert(new Edge(1,4));
-		list2.insert(new Edge(1,7));
-		list2.insert(new Edge(4,5));
+		list.insert(new Edge(0,3));
+		list.insert(new Edge(0,1));
+		list.insert(new Edge(3,2));
+		list.insert(new Edge(1,2));
+		list.insert(new Edge(2,9));
+		list.insert(new Edge(2,8));
+		list.insert(new Edge(1,4));
+		list.insert(new Edge(1,6));
+		list.insert(new Edge(1,7));
+		list.insert(new Edge(4,5));
 		
 		DepthFirstSearch dfs2 = new DepthFirstSearch(list2);
 		int[] dOrder2 = dfs2.getDiscoveryOrder();
