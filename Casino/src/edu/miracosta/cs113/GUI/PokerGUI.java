@@ -3,6 +3,8 @@ package edu.miracosta.cs113.GUI;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +34,7 @@ import edu.miracosta.cs113.Table;
  *      ___	  ___   		 ___	_________   ______   _______
  * 	   |   | |   | 		|            | |      | |       |
  * 	   | A | | K | 		| Call/Check | | Fold | | Raise |    <--- userPanel
- * 	   |___| |___| 		|____________| |______| |_______|
+ * 	   |___| |___| 		|__$300/$0___| |______| |_______|
  *        Name
  *       $Money
  */
@@ -102,7 +104,6 @@ public class PokerGUI extends JFrame {
 			//Give each player two cards
 			round.startRound();
 			redrawTable(round);
-			
 			round.cyclePlayers();
 	            
 	            System.out.println("flop");
@@ -179,6 +180,113 @@ public class PokerGUI extends JFrame {
       	this.add(botsPanel);
       	this.add(dealerPanel);
       	this.add(userPanel);
+    }
+    
+    /**
+     * Cycles through each player to see if they want to call, fold, or raise their bet
+     * Keeps track of who the current player is and their index in players
+     */
+    public void cyclePlayers(Round round)
+    {
+    		ArrayList<Player> players = round.players;
+    		
+        //Iterate through each player at the table
+        for(int i = 0; i < players.size(); i++) 
+        {
+        	
+        		//Skip the player if they have folded
+    			if(players.get(i).hasFolded()) 
+    			{
+    				i++;
+    			}
+    			
+    			//If the player is a bot
+    			if(players.get(i).isBot()) 
+    			{
+    				//Pause for 1 second, better user experience than instant move
+    				pause(1000);
+    				
+    				
+    				players.get(i).
+    			}
+    			
+    			
+        }
+        
+        
+        boolean cyclingPlayers = true;
+        
+       
+        
+        while (cyclingPlayers)
+        {
+            System.out.println("Amount of active players: " + players.size());
+            System.out.println("Current player's index: " + currentPlayerIndex);
+            System.out.println("Current player: " + currentPlayer.getName());
+            System.out.println("Last player in cycle: " + lastPlayerInCycle.getName());
+
+            if (currentPlayer == lastPlayerInCycle)
+            {
+                System.out.println("Last player in cycle");
+                cyclingPlayers = false;
+                playerChoice(players.get(currentPlayerIndex));
+            }
+            else if (currentPlayerIndex == (players.size() - 1))
+            {
+                System.out.println("Last player in list");
+                playerChoice(players.get(currentPlayerIndex));
+                //currentPlayerIndex = 0;
+            }
+            else
+            {
+                System.out.println("No issues");
+                playerChoice(players.get(currentPlayerIndex));
+            }
+            moveToNextPlayer();
+        }
+    }
+
+    /**
+     * Has the player make a choice of calling, folding, raising, or checking
+     * @param p The player to get the choice from
+     */
+    public void playerChoice(Player p)
+    {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("1. Call, 2. Fold, or 3. Raise?");
+        int playerChoice = keyboard.nextInt();
+        if (playerChoice == 1)
+        {
+
+        }
+        else if (playerChoice == 2)
+        {
+            p.playerFolds();
+
+            players.remove(p);
+        }
+        else if (playerChoice == 3)
+        {
+            System.out.println("Enter amount to raise by:");
+            int playerBet = keyboard.nextInt();
+            p.bet(playerBet);
+            lastPlayerInCycle = p; //So it keeps looping until we reach the last player who raised
+        }
+    }
+    
+    
+    public void pause(int milliseconds) throws Exception{
+        ActionListener taskPerformer = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+        };
+        Timer timer = new Timer(milliseconds ,taskPerformer);
+        timer.setRepeats(false);
+        timer.start();
+
+        //Thread.sleep(milliseconds);
     }
     
     private void setCardImage(String cardFilePath, JLabel label) 

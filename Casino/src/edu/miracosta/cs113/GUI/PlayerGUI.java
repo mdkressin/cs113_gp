@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import edu.miracosta.cs113.Bot;
 import edu.miracosta.cs113.Card;
 import edu.miracosta.cs113.Player;
 import edu.miracosta.cs113.Table;

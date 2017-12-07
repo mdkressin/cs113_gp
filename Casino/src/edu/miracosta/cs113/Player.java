@@ -11,6 +11,9 @@ public class Player {
 	//Player's cards
 	private Hand hand;
 	
+	//Whether or not this player is a bot
+	private boolean isBot;
+	
 	//Player's money
 	private int money;
 
@@ -22,40 +25,45 @@ public class Player {
 	{
 		this.name = DEFAULT_NAME;
 		this.money = DEFAULT_MONEY;
+		this.isBot = false;
 		this.hand = new Hand();
 	}
 	/**
-	 * Constructs a new player with a name, intitial money, and a new empty hand
+	 * Constructs a new player with a name, initial money, and a new empty hand
 	 *  
 	 * @param name Player's name
 	 * @param money Buy-in amount
 	 */
-	public Player(String name, int money) {
+	public Player(String name, int money, boolean isBot) {
 		this.name = name;
 		this.money = money;
+		this.isBot = isBot;
 		this.hand = new Hand();
 	}
 
 	/**
 	 * Sets player's status to "folded"
 	 */
-	public void playerFolds() {
+	public void fold() {
 		hasFolded = true;
 	}
 
 	/**
 	 * Sets player's status to "called"
 	 */
-	public void playerCalls() {
+	public void call(int amount) {
+		money = money - amount;
 		hasCalled = true;
 	}
 
 	/**
-	 * Sets player's status to "checked"
-	 */
-	public void playerChecks() {
-		hasChecked = true;
-	}
+     * Subtract from the player's money total
+     * 
+     * @param amount of money
+     */
+    public void bet(int amount) {
+    		money = money - amount;
+    }
 
 	/**
 	 * Resets fold, call, and check status of player to false
@@ -113,14 +121,6 @@ public class Player {
 		return hasChecked;
 	}
     
-    /**
-     * Subtract from the player's money total
-     * 
-     * @param amount of money
-     */
-    public void bet(int amount) {
-    	money = money - amount;
-    }
     
     /**
      * Add to the player's money total
@@ -128,6 +128,10 @@ public class Player {
      * @param amount of money
      */
     public void won(int amount) {
-    	money = money + amount;
+    		money = money + amount;
     }
+    
+	public boolean isBot() {
+		return isBot;
+	}
 }

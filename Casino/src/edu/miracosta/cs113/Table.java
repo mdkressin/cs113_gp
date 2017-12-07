@@ -42,9 +42,10 @@ public class Table
     private void initializePlayers(Player userPlayer, int numBots)
     {
         players.add(userPlayer);
+        
         for (int i = 0; i < numBots; i++)
         {
-            players.add(new Player(BOT_NAMES[i], 500));
+            players.add(new Player(BOT_NAMES[i], 500, true));
             botNumber++;
         }
     }
