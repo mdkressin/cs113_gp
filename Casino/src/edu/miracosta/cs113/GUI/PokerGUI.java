@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.miracosta.cs113.Card;
+import edu.miracosta.cs113.HandScore;
 import edu.miracosta.cs113.Player;
 import edu.miracosta.cs113.Round;
 import edu.miracosta.cs113.Table;
@@ -44,6 +45,8 @@ public class PokerGUI extends JFrame
 	
     private static final int BIG_BLIND = 10; 
     private static final int START_MONEY = 500;
+   
+    private final int BOT_THRESHOLD = 25;
     
     private final Player humanPlayer;
     private final Table table;
@@ -277,8 +280,23 @@ public class PokerGUI extends JFrame
 				
 				//TODO: Make decision based on strength of hand
 				//	    For now, bot calls/checks no matter what
+				HandScore score = new HandScore();
 				System.out.println("bot: " + currentPlayer.getName() + " called");
-				playerChoice(1);
+				Card[] tempCardArray = currentPlayer.getHand().getCards();
+				int botScore = score.calculateScore(tempCardArray);
+				if (botScore < BOT_THRESHOLD - 10)
+				{
+					playerChoice(2);
+				}
+				else if (botScore < BOT_THRESHOLD)
+				{
+					playerChoice(1);
+				}
+				else
+				{
+					playerChoice(3);
+				}
+				
 				updateGUI();
 			}
 			else
@@ -310,7 +328,6 @@ public class PokerGUI extends JFrame
 	public void playerChoice(int choice)
 	{
 		Player player = round.players.get(round.getIndex());
-		
 	    if (choice == 1) //Call
 	    {
 	    		player.call(round.getLastBet());
@@ -321,10 +338,16 @@ public class PokerGUI extends JFrame
 	    }
 	    else if (choice == 3) //Raise
 	    {
-	    	
+	    	if (player.isBot())
+	    	{
+	    		round.raise(10);
+	    	}
+	    	else
+	    	{
 	    		//TODO: if playerBet is lower than lastBet, throw error and dialog
 	    		int playerBet = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
-	        round.raise(playerBet);
+	    		round.raise(playerBet);
+	    	}
 	    }
 	    updateGUI();
 	}
