@@ -351,13 +351,13 @@ public class PokerGUI extends JFrame
 		    	if (player.isBot())
 		    	{
 		    		//TODO: calculate bot raise amount
-		    		raiseAmount = 10;
+		    		raiseAmount = 10 + round.getLastBet();
 		    		round.raise(raiseAmount);
 		    	}
 		    	else
 		    	{
 		    		//TODO: if playerBet is lower than lastBet, throw error and dialog
-		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
+		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", "")) + round.getLastBet();
 		    		round.raise(raiseAmount);
 		    	}
 		    	
