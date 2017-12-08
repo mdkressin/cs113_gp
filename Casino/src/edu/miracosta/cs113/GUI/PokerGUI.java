@@ -53,6 +53,7 @@ public class PokerGUI extends JFrame
     
     private Round round;
     private int stage;
+    HandScore score;
 
     //Panels
     private JPanel botsPanel;
@@ -89,6 +90,7 @@ public class PokerGUI extends JFrame
         humanPlayer = new Player(playerName, START_MONEY, false);        
         table = new Table(humanPlayer, numBots);
         round = new Round(table);
+        score = new HandScore();
         
         //Instantiate panels with default styling
     	botsPanel = createPanel();
@@ -280,8 +282,6 @@ public class PokerGUI extends JFrame
 				
 				//TODO: Make decision based on strength of hand
 				//	    For now, bot calls/checks no matter what
-				
-				HandScore score = new HandScore();
 								
 				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
 				
@@ -351,7 +351,7 @@ public class PokerGUI extends JFrame
 		    	if (player.isBot())
 		    	{
 		    		//TODO: calculate bot raise amount
-		    		raiseAmount = 10 + round.getLastBet();
+		    		raiseAmount = score.calculateScore(player.getHand().getCards()) + round.getLastBet();
 		    		round.raise(raiseAmount);
 		    	}
 		    	else
