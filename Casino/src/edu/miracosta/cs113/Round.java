@@ -212,6 +212,8 @@ public class Round
     public void resetRound()
     {
     	
+    	lastBetter = players.get(table.getBigBlind());
+    			
         for (Player player : players)
         {
             player.reset();
@@ -240,6 +242,8 @@ public class Round
 			player.resetStatus();
 		}
 		
+    	lastBetter = players.get(table.getBigBlind());
+
 	}
     
     /**
