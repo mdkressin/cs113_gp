@@ -9,8 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import edu.miracosta.cs113.Card;
+import edu.miracosta.cs113.HandScore;
 import edu.miracosta.cs113.Player;
 import edu.miracosta.cs113.Round;
 import edu.miracosta.cs113.Table;
@@ -44,12 +46,15 @@ public class PokerGUI extends JFrame
 	
     private static final int BIG_BLIND = 10; 
     private static final int START_MONEY = 500;
+   
+    private final int BOT_THRESHOLD = 10;
     
     private final Player humanPlayer;
     private final Table table;
     
     private Round round;
     private int stage;
+    HandScore score;
 
     //Panels
     private JPanel botsPanel;
@@ -86,6 +91,7 @@ public class PokerGUI extends JFrame
         humanPlayer = new Player(playerName, START_MONEY, false);        
         table = new Table(humanPlayer, numBots);
         round = new Round(table);
+        score = new HandScore();
         
         //Instantiate panels with default styling
     	botsPanel = createPanel();
@@ -275,10 +281,27 @@ public class PokerGUI extends JFrame
 				//Pause for 1 second, better user experience than instant move
 				pause(1000);
 				
-				//TODO: Make decision based on strength of hand
-				//	    For now, bot calls/checks no matter what
-				System.out.println("bot: " + currentPlayer.getName() + " called");
-				playerChoice(1);
+				//TODO: Tweak decision making randomness
+				//      Remove  hard-coded values
+								
+				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
+				Random randNum  = new Random();
+				//Random value between 1 and 10 to make bot less predictable
+				int botRandomness = randNum.nextInt(10) + 1;
+				
+				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= 7))) //Fold
+				{
+					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice)
+				}
+				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= 6)) //Call
+				{
+					playerChoice(1); //score is somewhat low(60% chance this affects choice)
+				}
+				else //Raise
+				{
+					playerChoice(3);
+				}
+				
 				updateGUI();
 			}
 			else
@@ -295,7 +318,10 @@ public class PokerGUI extends JFrame
 		System.out.println("\nStopped cycling players");
 		
 		updateGUI();
-		nextStage();
+		if(players.get(round.getIndex()) == round.getLastBetter())
+		{
+			nextStage();
+		}
     }
 
 	/**
@@ -312,20 +338,36 @@ public class PokerGUI extends JFrame
 		Player player = round.players.get(round.getIndex());
 		
 	    if (choice == 1) //Call
-	    {
+	    {	    		
 	    		player.call(round.getLastBet());
+	    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
 	    }
 	    else if (choice == 2) //Fold
 	    {
 	    		player.fold();
+    			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
+
 	    }
 	    else if (choice == 3) //Raise
 	    {
-	    	
-	    		//TODO: if playerBet is lower than lastBet, throw error and dialog
-	    		int playerBet = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
-	        round.raise(playerBet);
+	    		int raiseAmount;
+	    		
+		    	if (player.isBot())
+		    	{
+		    		//TODO: calculate bot raise amount
+		    		raiseAmount = (score.calculateScore(player.getHand().getCards())/2) + round.getLastBet();
+		    		round.raise(raiseAmount);
+		    	}
+		    	else
+		    	{
+		    		//TODO: if playerBet is lower than lastBet or empty, throw error and dialog
+		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", "")) + round.getLastBet();
+		    		round.raise(raiseAmount);
+		    	}
+		    	
+	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
 	    }
+	    
 	    updateGUI();
 	}
 	
