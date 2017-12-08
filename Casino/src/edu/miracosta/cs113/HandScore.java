@@ -268,6 +268,7 @@ public class HandScore
      */
     private boolean detectFlush(Card[] cards)
     {
+    	/*
         for (int i = 0; i < (cards.length - 1); i++)
         {
         	if  (cards[i] != null)
@@ -307,7 +308,15 @@ public class HandScore
         else
         {
             return false;
-        }
+        } */
+    	for (int i = 1; i < cards.length; i++)
+    	{
+    		if (cards[i].getSuit() != cards[i-1].getSuit())
+    		{ // check for matching suits
+    			return false; // suits don't match, return false
+    		}
+    	}
+    	return true; // matching suits. is a flush, return true
     }
 }
 

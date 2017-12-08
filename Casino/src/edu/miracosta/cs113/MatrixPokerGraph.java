@@ -67,7 +67,7 @@ public class MatrixPokerGraph extends AbstractPokerGraph {
 	 * @return the edge between these two vertices
 	 */
 	@Override
-	public Edge getEdge(int source, int dest) {
+	public Edge getEdge(Object source, Object dest) {
 		// TODO Auto-generated method stub
 		return null;
 	}

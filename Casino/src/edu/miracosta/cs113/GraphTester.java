@@ -84,6 +84,11 @@ public class GraphTester {
 													(v3, v4).equals(edge4));
 		
 	}
+	@Test
+	public void testInsertHand()
+	{
+		AbstractPokerGraph<Vertex<Hand>> list = new ListPokerGraph<Vertex<Hand>>(10, false);
+	}
 /*	@Test
 	public void testMatrixPokerGraphConstructor()
 	{

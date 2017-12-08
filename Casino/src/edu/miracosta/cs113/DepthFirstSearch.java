@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * Class to implement the depth-first search algorithm
  */
-public class DepthFirstSearch<E>
+public class DepthFirstSearch<E extends Vertex>
 {
 	// Data Fields
 	/** A reference to the graph being searched. */
@@ -45,7 +45,7 @@ public class DepthFirstSearch<E>
 		{
 			if (!visited[i])
 			{
-				depthFirstSearch(i);
+				depthFirstSearch(parent[i]);
 			}
 		}
 	}
@@ -71,7 +71,7 @@ public class DepthFirstSearch<E>
 		}
 		for (int i = 0; i < n; i++)
 		{
-			if (!visited[order[i]])
+			if (!visited[order[i].getId()])
 			{
 				depthFirstSearch(order[i]);
 			}
@@ -85,19 +85,19 @@ public class DepthFirstSearch<E>
 	public void depthFirstSearch(E current)
 	{
 		/* Mark the current vertex visited. */
-		visited[current] = true;
+		visited[current.getId()] = true;
 		discoveryOrder[discoverIndex++] = current;
 		/* Examine each vertex adjacent to the current index. */
-		Iterator<Edge> itr = graph.edgeIterator(current);
+		Iterator<Edge> itr = graph.edgeIterator(current.getId());
 		while (itr.hasNext())
 		{
 			E neighbor = (E) itr.next().getDest();
 			/* Process a neighbor that has not been visited */
-			if (!visited[neighbor])
+			if (!visited[neighbor.getId()])
 			{
 				/* Insert (current, neighbor) into the depth-first 
 				 * search tree. */
-				parent[neighbor] = current;
+				parent[neighbor.getId()] = current;
 				/* Recursively apply the algorithm starting at neighbor. */
 				depthFirstSearch(neighbor);
 			}

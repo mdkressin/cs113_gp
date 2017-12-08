@@ -18,21 +18,28 @@ public class DepthFirstSearchTest {
 	@Test
 	public void test() {
 		// undirected graph
-		AbstractPokerGraph list = new ListPokerGraph(7,false);
-		list.insert(new Edge(0,1));
-		list.insert(new Edge(0,3));
-		list.insert(new Edge(0,4));
-		list.insert(new Edge(0,2));
-		list.insert(new Edge(1,3));
-		list.insert(new Edge(1,4));
-		list.insert(new Edge(3,4));
-		list.insert(new Edge(2,5));
-		list.insert(new Edge(2,6));
-		list.insert(new Edge(5,6));
+		AbstractPokerGraph<Vertex<Integer>> list = new ListPokerGraph<Vertex<Integer>>(7,false);
+		Vertex<Integer> v0 = new Vertex<Integer>(100,0);
+		Vertex<Integer> v1 = new Vertex<Integer>(200,1);
+		Vertex<Integer> v2 = new Vertex<Integer>(300,2);
+		Vertex<Integer> v3 = new Vertex<Integer>(400,3);
+		Vertex<Integer> v4 = new Vertex<Integer>(500,4);
+		Vertex<Integer> v5 = new Vertex<Integer>(600,5);
+		Vertex<Integer> v6 = new Vertex<Integer>(700,6);
+		list.insert(new Edge(v0,v1));
+		list.insert(new Edge(v0,v3));
+		list.insert(new Edge(v0,v4));
+		list.insert(new Edge(v0,v2));
+		list.insert(new Edge(v1,v3));
+		list.insert(new Edge(v1,v4));
+		list.insert(new Edge(v3,v4));
+		list.insert(new Edge(v2,v5));
+		list.insert(new Edge(v2,v6));
+		list.insert(new Edge(v5,v6));
 		
-		DepthFirstSearch dfs = new DepthFirstSearch(list);
-		int[] dOrder = dfs.getDiscoveryOrder();
-		int[] fOrder = dfs.getFinishOrder();
+		DepthFirstSearch<Vertex<Integer>> dfs = new DepthFirstSearch<Vertex<Integer>>(list);
+		Vertex<Integer>[] dOrder = dfs.getDiscoveryOrder();
+		Vertex<Integer>[] fOrder = dfs.getFinishOrder();
 		System.out.println("Discovery and finish order undirected");
 		for (int i = 0; i < list.getNumV(); i++) 
 		{
@@ -40,21 +47,21 @@ public class DepthFirstSearchTest {
 		}
 		
 		// directed graph
-		AbstractPokerGraph list2 = new ListPokerGraph(7,true);
-		list2.insert(new Edge(0,1));
-		list2.insert(new Edge(0,3));
-		list2.insert(new Edge(0,4));
-		list2.insert(new Edge(0,2));
-		list2.insert(new Edge(1,3));
-		list2.insert(new Edge(1,4));
-		list2.insert(new Edge(3,4));
-		list2.insert(new Edge(2,5));
-		list2.insert(new Edge(2,6));
-		list2.insert(new Edge(5,6));
+		AbstractPokerGraph<Vertex<Integer>> list2 = new ListPokerGraph<Vertex<Integer>>(7,true);
+		list2.insert(new Edge(v0,v1));
+		list2.insert(new Edge(v0,v3));
+		list2.insert(new Edge(v0,v4));
+		list2.insert(new Edge(v0,v2));
+		list2.insert(new Edge(v1,v3));
+		list2.insert(new Edge(v1,v4));
+		list2.insert(new Edge(v3,v4));
+		list2.insert(new Edge(v2,v5));
+		list2.insert(new Edge(v2,v6));
+		list2.insert(new Edge(v5,v6));
 		
 		DepthFirstSearch dfs2 = new DepthFirstSearch(list2);
-		int[] dOrder2 = dfs2.getDiscoveryOrder();
-		int[] fOrder2 = dfs2.getFinishOrder();
+		Vertex<Integer>[] dOrder2 = dfs2.getDiscoveryOrder();
+		Vertex<Integer>[] fOrder2 = dfs2.getFinishOrder();
 		System.out.println("Discovery and finish order directed");
 		for (int i = 0; i < list2.getNumV(); i++) 
 		{
@@ -65,21 +72,31 @@ public class DepthFirstSearchTest {
 	@Test
 	public void test2() {
 		// undirected graph
-		AbstractPokerGraph list = new ListPokerGraph(10,false);
-		list.insert(new Edge(0,3));
-		list.insert(new Edge(0,1));
-		list.insert(new Edge(3,2));
-		list.insert(new Edge(1,2));
-		list.insert(new Edge(2,9));
-		list.insert(new Edge(2,8));
-		list.insert(new Edge(1,4));
-		list.insert(new Edge(1,6));
-		list.insert(new Edge(1,7));
-		list.insert(new Edge(4,5));
+		AbstractPokerGraph<Vertex<Integer>> list = new ListPokerGraph<Vertex<Integer>>(10,false);
+		Vertex<Integer> v0 = new Vertex<Integer>(0,0);
+		Vertex<Integer> v1 = new Vertex<Integer>(100,1);
+		Vertex<Integer> v2 = new Vertex<Integer>(200,2);
+		Vertex<Integer> v3 = new Vertex<Integer>(300,3);
+		Vertex<Integer> v4 = new Vertex<Integer>(400,4);
+		Vertex<Integer> v5 = new Vertex<Integer>(500,5);
+		Vertex<Integer> v6 = new Vertex<Integer>(600,6);
+		Vertex<Integer> v7 = new Vertex<Integer>(700,6);
+		Vertex<Integer> v8 = new Vertex<Integer>(800,6);
+		Vertex<Integer> v9 = new Vertex<Integer>(900,6);
+		list.insert(new Edge(v0,v3));
+		list.insert(new Edge(v0,v1));
+		list.insert(new Edge(v3,v2));
+		list.insert(new Edge(v1,v2));
+		list.insert(new Edge(v2,v9));
+		list.insert(new Edge(v2,v8));
+		list.insert(new Edge(v1,v4));
+		list.insert(new Edge(v1,v6));
+		list.insert(new Edge(v1,v7));
+		list.insert(new Edge(v4,v5));
 		
 		DepthFirstSearch dfs = new DepthFirstSearch(list);
-		int[] dOrder = dfs.getDiscoveryOrder();
-		int[] fOrder = dfs.getFinishOrder();
+		Vertex<Integer>[] dOrder = dfs.getDiscoveryOrder();
+		Vertex<Integer>[] fOrder = dfs.getFinishOrder();
 		System.out.println("Discovery and finish order undirected");
 		for (int i = 0; i < list.getNumV(); i++) 
 		{
@@ -87,21 +104,21 @@ public class DepthFirstSearchTest {
 		}
 		
 		// directed graph
-		AbstractPokerGraph list2 = new ListPokerGraph(10,true);
-		list.insert(new Edge(0,3));
-		list.insert(new Edge(0,1));
-		list.insert(new Edge(3,2));
-		list.insert(new Edge(1,2));
-		list.insert(new Edge(2,9));
-		list.insert(new Edge(2,8));
-		list.insert(new Edge(1,4));
-		list.insert(new Edge(1,6));
-		list.insert(new Edge(1,7));
-		list.insert(new Edge(4,5));
+		AbstractPokerGraph<Vertex<Integer>> list2 = new ListPokerGraph<Vertex<Integer>>(10,true);
+		list.insert(new Edge(v0,v3));
+		list.insert(new Edge(v0,v1));
+		list.insert(new Edge(v3,v2));
+		list.insert(new Edge(v1,v2));
+		list.insert(new Edge(v2,v9));
+		list.insert(new Edge(v2,v8));
+		list.insert(new Edge(v1,v4));
+		list.insert(new Edge(v1,v6));
+		list.insert(new Edge(v1,v7));
+		list.insert(new Edge(v4,v5));
 		
 		DepthFirstSearch dfs2 = new DepthFirstSearch(list2);
-		int[] dOrder2 = dfs2.getDiscoveryOrder();
-		int[] fOrder2 = dfs2.getFinishOrder();
+		Vertex<Integer>[] dOrder2 = dfs2.getDiscoveryOrder();
+		Vertex<Integer>[] fOrder2 = dfs2.getFinishOrder();
 		System.out.println("Discovery and finish order directed");
 		for (int i = 0; i < list2.getNumV(); i++) 
 		{
