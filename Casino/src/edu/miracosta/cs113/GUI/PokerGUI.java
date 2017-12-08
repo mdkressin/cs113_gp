@@ -195,7 +195,7 @@ public class PokerGUI extends JFrame
 		        case 4:  endRound();
 		        		 break;
 	    	}
-	    	updateGUI();
+	    	//updateGUI();
     }
     
 	public void newRound() 
@@ -219,6 +219,7 @@ public class PokerGUI extends JFrame
 		{
 			if (!p.hasFolded())
 			{
+				
 				if(bestPlayer == null)
 				{
 					bestPlayer = p;
@@ -229,13 +230,13 @@ public class PokerGUI extends JFrame
 				}
 			}
 		}
+		
 		bestPlayer.won(round.getPot());
 		
 		stage = 0;
-		
-		round.resetRound();
-		
+				
 		JLabel winnerLabel = new JLabel("Winner: " + bestPlayer.getName());
+		//TODO: Add winning hand label? ^ + "\n" + bestlayer.getHand() or something
 		formatLabel(winnerLabel, new Font("Gill Sans MT", Font.PLAIN, 16), new Color(255,255,255));
 		endRoundPanel.add(winnerLabel, BorderLayout.NORTH);
 		
@@ -244,7 +245,21 @@ public class PokerGUI extends JFrame
 		endRoundPanel.add(newRoundBtn, BorderLayout.CENTER);
 		add(endRoundPanel, BorderLayout.EAST);
 		
+		
+		
 		updateGUI();
+
+		for(int i = 1; i < round.players.size(); i++) 
+        {
+			if(!round.players.get(i).hasFolded())
+			{
+	    		botGUIs[i-1].showCards(round.players.get(i));
+			}
+        }
+		
+		round.resetRound();
+
+		
 	}
    
     /**
@@ -384,12 +399,12 @@ public class PokerGUI extends JFrame
 
 		    checkForPrematureEnd();
 			
-			updateGUI();
+			//updateGUI();
 		}
 		
 		System.out.println("\nStopped cycling players");
 		
-		updateGUI();
+		//updateGUI();
 		if(players.get(round.getIndex()) == round.getLastBetter())
 		{
 			nextStage();
@@ -433,7 +448,7 @@ public class PokerGUI extends JFrame
 		
 		//TODO: check for money < 0 and run appropriate fixes
 		//TODO: Bot responding to player raises is broken
-		
+		//TODO: Neither bot or player should be able to fold when the call amount is $0
 		
 		
 	
