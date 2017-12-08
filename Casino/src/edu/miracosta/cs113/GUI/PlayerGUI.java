@@ -126,7 +126,13 @@ public class PlayerGUI extends JPanel
 		
 		if(player.isTurn())
 		{
+			System.out.println(player.getName() + "- isTurn: " + player.isTurn());
 			info.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, Color.WHITE));
+		}
+		else
+		{
+			System.out.println(player.getName() + "- isTurn: " + player.isTurn());
+			info.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, DARK_GREEN));
 		}
 
 	}

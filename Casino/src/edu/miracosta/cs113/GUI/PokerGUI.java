@@ -218,7 +218,7 @@ public class PokerGUI extends JFrame
     public void updateGUI() 
     {
     	System.out.println("UPDATE GUI CALLED");
-    		
+    	
     	//Bots panel
         updateBotsPanel();
         
@@ -286,9 +286,7 @@ public class PokerGUI extends JFrame
     public void cyclePlayers() throws Exception
     {
 		ArrayList<Player> players = round.players;
-		
-		players.get(round.getIndex()).toggleTurn(); //Toggle off user turn
-		
+				
 		System.out.println("\nStarted cycling players --- start index: " + round.getIndex());
 		
 		
@@ -296,6 +294,7 @@ public class PokerGUI extends JFrame
 		{
 			int currentIndex = round.getIndex();
 			Player currentPlayer = players.get(currentIndex);
+			
 			
 			currentPlayer.toggleTurn(); //Toggle on current player turn
 			updateGUI();
@@ -422,7 +421,7 @@ public class PokerGUI extends JFrame
             	//Call player choice
                 playerChoice(action);
                 
-                round.players.get(round.getIndex()).toggleTurn(); //Toggle on user turn
+                //round.players.get(round.getIndex()).toggleTurn(); //Toggle on user turn
                 updateGUI();
                 round.moveToNextPlayer();
                 

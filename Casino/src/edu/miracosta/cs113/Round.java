@@ -175,9 +175,9 @@ public class Round
      */
     public void turn()
     {
-	    	System.out.println("\nInside turn()");
-		    	
-	    	Card tableCard4 = table.getDeck().deal();
+    	System.out.println("\nInside turn()");
+	    	
+    	Card tableCard4 = table.getDeck().deal();
         cardsInPlay.add(tableCard4);
         addToAllHands(tableCard4);
         
@@ -189,9 +189,9 @@ public class Round
      */
     public void river()
     {
-	    	System.out.println("\nInside river()");
-	    		
-	    	Card tableCard5 = table.getDeck().deal();
+    	System.out.println("\nInside river()");
+    		
+    	Card tableCard5 = table.getDeck().deal();
         cardsInPlay.add(tableCard5);
         addToAllHands(tableCard5);
         
