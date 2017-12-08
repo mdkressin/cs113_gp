@@ -305,7 +305,7 @@ public class PokerGUI extends JFrame
 			if(currentPlayer.isBot())
 			{
 				//Pause for 1 second, better user experience than instant move
-				pause(1000);
+				//pause(10000);
 				
 				//TODO: Tweak decision making randomness
 				//      Remove  hard-coded values
@@ -485,10 +485,9 @@ public class PokerGUI extends JFrame
 			}
         };
         Timer timer = new Timer(milliseconds ,taskPerformer);
-        timer.setRepeats(false);
         timer.start();
+        timer.stop();
 
-        Thread.sleep(milliseconds);
     }
     
     private void setCardImage(String cardFilePath, JLabel label) 
