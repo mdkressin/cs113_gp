@@ -353,7 +353,6 @@ public class PokerGUI extends JFrame
 	    {	    		
 	    		player.call(round.getLastBet());
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
-	    		round.addToPot(round.getLastBet());
 	    }
 	    else if (choice == 2) //Fold
 	    {
@@ -363,7 +362,7 @@ public class PokerGUI extends JFrame
 	    }
 	    else if (choice == 3) //Raise
 	    {
-	    		int raiseAmount = 0;
+	    		int raiseAmount;
 	    		
 		    	if (player.isBot())
 		    	{
@@ -377,7 +376,6 @@ public class PokerGUI extends JFrame
 		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", "")) + round.getLastBet();
 		    		round.raise(raiseAmount);
 		    	}
-		    	round.addToPot(raiseAmount);
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
 	    }
 	    
