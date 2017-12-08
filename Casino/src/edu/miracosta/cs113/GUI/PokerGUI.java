@@ -90,7 +90,7 @@ public class PokerGUI extends JFrame
         setTitle("CS113 Texas Hold Em");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setBackground(DARK_GREEN);
-        setLayout(new GridLayout(3,1));
+        setLayout(new BorderLayout());
 
         //Initialize player and table variables
         humanPlayer = new Player(playerName, START_MONEY, false);        
@@ -99,11 +99,10 @@ public class PokerGUI extends JFrame
         score = new HandScore();
         
         //Instantiate panels with default styling
-    	botsPanel = createPanel();
-    	dealerPanel = createPanel();
-    	userPanel = createPanel();
-    	
-    	endRoundPanel = createPanel();
+    	botsPanel = createPanel(new FlowLayout());
+    	dealerPanel = createPanel(new FlowLayout());
+    	userPanel = createPanel(new FlowLayout());
+    	endRoundPanel = createPanel(new BorderLayout());
     	
     	
     	//Instantiate Bot GUI's
@@ -116,8 +115,9 @@ public class PokerGUI extends JFrame
     	
     	//Instantiate dealer labels
     	potLabel = new JLabel("Pot: $0");
-    	potLabel.setForeground(Color.WHITE);
+		formatLabel(potLabel, new Font("Gill Sans MT", Font.PLAIN, 14), new Color(255,255,255));
     	dealerPanel.add(potLabel);
+    	
     	dealerCardLabels = new JLabel[5];
     	for(int j = 0; j < 5; j++)
     	{
@@ -150,9 +150,9 @@ public class PokerGUI extends JFrame
         
        
         //Add all panels
-        add(botsPanel);
-      	add(dealerPanel);
-      	add(userPanel);
+        add(botsPanel, BorderLayout.NORTH);
+      	add(dealerPanel, BorderLayout.CENTER);
+      	add(userPanel, BorderLayout.SOUTH);
       	
         //Show frame
         setSize(800, 450);
@@ -166,7 +166,14 @@ public class PokerGUI extends JFrame
 
     }
 
-    public void nextStage() 
+    private void formatLabel(JLabel label, Font font, Color fontColor) {
+		label.setFont(font);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setForeground(fontColor);
+		//label.setBorder(new EmptyBorder(5, 5, 5, 5));
+	}
+
+	public void nextStage() 
     {
     		System.out.println("\nMove to next stage");
     		round.setLastBet(0);
@@ -226,12 +233,14 @@ public class PokerGUI extends JFrame
 		round.resetRound();
 		
 		JLabel winnerLabel = new JLabel("Winner: " + bestPlayer.getName());
-		winnerLabel.setForeground(Color.WHITE);
-		endRoundPanel.add(winnerLabel, BorderLayout.CENTER);
+		formatLabel(winnerLabel, new Font("Gill Sans MT", Font.PLAIN, 16), new Color(255,255,255));
+		endRoundPanel.add(winnerLabel, BorderLayout.NORTH);
+		
 		JButton newRoundBtn = new JButton("Next Round");
 		setNewRoundListener(newRoundBtn);
-		endRoundPanel.add(newRoundBtn, BorderLayout.SOUTH);
-		add(endRoundPanel);
+		endRoundPanel.add(newRoundBtn, BorderLayout.CENTER);
+		add(endRoundPanel, BorderLayout.EAST);
+		
 		updateGUI();
 
 
@@ -516,12 +525,12 @@ public class PokerGUI extends JFrame
      * 
      * @return new JPanel
      */
-	private JPanel createPanel() 
+	private JPanel createPanel(LayoutManager layout) 
 	{
     	
     	JPanel newPanel = new JPanel();
     	newPanel.setBackground(DARK_GREEN);
-    	newPanel.setLayout(new FlowLayout());
+    	newPanel.setLayout(layout);
     	
     	return newPanel;
 	}
