@@ -13,7 +13,7 @@ public abstract class AbstractPokerGraph<E> implements Graph {
 	private int numV;
 	/** Flag to indicate whether this is a directed graph. */
 	private boolean isDirected;
-	
+	/** The id of the next vertex. */
 	private static int vertexId = 0;
 	
 	// Constructor
@@ -147,7 +147,7 @@ public abstract class AbstractPokerGraph<E> implements Graph {
 			while (true)
 			{ // will exit once the deck runs out of cards by throwing an exception
 				Hand possibleHand = new Hand();// new hand combination
-				card = deck.deal();
+				card = deck.deal(); // draw a card from the deck
 				boolean newCard = true; // flag for determining if card from deck is already in the hand
 				int i = 0;
 				while (newCard && i < handSize)

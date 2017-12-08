@@ -1,5 +1,11 @@
 package edu.miracosta.cs113;
 
+/**
+ * Generic implementation of the Edge class from the text book. The Edge class will contain
+ * the source vertex, the destination vertex, and the weight.
+ *
+ * @param <E>	The element type of the vertices in the graph
+ */
 public class Edge<E extends Vertex>
 {
 	// Data Fields
