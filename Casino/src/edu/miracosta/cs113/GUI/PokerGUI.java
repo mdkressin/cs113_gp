@@ -189,6 +189,22 @@ public class PokerGUI extends JFrame
 	public void endRound()
 	{
 		//TODO: show cards, find winner, and award winnings logic
+		Player bestPlayer = null;
+		for (Player  p : round.players)
+		{
+			if (!p.hasFolded())
+			{
+				if(bestPlayer == null)
+				{
+					bestPlayer = p;
+				}
+				else if (score.calculateScore(p.getHand().getCards())  > score.calculateScore(bestPlayer.getHand().getCards()))
+				{
+					bestPlayer = p;
+				}
+			}
+		}
+		bestPlayer.won(round.getPot());
 		stage = 0;
 		round.resetRound();
 		resetGUI();

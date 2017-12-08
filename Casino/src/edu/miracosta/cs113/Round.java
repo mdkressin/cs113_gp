@@ -220,6 +220,8 @@ public class Round
         //Reset cards in play
         cardsInPlay.clear();
         
+        //Reset pot
+        pot = 0;
 
         //TODO: uncomment once flow works for first deck
         //table.getDeck().shuffle();
