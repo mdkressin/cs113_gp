@@ -173,6 +173,9 @@ public class PokerGUI extends JFrame
 		//label.setBorder(new EmptyBorder(5, 5, 5, 5));
 	}
 
+    /**
+     * Resets stage variables and moves to the next stage
+     */
 	public void nextStage() 
     {
     		System.out.println("\nMove to next stage");
@@ -242,11 +245,6 @@ public class PokerGUI extends JFrame
 		add(endRoundPanel, BorderLayout.EAST);
 		
 		updateGUI();
-
-
-		//resetGUI(); //Reset for next round
-				
-		//newRound();
 	}
    
     /**
@@ -254,7 +252,7 @@ public class PokerGUI extends JFrame
      */
     public void updateGUI() 
     {
-    	System.out.println("UPDATE GUI CALLED");
+    	//System.out.println("UPDATE GUI CALLED");
     	
     	//Bots panel
         updateBotsPanel();
@@ -328,15 +326,14 @@ public class PokerGUI extends JFrame
 		ArrayList<Player> players = round.players;
 				
 		System.out.println("\nStarted cycling players --- start index: " + round.getIndex());
-		
-		
+				
 		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
 			int currentIndex = round.getIndex();
 			Player currentPlayer = players.get(currentIndex);
 			
 			
-			currentPlayer.toggleTurn(); //Toggle on current player turn
+			//currentPlayer.toggleTurn(); //Toggle on current player turn
 			updateGUI();
 			
 			System.out.println("Current player: " + currentPlayer.getName() + " ---- index: " + currentIndex);
@@ -344,6 +341,8 @@ public class PokerGUI extends JFrame
 			//If the current player is a bot, run bot decision process
 			if(currentPlayer.isBot())
 			{
+				//System.out.println("\nNumber of bots still in hand: ");
+				
 				//Pause for 1 second, better user experience than instant move
 				//pause(10000);
 				
@@ -357,14 +356,17 @@ public class PokerGUI extends JFrame
 				
 				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD))) //Fold
 				{
+					System.out.println("\n" + currentPlayer.getName() + " folded");
 					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice)
 				}
 				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL)) //Call
 				{
+					System.out.println("\n" + currentPlayer.getName() + " called");
 					playerChoice(1); //score is somewhat low(60% chance this affects choice)
 				}
 				else //Raise
 				{
+					System.out.println("\n" + currentPlayer.getName() + " raised");
 					playerChoice(3);
 				}
 				
@@ -376,10 +378,11 @@ public class PokerGUI extends JFrame
 				break;
 			}
 			
-			currentPlayer.toggleTurn(); //Toggle off current player
+			//currentPlayer.toggleTurn(); //Toggle off current player
 			updateGUI();
 		    round.moveToNextPlayer();
 
+		    checkForPrematureEnd();
 			
 			updateGUI();
 		}
@@ -391,6 +394,29 @@ public class PokerGUI extends JFrame
 		{
 			nextStage();
 		}
+    }
+    
+    /**
+     * End the round if only one player remains
+     * (all other players have folded)
+     */
+    public void checkForPrematureEnd()
+    {
+    	int numPlayersIn = 0;
+	    
+	    for(Player p : round.players)
+	    {
+	    	if(!p.hasFolded())
+	    	{
+	    		numPlayersIn++;
+	    	}
+	    }
+	    
+	    if(numPlayersIn < 2)
+	    {
+	    	endRound();
+	    }
+    	
     }
 
 	/**
@@ -404,6 +430,13 @@ public class PokerGUI extends JFrame
 	 */
 	public void playerChoice(int choice)
 	{
+		
+		//TODO: check for money < 0 and run appropriate fixes
+		//TODO: Bot responding to player raises is broken
+		
+		
+		
+	
 		Player player = round.players.get(round.getIndex());
 		
 	    if (choice == 1) //Call
