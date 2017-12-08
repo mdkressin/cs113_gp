@@ -63,6 +63,9 @@ public class PokerGUI extends JFrame
     private JPanel dealerPanel;
     private JPanel userPanel;
     
+	private JPanel endRoundPanel;
+
+    
     //Dealer Labels
     private JLabel potLabel;
     private JLabel[] dealerCardLabels;
@@ -100,6 +103,9 @@ public class PokerGUI extends JFrame
     	dealerPanel = createPanel();
     	userPanel = createPanel();
     	
+    	endRoundPanel = createPanel();
+    	
+    	
     	//Instantiate Bot GUI's
     	botGUIs = new PlayerGUI[numBots];
     	for(int i = 1; i < round.players.size(); i++) 
@@ -131,9 +137,9 @@ public class PokerGUI extends JFrame
         raiseBtn = new JButton("Raise");
         setListener(raiseBtn, 3);
         
-        	raiseInput = new JTextField("$      ");
-        	raiseInput.setBackground(DARK_GREEN);
-        	raiseInput.setForeground(Color.WHITE);
+    	raiseInput = new JTextField("$      ");
+    	raiseInput.setBackground(DARK_GREEN);
+    	raiseInput.setForeground(Color.WHITE);
         
         //Add human GUI and control buttons to user panel
         userPanel.add(humanGUI);
@@ -141,6 +147,7 @@ public class PokerGUI extends JFrame
         userPanel.add(foldBtn);
         userPanel.add(raiseBtn);
         userPanel.add(raiseInput);
+        
        
         //Add all panels
         add(botsPanel);
@@ -183,7 +190,8 @@ public class PokerGUI extends JFrame
     
 	public void newRound() 
 	{	
-		updateGUI();
+		resetGUI();
+
 		stage = 0;
 		round.setLastBetter(round.players.get(table.getBigBlind()));
 		round.startRound();
@@ -217,11 +225,13 @@ public class PokerGUI extends JFrame
 		
 		round.resetRound();
 		
-		potLabel.setText("Winner: " + bestPlayer);
-		
+		JLabel winnerLabel = new JLabel("Winner: " + bestPlayer.getName());
+		winnerLabel.setForeground(Color.WHITE);
+		endRoundPanel.add(winnerLabel, BorderLayout.CENTER);
 		JButton newRoundBtn = new JButton("Next Round");
 		setNewRoundListener(newRoundBtn);
-		dealerPanel.add(newRoundBtn);
+		endRoundPanel.add(newRoundBtn, BorderLayout.SOUTH);
+		add(endRoundPanel);
 		updateGUI();
 
 
@@ -252,6 +262,8 @@ public class PokerGUI extends JFrame
      */
     public void resetGUI() 
     {
+    	endRoundPanel.removeAll();
+    	remove(endRoundPanel);
     	for(int j = 0; j < 5; j++)
     	{
     		dealerCardLabels[j].setIcon(null);
