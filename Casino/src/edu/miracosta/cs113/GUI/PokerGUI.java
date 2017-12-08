@@ -356,7 +356,7 @@ public class PokerGUI extends JFrame
 		    	}
 		    	else
 		    	{
-		    		//TODO: if playerBet is lower than lastBet, throw error and dialog
+		    		//TODO: if playerBet is lower than lastBet or empty, throw error and dialog
 		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", "")) + round.getLastBet();
 		    		round.raise(raiseAmount);
 		    	}
