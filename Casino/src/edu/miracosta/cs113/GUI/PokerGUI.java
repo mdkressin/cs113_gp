@@ -369,12 +369,14 @@ public class PokerGUI extends JFrame
 	    if (choice == 1) //Call
 	    {	    		
 	    		player.call(round.getLastBet());
+	    		player.setLastAction("Called " + round.getLastBet());
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
 	    		round.addToPot(round.getLastBet());
 	    }
 	    else if (choice == 2) //Fold
 	    {
 	    		player.fold();
+	    		player.setLastAction("Folded");
     			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
 
 	    }
@@ -396,6 +398,8 @@ public class PokerGUI extends JFrame
 		    	}
 		    	round.addToPot(raiseAmount);
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
+	    		player.setLastAction("Raised " + raiseAmount);
+
 	    }
 	    
 	    updateGUI();
@@ -423,6 +427,7 @@ public class PokerGUI extends JFrame
                 
                 //round.players.get(round.getIndex()).toggleTurn(); //Toggle on user turn
                 updateGUI();
+                
                 round.moveToNextPlayer();
                 
                 updateGUI();

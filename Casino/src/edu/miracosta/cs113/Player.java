@@ -18,6 +18,8 @@ public class Player
 	
 	//Player's money
 	private int money;
+	
+	private String lastAction;
 
 	private boolean hasFolded;
 	private boolean hasCalled;
@@ -80,6 +82,25 @@ public class Player
     		hasRaised = true;
     }
 
+    /**
+     * Set the last action string
+     * 
+     * @param action
+     */
+    public void setLastAction(String action)
+    {
+    	lastAction = action;
+    }
+    
+    /**
+     * Get the last action string
+     * 
+     * @param action
+     */
+    public String getLastAction()
+    {
+    	return lastAction;
+    }
     
 	/**
 	 * Reset player turn variables

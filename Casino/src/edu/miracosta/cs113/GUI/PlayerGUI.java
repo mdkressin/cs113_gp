@@ -65,7 +65,7 @@ public class PlayerGUI extends JPanel
 		info = new JLabel(player.getName() + " $" + player.getMoney() + "");
 		formatLabel(info, new Font("Gill Sans MT", Font.PLAIN, 14), new Color(255,255,255));
 		
-		action = new JLabel("Folded");
+		action = new JLabel("");
 		formatLabel(action, new Font("Gill Sans MT", Font.PLAIN, 12), new Color(224, 224, 224));
 		
 		this.add(cards, BorderLayout.CENTER);
@@ -139,6 +139,8 @@ public class PlayerGUI extends JPanel
 			System.out.println(player.getName() + "- isTurn: " + player.isTurn());
 			info.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, DARK_GREEN));
 		}
+		
+		action.setText(player.getLastAction());
 
 	}
 	

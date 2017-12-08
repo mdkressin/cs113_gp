@@ -101,7 +101,7 @@ public class Round
      */
     public void moveToNextPlayer()
     {
-    		System.out.println("Moving to next player... index: " + index);
+    	System.out.println("Moving to next player... index: " + index);
 		//Move to next player
 		index++;
 		
@@ -129,7 +129,7 @@ public class Round
     {
     		players.get(index).bet(amount);
 	    	setLastBet(amount);
-	    	lastBetter = players.get(index);
+	    	setLastBetter(players.get(index));
     }
     
     /**
@@ -155,7 +155,7 @@ public class Round
     {
     	System.out.println("\nInside flop()");
     	
-    		Card tableCard1 = table.getDeck().deal();
+    	Card tableCard1 = table.getDeck().deal();
         cardsInPlay.add(tableCard1);
         addToAllHands(tableCard1);
         
