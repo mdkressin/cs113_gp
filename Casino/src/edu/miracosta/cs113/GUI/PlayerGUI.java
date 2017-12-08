@@ -144,7 +144,15 @@ public class PlayerGUI extends JPanel
 		*/
 		
 		action.setText(player.getLastAction());
-
+	}
+	
+	public void showCards(Player player)
+	{
+		Card playerCard1 = player.getHand().getHoleCards()[0];
+		Card playerCard2 = player.getHand().getHoleCards()[1];
+		
+		setCardImage(playerCard1.getFilePath(), card1Label, false, player.hasFolded());
+		setCardImage(playerCard2.getFilePath(), card2Label, false, player.hasFolded());
 	}
 	
 }
