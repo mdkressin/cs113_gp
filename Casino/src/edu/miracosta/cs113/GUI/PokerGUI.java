@@ -63,6 +63,9 @@ public class PokerGUI extends JFrame
     private JPanel dealerPanel;
     private JPanel userPanel;
     
+	private JPanel endRoundPanel;
+
+    
     //Dealer Labels
     private JLabel potLabel;
     private JLabel[] dealerCardLabels;
@@ -87,7 +90,7 @@ public class PokerGUI extends JFrame
         setTitle("CS113 Texas Hold Em");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setBackground(DARK_GREEN);
-        setLayout(new GridLayout(3,1));
+        setLayout(new BorderLayout());
 
         //Initialize player and table variables
         humanPlayer = new Player(playerName, START_MONEY, false);        
@@ -96,9 +99,11 @@ public class PokerGUI extends JFrame
         score = new HandScore();
         
         //Instantiate panels with default styling
-    	botsPanel = createPanel();
-    	dealerPanel = createPanel();
-    	userPanel = createPanel();
+    	botsPanel = createPanel(new FlowLayout());
+    	dealerPanel = createPanel(new FlowLayout());
+    	userPanel = createPanel(new FlowLayout());
+    	endRoundPanel = createPanel(new BorderLayout());
+    	
     	
     	//Instantiate Bot GUI's
     	botGUIs = new PlayerGUI[numBots];
@@ -110,7 +115,9 @@ public class PokerGUI extends JFrame
     	
     	//Instantiate dealer labels
     	potLabel = new JLabel("Pot: $0");
+		formatLabel(potLabel, new Font("Gill Sans MT", Font.PLAIN, 14), new Color(255,255,255));
     	dealerPanel.add(potLabel);
+    	
     	dealerCardLabels = new JLabel[5];
     	for(int j = 0; j < 5; j++)
     	{
@@ -130,9 +137,9 @@ public class PokerGUI extends JFrame
         raiseBtn = new JButton("Raise");
         setListener(raiseBtn, 3);
         
-        	raiseInput = new JTextField("$      ");
-        	raiseInput.setBackground(DARK_GREEN);
-        	raiseInput.setForeground(Color.WHITE);
+    	raiseInput = new JTextField("$      ");
+    	raiseInput.setBackground(DARK_GREEN);
+    	raiseInput.setForeground(Color.WHITE);
         
         //Add human GUI and control buttons to user panel
         userPanel.add(humanGUI);
@@ -140,11 +147,12 @@ public class PokerGUI extends JFrame
         userPanel.add(foldBtn);
         userPanel.add(raiseBtn);
         userPanel.add(raiseInput);
+        
        
         //Add all panels
-        add(botsPanel);
-      	add(dealerPanel);
-      	add(userPanel);
+        add(botsPanel, BorderLayout.NORTH);
+      	add(dealerPanel, BorderLayout.CENTER);
+      	add(userPanel, BorderLayout.SOUTH);
       	
         //Show frame
         setSize(800, 450);
@@ -158,12 +166,24 @@ public class PokerGUI extends JFrame
 
     }
 
-    public void nextStage() 
+    private void formatLabel(JLabel label, Font font, Color fontColor) {
+		label.setFont(font);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setForeground(fontColor);
+		//label.setBorder(new EmptyBorder(5, 5, 5, 5));
+	}
+
+    /**
+     * Resets stage variables and moves to the next stage
+     */
+	public void nextStage() 
     {
+    		System.out.println("\nMove to next stage");
     		round.setLastBet(0);
     		round.stageReset();
     		
 	    	stage++;
+	    	
 	    	switch (stage) 
 	    	{
 		        case 1:  round.flop();
@@ -180,8 +200,10 @@ public class PokerGUI extends JFrame
     
 	public void newRound() 
 	{	
-		updateGUI();
+		resetGUI();
+
 		stage = 0;
+		round.setLastBetter(round.players.get(table.getBigBlind()));
 		round.startRound();
 		updateGUI();
     	//TODO: loop, stop when user money < 0
@@ -190,8 +212,10 @@ public class PokerGUI extends JFrame
 	public void endRound()
 	{
 		//TODO: show cards, find winner, and award winnings logic
+		
 		Player bestPlayer = null;
-		for (Player  p : round.players)
+		
+		for (Player p : round.players)
 		{
 			if (!p.hasFolded())
 			{
@@ -206,10 +230,21 @@ public class PokerGUI extends JFrame
 			}
 		}
 		bestPlayer.won(round.getPot());
+		
 		stage = 0;
+		
 		round.resetRound();
-		resetGUI();
-		newRound();
+		
+		JLabel winnerLabel = new JLabel("Winner: " + bestPlayer.getName());
+		formatLabel(winnerLabel, new Font("Gill Sans MT", Font.PLAIN, 16), new Color(255,255,255));
+		endRoundPanel.add(winnerLabel, BorderLayout.NORTH);
+		
+		JButton newRoundBtn = new JButton("Next Round");
+		setNewRoundListener(newRoundBtn);
+		endRoundPanel.add(newRoundBtn, BorderLayout.CENTER);
+		add(endRoundPanel, BorderLayout.EAST);
+		
+		updateGUI();
 	}
    
     /**
@@ -217,7 +252,7 @@ public class PokerGUI extends JFrame
      */
     public void updateGUI() 
     {
-    	System.out.println("UPDATE GUI CALLED");
+    	//System.out.println("UPDATE GUI CALLED");
     	
     	//Bots panel
         updateBotsPanel();
@@ -234,6 +269,8 @@ public class PokerGUI extends JFrame
      */
     public void resetGUI() 
     {
+    	endRoundPanel.removeAll();
+    	remove(endRoundPanel);
     	for(int j = 0; j < 5; j++)
     	{
     		dealerCardLabels[j].setIcon(null);
@@ -266,15 +303,16 @@ public class PokerGUI extends JFrame
      */
 	public void updateDealerPanel() 
     {
-	    	potLabel.setText("Pot: $" + round.getPot());
-	    	
-	    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
-	    	ArrayList<Card> dealerCards = round.getCardsInPlay();
-	    	
-	    	for(int i = 0; i < dealerCards.size(); i++)
-	    	{
-	    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
-	    	}
+    	potLabel.setText("Pot: $" + round.getPot());
+    	
+    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
+    	// Or maybe not because we call clear() every round which is nice
+    	ArrayList<Card> dealerCards = round.getCardsInPlay();
+    	
+    	for(int i = 0; i < dealerCards.size(); i++)
+    	{
+    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
+    	}
     }
 	
     
@@ -288,15 +326,14 @@ public class PokerGUI extends JFrame
 		ArrayList<Player> players = round.players;
 				
 		System.out.println("\nStarted cycling players --- start index: " + round.getIndex());
-		
-		
+				
 		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
 			int currentIndex = round.getIndex();
 			Player currentPlayer = players.get(currentIndex);
 			
 			
-			currentPlayer.toggleTurn(); //Toggle on current player turn
+			//currentPlayer.toggleTurn(); //Toggle on current player turn
 			updateGUI();
 			
 			System.out.println("Current player: " + currentPlayer.getName() + " ---- index: " + currentIndex);
@@ -304,6 +341,8 @@ public class PokerGUI extends JFrame
 			//If the current player is a bot, run bot decision process
 			if(currentPlayer.isBot())
 			{
+				//System.out.println("\nNumber of bots still in hand: ");
+				
 				//Pause for 1 second, better user experience than instant move
 				//pause(10000);
 				
@@ -317,14 +356,17 @@ public class PokerGUI extends JFrame
 				
 				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD))) //Fold
 				{
+					System.out.println("\n" + currentPlayer.getName() + " folded");
 					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice)
 				}
 				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL)) //Call
 				{
+					System.out.println("\n" + currentPlayer.getName() + " called");
 					playerChoice(1); //score is somewhat low(60% chance this affects choice)
 				}
 				else //Raise
 				{
+					System.out.println("\n" + currentPlayer.getName() + " raised");
 					playerChoice(3);
 				}
 				
@@ -336,10 +378,11 @@ public class PokerGUI extends JFrame
 				break;
 			}
 			
-			currentPlayer.toggleTurn(); //Toggle off current player
+			//currentPlayer.toggleTurn(); //Toggle off current player
 			updateGUI();
 		    round.moveToNextPlayer();
 
+		    checkForPrematureEnd();
 			
 			updateGUI();
 		}
@@ -351,6 +394,29 @@ public class PokerGUI extends JFrame
 		{
 			nextStage();
 		}
+    }
+    
+    /**
+     * End the round if only one player remains
+     * (all other players have folded)
+     */
+    public void checkForPrematureEnd()
+    {
+    	int numPlayersIn = 0;
+	    
+	    for(Player p : round.players)
+	    {
+	    	if(!p.hasFolded())
+	    	{
+	    		numPlayersIn++;
+	    	}
+	    }
+	    
+	    if(numPlayersIn < 2)
+	    {
+	    	endRound();
+	    }
+    	
     }
 
 	/**
@@ -364,12 +430,27 @@ public class PokerGUI extends JFrame
 	 */
 	public void playerChoice(int choice)
 	{
+		
+		//TODO: check for money < 0 and run appropriate fixes
+		//TODO: Bot responding to player raises is broken
+		
+		
+		
+	
 		Player player = round.players.get(round.getIndex());
 		
 	    if (choice == 1) //Call
 	    {	    		
 	    		player.call(round.getLastBet());
-	    		player.setLastAction("Called " + round.getLastBet());
+	    		if(round.getLastBet() == 0)
+	    		{
+	    			player.setLastAction("Checked");
+	    		}
+	    		else
+	    		{
+	    			player.setLastAction("Called $" + round.getLastBet());
+	    		}
+	    		
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
 	    		round.addToPot(round.getLastBet());
 	    }
@@ -431,6 +512,7 @@ public class PokerGUI extends JFrame
                 round.moveToNextPlayer();
                 
                 updateGUI();
+                
                 try 
                 {
 					cyclePlayers();
@@ -439,6 +521,19 @@ public class PokerGUI extends JFrame
                 {
 					error.printStackTrace();
 				}
+            }
+        });
+    }
+    
+    public void setNewRoundListener(JButton button)
+    {
+    	button.addActionListener(new ActionListener() 
+    	{
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+            	resetGUI();
+            	newRound();
             }
         });
     }
@@ -463,12 +558,12 @@ public class PokerGUI extends JFrame
      * 
      * @return new JPanel
      */
-	private JPanel createPanel() 
+	private JPanel createPanel(LayoutManager layout) 
 	{
     	
     	JPanel newPanel = new JPanel();
     	newPanel.setBackground(DARK_GREEN);
-    	newPanel.setLayout(new FlowLayout());
+    	newPanel.setLayout(layout);
     	
     	return newPanel;
 	}
@@ -491,7 +586,7 @@ public class PokerGUI extends JFrame
         };
         Timer timer = new Timer(milliseconds ,taskPerformer);
         timer.start();
-        timer.stop();
+        Thread.sleep(milliseconds);
 
     }
     

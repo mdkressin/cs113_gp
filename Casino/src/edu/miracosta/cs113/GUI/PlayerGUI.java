@@ -113,7 +113,7 @@ public class PlayerGUI extends JPanel
 	 */
 	public void update(Player player) 
 	{
-		info.setText(player.getName() + "$" + player.getMoney());
+		info.setText(player.getName() + " $" + player.getMoney());
 		
 		Card playerCard1 = player.getHand().getHoleCards()[0];
 		Card playerCard2 = player.getHand().getHoleCards()[1];
@@ -129,6 +129,8 @@ public class PlayerGUI extends JPanel
 			setCardImage("card_back.png", card2Label, player.isBot(), player.hasFolded());
 		}
 		
+		/* Abandon turn idicators
+		 * 
 		if(player.isTurn())
 		{
 			System.out.println(player.getName() + "- isTurn: " + player.isTurn());
@@ -139,6 +141,7 @@ public class PlayerGUI extends JPanel
 			System.out.println(player.getName() + "- isTurn: " + player.isTurn());
 			info.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, DARK_GREEN));
 		}
+		*/
 		
 		action.setText(player.getLastAction());
 
