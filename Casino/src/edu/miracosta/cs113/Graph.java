@@ -9,7 +9,7 @@ import java.util.Iterator;
  * constructor that specifies the number of vertices and whether or not the graph
  * is directed
  */
-public interface Graph {
+public interface Graph<E> {
 	// Accessor Methods
 	/**
 	 * Return the number of vertices
@@ -36,7 +36,7 @@ public interface Graph {
 	 * @return	The Edge between these two vertices or an Edge with a weight of 
 	 * 			Double.POSITIVE_INFINITY if there is no edge
 	 */
-	Edge getEdge(int source, int dest);
+	Edge getEdge(E source, E dest);
 	
 	/**
 	 * Return an iterator to the edges connected to a given vertex.

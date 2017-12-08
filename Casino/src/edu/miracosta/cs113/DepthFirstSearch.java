@@ -5,19 +5,19 @@ import java.util.Iterator;
 /**
  * Class to implement the depth-first search algorithm
  */
-public class DepthFirstSearch
+public class DepthFirstSearch<E>
 {
 	// Data Fields
 	/** A reference to the graph being searched. */
 	Graph graph;
 	/** Array of parents in the depth-first search. */
-	private int[] parent;
+	private E[] parent;
 	/** Flag to indicate whether this vertex has been visited. */
 	private boolean[] visited;
 	/** The array that contains each vertex in discover order. */
-	private int[] discoveryOrder;
+	private E[] discoveryOrder;
 	/** The array that contains each vertex in finish order. */
-	private int[] finishOrder;
+	private E[] finishOrder;
 	/** The index that indicates the discovery order. */
 	private int discoverIndex = 0;
 	/** The index that indicates the finish order. */
@@ -32,13 +32,14 @@ public class DepthFirstSearch
 	{
 		this.graph = graph;
 		int n = graph.getNumV();
-		parent = new int[n];
+		parent = (E[]) new Object[n];
 		visited = new boolean[n];
-		discoveryOrder = new int[n];
-		finishOrder = new int[n];
+		discoveryOrder = (E[]) new Object[n];
+		finishOrder = (E[]) new Object[n];
 		for (int i = 0; i < n; i++)
 		{
-			parent[i] = -1;
+			//parent[i] = -1;
+			parent[i] = null;
 		}
 		for (int i = 0; i < n; i++)
 		{
@@ -55,17 +56,18 @@ public class DepthFirstSearch
 	 * @param order	The array giving the order in which the start vertices
 	 * 				should be selected
 	 */
-	public DepthFirstSearch(Graph graph, int[] order)
+	public DepthFirstSearch(Graph graph, E[] order)
 	{
 		this.graph = graph;
 		int n = graph.getNumV();
-		parent = new int[n];
+		parent = (E[]) new Object[n];
 		visited = new boolean[n];
-		discoveryOrder = new int[n];
-		finishOrder = new int[n];
+		discoveryOrder = (E[]) new Object[n];
+		finishOrder = (E[]) new Object[n];
 		for (int i = 0; i < n; i++)
 		{
-			parent[i] = -1;
+			//parent[i] = -1;
+			parent[i] = null;
 		}
 		for (int i = 0; i < n; i++)
 		{
@@ -80,7 +82,7 @@ public class DepthFirstSearch
 	 * Recursively depth-first search the graph starting at vertex current.
 	 * @param current	The start vertex
 	 */
-	public void depthFirstSearch(int current)
+	public void depthFirstSearch(E current)
 	{
 		/* Mark the current vertex visited. */
 		visited[current] = true;
@@ -89,7 +91,7 @@ public class DepthFirstSearch
 		Iterator<Edge> itr = graph.edgeIterator(current);
 		while (itr.hasNext())
 		{
-			int neighbor = itr.next().getDest();
+			E neighbor = (E) itr.next().getDest();
 			/* Process a neighbor that has not been visited */
 			if (!visited[neighbor])
 			{
@@ -105,11 +107,11 @@ public class DepthFirstSearch
 	}
 	
 	// Accessors
-	public int[] getDiscoveryOrder()
+	public E[] getDiscoveryOrder()
 	{
 		return discoveryOrder;
 	}
-	public int[] getFinishOrder()
+	public E[] getFinishOrder()
 	{
 		return finishOrder;
 	}

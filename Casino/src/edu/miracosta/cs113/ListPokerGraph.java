@@ -8,7 +8,7 @@ import java.util.LinkedList;
  * A ListPokerGraph is an extension of the AbstractPokerGraph abstract class that
  * uses an array of lists to represent edges.
  */
-public class ListPokerGraph extends AbstractPokerGraph {
+public class ListPokerGraph<E extends Vertex> extends AbstractPokerGraph {
 	// Data Fields
 	/** An array of Lists to contain the edges that originate with each vertex. */
 	private List<Edge>[] edges;
@@ -36,10 +36,13 @@ public class ListPokerGraph extends AbstractPokerGraph {
 	@Override
 	public void insert(Edge edge) 
 	{
-		edges[edge.getSource()].add(edge);
+		E vertex = (E) edge.getSource();
+		edges[vertex.getId()].add(edge);
+		//edges[edge.getSource()].add(edge);
+		
 		if (!isDirected())
 		{
-			edges[edge.getDest()].add(new Edge(edge.getDest(), 
+			edges[edge.getDest().getId()].add(new Edge(edge.getDest(), 
 												edge.getSource(), 
 												edge.getWeight()));
 		}
@@ -53,14 +56,15 @@ public class ListPokerGraph extends AbstractPokerGraph {
 	 * @return the edge between these two vertices
 	 */
 	@Override
-	public Edge getEdge(int source, int dest) 
+	public Edge getEdge(Object source, Object dest) 
 	{
-		Edge target = new Edge(source, dest, Double.POSITIVE_INFINITY);
-		for (Edge edge : edges[source])
+		Edge target = new Edge((E) source, (E) dest, Double.POSITIVE_INFINITY);
+		
+		for (Edge<E> edge : edges[((E) source).getId()])
 		{
-			if (edge.equals(target))
+			if(edge.equals(target))
 			{
-				return edge; // Desired edge found, return it.
+				return edge; // Desired edge found, return it
 			}
 		}
 		// Assert: All edges for source checked
@@ -84,8 +88,8 @@ public class ListPokerGraph extends AbstractPokerGraph {
 	 * @param dest	The destination vertex
 	 * @return	true if there is an edge from source to dest.
 	 */
-	public boolean isEdge(int source, int dest)
+	public boolean isEdge(E source, E dest)
 	{
-		return edges[source].contains(new Edge(source,dest));
+		return edges[source.getId()].contains(new Edge<E>(source, dest));
 	}
 }

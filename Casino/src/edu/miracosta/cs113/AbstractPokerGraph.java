@@ -7,12 +7,14 @@ import java.util.StringTokenizer;
 /**
  * Abstract base class for poker graphs.
  */
-public abstract class AbstractPokerGraph implements Graph {
+public abstract class AbstractPokerGraph<E> implements Graph {
 	// Data Fields
 	/** The number of vertices. */
 	private int numV;
 	/** Flag to indicate whether this is a directed graph. */
 	private boolean isDirected;
+	
+	private static int vertexId = 0;
 	
 	// Constructor
 	/**
@@ -56,7 +58,7 @@ public abstract class AbstractPokerGraph implements Graph {
 	 * third is the weight
 	 * @param scan The Scanner connected to the data file
 	 */
-	public void loadEdgesFromFile(Scanner scan) 
+/*	public void loadEdgesFromFile(Scanner scan) 
 	{
 		StringTokenizer tokens;
 		String line,source,dest,weight;
@@ -85,7 +87,7 @@ public abstract class AbstractPokerGraph implements Graph {
 				}
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * Factory method to create a graph and load the data from an input file. The
@@ -99,7 +101,7 @@ public abstract class AbstractPokerGraph implements Graph {
 	 * @throws IllegalArgumentException if type is neither "Matrix" nor "List"
 	 * @return	the graph created from the data file
 	 */
-	public static Graph createGraph(Scanner scan, boolean isDirected, String type)
+/*	public static Graph createGraph(Scanner scan, boolean isDirected, String type)
 	{
 		int numV = scan.nextInt();
 		AbstractPokerGraph returnValue = null;
@@ -117,7 +119,7 @@ public abstract class AbstractPokerGraph implements Graph {
 		}
 		returnValue.loadEdgesFromFile(scan);
 		return returnValue;
-	}
+	}*/
 	
 	/**
 	 * Generate a graph of all possible hands based off the passed in hand
@@ -127,7 +129,12 @@ public abstract class AbstractPokerGraph implements Graph {
 	 */
 	public static Graph createGraph(Graph graph, Hand currentHand) 
 	{
-		Edge edge = new Edge(0,0);
+		/* The source vertex. */
+		Vertex<Hand> source = new Vertex<Hand>(currentHand, vertexId++);
+		/* The destination vertex. */
+		Vertex<Hand> dest;
+		/* The edge to insert into the graph. */
+		Edge<Vertex> edge;
 		/* Create a deck to calculate hand possibilities .*/
 		CardDeck deck = new CardDeck();
 		Card[] handCards = currentHand.getCards();
@@ -138,10 +145,10 @@ public abstract class AbstractPokerGraph implements Graph {
 		try 
 		{
 			while (true)
-			{ // will exist once the deck runs out of cards by throwing an exception
-				Hand possibleHand = new Hand();
+			{ // will exit once the deck runs out of cards by throwing an exception
+				Hand possibleHand = new Hand();// new hand combination
 				card = deck.deal();
-				boolean newCard = true;
+				boolean newCard = true; // flag for determining if card from deck is already in the hand
 				int i = 0;
 				while (newCard && i < handSize)
 				{ // make sure card is not already in the hand
@@ -154,11 +161,15 @@ public abstract class AbstractPokerGraph implements Graph {
 				if (newCard)
 				{
 					for (Card c : handCards)
-					{
+					{ // add the cards from the previous hand into the new possible hand
 						possibleHand.addCard(c);
 					}
+					// add the new card to the next possible hand
 					possibleHand.addCard(card);
-					
+					createGraph(graph, possibleHand); // recursive call to calculate possible hands
+					dest = new Vertex<Hand>(possibleHand, vertexId++);
+					edge = new Edge<Vertex>(source,dest);
+					graph.insert(edge);
 				}
 			}
 		} catch (IllegalStateException e) 
