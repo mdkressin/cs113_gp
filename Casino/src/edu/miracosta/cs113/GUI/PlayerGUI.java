@@ -113,7 +113,7 @@ public class PlayerGUI extends JPanel
 	 */
 	public void update(Player player) 
 	{
-		info.setText(player.getName() + "$" + player.getMoney());
+		info.setText(player.getName() + " $" + player.getMoney());
 		
 		Card playerCard1 = player.getHand().getHoleCards()[0];
 		Card playerCard2 = player.getHand().getHoleCards()[1];

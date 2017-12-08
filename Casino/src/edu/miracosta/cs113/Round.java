@@ -240,6 +240,7 @@ public class Round
 		for(Player player : players)
 		{
 			player.resetStatus();
+			//player.setLastAction(" ");
 		}
 		
     	lastBetter = players.get(table.getBigBlind());

@@ -110,6 +110,7 @@ public class PokerGUI extends JFrame
     	
     	//Instantiate dealer labels
     	potLabel = new JLabel("Pot: $0");
+    	potLabel.setForeground(Color.WHITE);
     	dealerPanel.add(potLabel);
     	dealerCardLabels = new JLabel[5];
     	for(int j = 0; j < 5; j++)
@@ -160,10 +161,12 @@ public class PokerGUI extends JFrame
 
     public void nextStage() 
     {
+    		System.out.println("\nMove to next stage");
     		round.setLastBet(0);
     		round.stageReset();
     		
 	    	stage++;
+	    	
 	    	switch (stage) 
 	    	{
 		        case 1:  round.flop();
@@ -182,6 +185,7 @@ public class PokerGUI extends JFrame
 	{	
 		updateGUI();
 		stage = 0;
+		round.setLastBetter(round.players.get(table.getBigBlind()));
 		round.startRound();
 		updateGUI();
     	//TODO: loop, stop when user money < 0
@@ -190,8 +194,10 @@ public class PokerGUI extends JFrame
 	public void endRound()
 	{
 		//TODO: show cards, find winner, and award winnings logic
+		
 		Player bestPlayer = null;
-		for (Player  p : round.players)
+		
+		for (Player p : round.players)
 		{
 			if (!p.hasFolded())
 			{
@@ -206,10 +212,22 @@ public class PokerGUI extends JFrame
 			}
 		}
 		bestPlayer.won(round.getPot());
+		
 		stage = 0;
+		
 		round.resetRound();
-		resetGUI();
-		newRound();
+		
+		potLabel.setText("Winner: " + bestPlayer);
+		
+		JButton newRoundBtn = new JButton("Next Round");
+		setNewRoundListener(newRoundBtn);
+		dealerPanel.add(newRoundBtn);
+		updateGUI();
+
+
+		//resetGUI(); //Reset for next round
+				
+		//newRound();
 	}
    
     /**
@@ -266,15 +284,16 @@ public class PokerGUI extends JFrame
      */
 	public void updateDealerPanel() 
     {
-	    	potLabel.setText("Pot: $" + round.getPot());
-	    	
-	    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
-	    	ArrayList<Card> dealerCards = round.getCardsInPlay();
-	    	
-	    	for(int i = 0; i < dealerCards.size(); i++)
-	    	{
-	    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
-	    	}
+    	potLabel.setText("Pot: $" + round.getPot());
+    	
+    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
+    	// Or maybe not because we call clear() every round which is nice
+    	ArrayList<Card> dealerCards = round.getCardsInPlay();
+    	
+    	for(int i = 0; i < dealerCards.size(); i++)
+    	{
+    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
+    	}
     }
 	
     
@@ -369,7 +388,15 @@ public class PokerGUI extends JFrame
 	    if (choice == 1) //Call
 	    {	    		
 	    		player.call(round.getLastBet());
-	    		player.setLastAction("Called " + round.getLastBet());
+	    		if(round.getLastBet() == 0)
+	    		{
+	    			player.setLastAction("Checked");
+	    		}
+	    		else
+	    		{
+	    			player.setLastAction("Called $" + round.getLastBet());
+	    		}
+	    		
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
 	    		round.addToPot(round.getLastBet());
 	    }
@@ -431,6 +458,7 @@ public class PokerGUI extends JFrame
                 round.moveToNextPlayer();
                 
                 updateGUI();
+                
                 try 
                 {
 					cyclePlayers();
@@ -439,6 +467,19 @@ public class PokerGUI extends JFrame
                 {
 					error.printStackTrace();
 				}
+            }
+        });
+    }
+    
+    public void setNewRoundListener(JButton button)
+    {
+    	button.addActionListener(new ActionListener() 
+    	{
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+            	resetGUI();
+            	newRound();
             }
         });
     }
@@ -491,7 +532,7 @@ public class PokerGUI extends JFrame
         };
         Timer timer = new Timer(milliseconds ,taskPerformer);
         timer.start();
-        timer.stop();
+        Thread.sleep(milliseconds);
 
     }
     
