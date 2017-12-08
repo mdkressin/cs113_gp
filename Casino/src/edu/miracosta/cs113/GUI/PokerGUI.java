@@ -374,7 +374,7 @@ public class PokerGUI extends JFrame
 					System.out.println("\n" + currentPlayer.getName() + " folded");
 					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice)
 				}
-				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL)) //Call
+				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= currentPlayer.getMoney())) //Call
 				{
 					System.out.println("\n" + currentPlayer.getName() + " called");
 					playerChoice(1); //score is somewhat low(60% chance this affects choice)
@@ -455,19 +455,26 @@ public class PokerGUI extends JFrame
 		Player player = round.players.get(round.getIndex());
 		
 	    if (choice == 1) //Call
-	    {	    		
-	    		player.call(round.getLastBet());
-	    		if(round.getLastBet() == 0)
-	    		{
-	    			player.setLastAction("Checked");
-	    		}
-	    		else
-	    		{
-	    			player.setLastAction("Called $" + round.getLastBet());
-	    		}
-	    		
-	    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
-	    		round.addToPot(round.getLastBet());
+	    {	    	
+	    	    if ((player.getMoney() < round.getLastBet()) && (player !=  round.getLastBetter()))
+	    	    {
+	    	    	playerChoice(2);
+	    	    }
+	    	    else
+	    	    {
+		    		if((round.getLastBet() <= 0) || (player == round.getLastBetter()))
+		    		{
+		    			player.setLastAction("Checked");
+		    		}
+		    		else
+		    		{
+		    			player.setLastAction("Called $" + round.getLastBet());
+		    			player.call(round.getLastBet());
+		    			round.addToPot(round.getLastBet());
+		    		}
+		    		
+		    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
+	    	    }
 	    }
 	    else if (choice == 2) //Fold
 	    {
@@ -484,14 +491,18 @@ public class PokerGUI extends JFrame
 		    	{
 		    		//TODO: calculate bot raise amount
 		    		raiseAmount = (score.calculateScore(player.getHand().getCards())/2) + round.getLastBet();
-		    		round.raise(raiseAmount);
 		    	}
 		    	else
 		    	{
 		    		//TODO: if playerBet is lower than lastBet or empty, throw error and dialog
 		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", "")) + round.getLastBet();
-		    		round.raise(raiseAmount);
 		    	}
+		    	//Checking they have enough money for their choice
+		    	if (raiseAmount > player.getMoney())
+	    		{
+	    			raiseAmount = player.getMoney();
+	    		}
+		    	round.raise(raiseAmount);
 		    	round.addToPot(raiseAmount);
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
 	    		player.setLastAction("Raised " + raiseAmount);
