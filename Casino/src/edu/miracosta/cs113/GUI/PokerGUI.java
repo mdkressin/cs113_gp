@@ -280,9 +280,11 @@ public class PokerGUI extends JFrame
 				
 				//TODO: Make decision based on strength of hand
 				//	    For now, bot calls/checks no matter what
+				
 				HandScore score = new HandScore();
-				System.out.println("bot: " + currentPlayer.getName() + " called");
+								
 				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
+				
 				if (botScore < BOT_THRESHOLD/2)
 				{
 					playerChoice(2);
@@ -312,7 +314,10 @@ public class PokerGUI extends JFrame
 		System.out.println("\nStopped cycling players");
 		
 		updateGUI();
-		nextStage();
+		if(players.get(round.getIndex()) != round.getLastBetter())
+		{
+			nextStage();
+		}
     }
 
 	/**
@@ -327,27 +332,38 @@ public class PokerGUI extends JFrame
 	public void playerChoice(int choice)
 	{
 		Player player = round.players.get(round.getIndex());
+		
 	    if (choice == 1) //Call
-	    {
+	    {	    		
 	    		player.call(round.getLastBet());
+	    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
 	    }
 	    else if (choice == 2) //Fold
 	    {
 	    		player.fold();
+    			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
+
 	    }
 	    else if (choice == 3) //Raise
 	    {
-	    	if (player.isBot())
-	    	{
-	    		round.raise(10);
-	    	}
-	    	else
-	    	{
-	    		//TODO: if playerBet is lower than lastBet, throw error and dialog
-	    		int playerBet = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
-	    		round.raise(playerBet);
-	    	}
+	    		int raiseAmount;
+	    		
+		    	if (player.isBot())
+		    	{
+		    		//TODO: calculate bot raise amount
+		    		raiseAmount = 10;
+		    		round.raise(raiseAmount);
+		    	}
+		    	else
+		    	{
+		    		//TODO: if playerBet is lower than lastBet, throw error and dialog
+		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
+		    		round.raise(raiseAmount);
+		    	}
+		    	
+	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
 	    }
+	    
 	    updateGUI();
 	}
 	
