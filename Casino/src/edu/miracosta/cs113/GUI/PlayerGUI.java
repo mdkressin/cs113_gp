@@ -33,6 +33,7 @@ public class PlayerGUI extends JPanel
 	private JLabel card2Label;
 	
 	private JLabel info;
+	private JLabel action;
 
 	public PlayerGUI(Player player, boolean isBot) {
 		
@@ -64,8 +65,12 @@ public class PlayerGUI extends JPanel
 		info = new JLabel(player.getName() + " $" + player.getMoney() + "");
 		formatLabel(info, new Font("Gill Sans MT", Font.PLAIN, 14), new Color(255,255,255));
 		
+		action = new JLabel("Folded");
+		formatLabel(action, new Font("Gill Sans MT", Font.PLAIN, 12), new Color(224, 224, 224));
+		
 		this.add(cards, BorderLayout.CENTER);
 		this.add(info, BorderLayout.SOUTH);
+		this.add(action, BorderLayout.NORTH);
 	}
 	
 	
