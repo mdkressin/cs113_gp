@@ -44,10 +44,12 @@ public class PokerGUI extends JFrame
 	
 	private static final Color DARK_GREEN = new Color(30, 130, 76);
 	
-    private static final int BIG_BLIND = 10; 
+    private static final int BIG_BLIND   = 10; 
     private static final int START_MONEY = 500;
    
-    private final int BOT_THRESHOLD = 10;
+    private final int BOT_THRESHOLD  = 10;
+    private final int CHANCE_TO_FOLD = 7;
+    private final int CHANCE_TO_CALL = 6;
     
     private final Player humanPlayer;
     private final Table table;
@@ -196,7 +198,8 @@ public class PokerGUI extends JFrame
     /**
      * Updates all dynamic elements (cards on the table, pot, player money, etc)
      */
-    public void updateGUI() {
+    public void updateGUI() 
+    {
     		
     	//Bots panel
         updateBotsPanel();
@@ -289,11 +292,11 @@ public class PokerGUI extends JFrame
 				//Random value between 1 and 10 to make bot less predictable
 				int botRandomness = randNum.nextInt(10) + 1;
 				
-				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= 7))) //Fold
+				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD))) //Fold
 				{
 					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice)
 				}
-				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= 6)) //Call
+				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL)) //Call
 				{
 					playerChoice(1); //score is somewhat low(60% chance this affects choice)
 				}
@@ -382,17 +385,22 @@ public class PokerGUI extends JFrame
      */
     public void setListener(JButton button, int action)
     {
-    		button.addActionListener(new ActionListener() {
+    	button.addActionListener(new ActionListener() 
+    	{
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) 
+            {
             	
             	//Call player choice
                 playerChoice(action);
                 round.moveToNextPlayer();
                 updateGUI();
-                try {
+                try 
+                {
 					cyclePlayers();
-				} catch (Exception error) {
+				} 
+                catch (Exception error) 
+                {
 					error.printStackTrace();
 				}
             }
@@ -419,7 +427,8 @@ public class PokerGUI extends JFrame
      * 
      * @return new JPanel
      */
-	private JPanel createPanel() {
+	private JPanel createPanel() 
+	{
     	
     	JPanel newPanel = new JPanel();
     	newPanel.setBackground(DARK_GREEN);
@@ -436,9 +445,11 @@ public class PokerGUI extends JFrame
 	 */
     public void pause(int milliseconds) throws Exception
     {
-        ActionListener taskPerformer = new ActionListener() {
+        ActionListener taskPerformer = new ActionListener() 
+        {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
 				
 			}
         };
