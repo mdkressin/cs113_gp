@@ -281,8 +281,8 @@ public class PokerGUI extends JFrame
 				//Pause for 1 second, better user experience than instant move
 				pause(1000);
 				
-				//TODO: Make decision based on strength of hand
-				//	    For now, bot calls/checks no matter what
+				//TODO: Tweak decision making randomness
+				//      Remove  hard-coded values
 								
 				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
 				Random randNum  = new Random();
