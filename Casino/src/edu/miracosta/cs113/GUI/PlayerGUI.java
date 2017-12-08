@@ -20,11 +20,11 @@ import edu.miracosta.cs113.Player;
  * 	   |   | |   |
  * 	   | K | | J |
  * 	   |___| |___|
- * 		  Name
+ * 		  info
  * 		 $Money
  */
-public class PlayerGUI extends JPanel {
-	
+public class PlayerGUI extends JPanel 
+{
 	private static final Color DARK_GREEN = new Color(30, 130, 76);
 		
 	private JPanel cards;
@@ -32,12 +32,12 @@ public class PlayerGUI extends JPanel {
 	private JLabel card1Label;
 	private JLabel card2Label;
 	
-	private JLabel name;
-	private JLabel money;
+	private JLabel info;
+	private JLabel action;
 
 	public PlayerGUI(Player player, boolean isBot) {
 		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BorderLayout());
 		setBackground(DARK_GREEN);
 
 		card1Label = new JLabel("");
@@ -62,15 +62,15 @@ public class PlayerGUI extends JPanel {
 		cards.add(card1Label);
 		cards.add(card2Label);
 		
-		name = new JLabel(player.getName());
-		formatLabel(name, new Font("Gill Sans MT", Font.PLAIN, 12), new Color(255,255,255));
+		info = new JLabel(player.getName() + " $" + player.getMoney() + "");
+		formatLabel(info, new Font("Gill Sans MT", Font.PLAIN, 14), new Color(255,255,255));
 		
-		money = new JLabel("$" + player.getMoney() + "");
-		formatLabel(money, new Font("Gill Sans MT", Font.PLAIN, 16), new Color(255,255,255));
+		action = new JLabel("");
+		formatLabel(action, new Font("Gill Sans MT", Font.PLAIN, 12), new Color(224, 224, 224));
 		
-		this.add(cards);
-		this.add(name);
-		this.add(money);
+		this.add(cards, BorderLayout.CENTER);
+		this.add(info, BorderLayout.SOUTH);
+		this.add(action, BorderLayout.NORTH);
 	}
 	
 	
@@ -113,7 +113,7 @@ public class PlayerGUI extends JPanel {
 	 */
 	public void update(Player player) 
 	{
-		money.setText("$" + player.getMoney() + "");
+		info.setText(player.getName() + "$" + player.getMoney());
 		
 		Card playerCard1 = player.getHand().getHoleCards()[0];
 		Card playerCard2 = player.getHand().getHoleCards()[1];
@@ -128,6 +128,19 @@ public class PlayerGUI extends JPanel {
 			setCardImage("card_back.png", card1Label, player.isBot(), player.hasFolded());
 			setCardImage("card_back.png", card2Label, player.isBot(), player.hasFolded());
 		}
+		
+		if(player.isTurn())
+		{
+			System.out.println(player.getName() + "- isTurn: " + player.isTurn());
+			info.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, Color.WHITE));
+		}
+		else
+		{
+			System.out.println(player.getName() + "- isTurn: " + player.isTurn());
+			info.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, DARK_GREEN));
+		}
+		
+		action.setText(player.getLastAction());
 
 	}
 	

@@ -101,7 +101,7 @@ public class Round
      */
     public void moveToNextPlayer()
     {
-    		System.out.println("Moving to next player... index: " + index);
+    	System.out.println("Moving to next player... index: " + index);
 		//Move to next player
 		index++;
 		
@@ -129,7 +129,7 @@ public class Round
     {
     		players.get(index).bet(amount);
 	    	setLastBet(amount);
-	    	lastBetter = players.get(index);
+	    	setLastBetter(players.get(index));
     }
     
     /**
@@ -155,7 +155,7 @@ public class Round
     {
     	System.out.println("\nInside flop()");
     	
-    		Card tableCard1 = table.getDeck().deal();
+    	Card tableCard1 = table.getDeck().deal();
         cardsInPlay.add(tableCard1);
         addToAllHands(tableCard1);
         
@@ -175,9 +175,9 @@ public class Round
      */
     public void turn()
     {
-	    	System.out.println("\nInside turn()");
-		    	
-	    	Card tableCard4 = table.getDeck().deal();
+    	System.out.println("\nInside turn()");
+	    	
+    	Card tableCard4 = table.getDeck().deal();
         cardsInPlay.add(tableCard4);
         addToAllHands(tableCard4);
         
@@ -189,9 +189,9 @@ public class Round
      */
     public void river()
     {
-	    	System.out.println("\nInside river()");
-	    		
-	    	Card tableCard5 = table.getDeck().deal();
+    	System.out.println("\nInside river()");
+    		
+    	Card tableCard5 = table.getDeck().deal();
         cardsInPlay.add(tableCard5);
         addToAllHands(tableCard5);
         
@@ -212,6 +212,8 @@ public class Round
     public void resetRound()
     {
     	
+    	lastBetter = players.get(table.getBigBlind());
+    			
         for (Player player : players)
         {
             player.reset();
@@ -220,6 +222,8 @@ public class Round
         //Reset cards in play
         cardsInPlay.clear();
         
+        //Reset pot
+        pot = 0;
 
         //TODO: uncomment once flow works for first deck
         //table.getDeck().shuffle();
@@ -238,6 +242,8 @@ public class Round
 			player.resetStatus();
 		}
 		
+    	lastBetter = players.get(table.getBigBlind());
+
 	}
     
     /**
