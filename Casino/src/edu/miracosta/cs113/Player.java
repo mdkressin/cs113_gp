@@ -23,6 +23,9 @@ public class Player
 	private boolean hasCalled;
 	private boolean hasRaised;
 	
+	//True only when 
+	private boolean isTurn;
+	
 	public Player()
 	{
 		this.name = DEFAULT_NAME;
@@ -132,7 +135,8 @@ public class Player
 	 *
 	 * @return "Called" status
 	 */
-	public boolean hasCalled() {
+	public boolean hasCalled() 
+	{
 		return hasCalled;
 	}
 	/**
@@ -140,7 +144,8 @@ public class Player
 	 *
 	 * @return "Raised" status
 	 */
-	public boolean hasRaised() {
+	public boolean hasRaised() 
+	{
 		return hasRaised;
 	}
     
@@ -150,11 +155,22 @@ public class Player
      * 
      * @param amount of money
      */
-    public void won(int amount) {
+    public void won(int amount) 
+    {
     		money = money + amount;
     }
     
-	public boolean isBot() {
+	public boolean isBot() 
+	{
 		return isBot;
+	}
+	
+	public void toggleTurn() 
+	{
+		isTurn = !isTurn;
+	}
+	public boolean isTurn() 
+	{
+		return isTurn;
 	}
 }

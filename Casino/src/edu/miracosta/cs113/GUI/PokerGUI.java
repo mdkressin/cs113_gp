@@ -266,12 +266,18 @@ public class PokerGUI extends JFrame
     {
 		ArrayList<Player> players = round.players;
 		
+		players.get(round.getIndex()).toggleTurn(); //Toggle off user turn
+		
 		System.out.println("\nStarted cycling players --- start index: " + round.getIndex());
+		
 		
 		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
 			int currentIndex = round.getIndex();
 			Player currentPlayer = players.get(currentIndex);
+			
+			currentPlayer.toggleTurn(); //Toggle on current player turn
+			updateGUI();
 			
 			System.out.println("Current player: " + currentPlayer.getName() + " ---- index: " + currentIndex);
 			
@@ -309,6 +315,9 @@ public class PokerGUI extends JFrame
 				//If it's the human player, get out of this loop and wait for their move
 				break;
 			}
+			
+			currentPlayer.toggleTurn(); //Toggle off current player
+			updateGUI();
 		    round.moveToNextPlayer();
 
 			
@@ -388,7 +397,11 @@ public class PokerGUI extends JFrame
             	
             	//Call player choice
                 playerChoice(action);
+                
+                round.players.get(round.getIndex()).toggleTurn(); //Toggle on user turn
+                updateGUI();
                 round.moveToNextPlayer();
+                
                 updateGUI();
                 try {
 					cyclePlayers();
