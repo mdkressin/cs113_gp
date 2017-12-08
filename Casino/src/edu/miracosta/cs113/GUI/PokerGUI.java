@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import edu.miracosta.cs113.Card;
 import edu.miracosta.cs113.HandScore;
@@ -284,16 +285,19 @@ public class PokerGUI extends JFrame
 				//	    For now, bot calls/checks no matter what
 								
 				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
+				Random randNum  = new Random();
+				//Random value between 1 and 10 to make bot less predictable
+				int botRandomness = randNum.nextInt(10) + 1;
 				
-				if (botScore < BOT_THRESHOLD/2)
+				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= 7))) //Fold
 				{
-					playerChoice(2);
+					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice)
 				}
-				else if (botScore < BOT_THRESHOLD)
+				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= 6)) //Call
 				{
-					playerChoice(1);
+					playerChoice(1); //score is somewhat low(60% chance this affects choice)
 				}
-				else
+				else //Raise
 				{
 					playerChoice(3);
 				}
@@ -351,7 +355,7 @@ public class PokerGUI extends JFrame
 		    	if (player.isBot())
 		    	{
 		    		//TODO: calculate bot raise amount
-		    		raiseAmount = score.calculateScore(player.getHand().getCards()) + round.getLastBet();
+		    		raiseAmount = (score.calculateScore(player.getHand().getCards())/2) + round.getLastBet();
 		    		round.raise(raiseAmount);
 		    	}
 		    	else
