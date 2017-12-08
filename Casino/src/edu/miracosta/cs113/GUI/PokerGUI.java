@@ -314,7 +314,7 @@ public class PokerGUI extends JFrame
 		System.out.println("\nStopped cycling players");
 		
 		updateGUI();
-		if(players.get(round.getIndex()) != round.getLastBetter())
+		if(players.get(round.getIndex()) == round.getLastBetter())
 		{
 			nextStage();
 		}
