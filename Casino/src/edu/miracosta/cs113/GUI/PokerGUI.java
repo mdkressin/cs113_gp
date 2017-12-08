@@ -180,6 +180,7 @@ public class PokerGUI extends JFrame
     
 	public void newRound() 
 	{	
+		updateGUI();
 		stage = 0;
 		round.startRound();
 		updateGUI();
@@ -216,6 +217,7 @@ public class PokerGUI extends JFrame
      */
     public void updateGUI() 
     {
+    	System.out.println("UPDATE GUI CALLED");
     		
     	//Bots panel
         updateBotsPanel();
