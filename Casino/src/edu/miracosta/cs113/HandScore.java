@@ -315,30 +315,25 @@ public class HandScore
     	int numHearts = 0;
     	for (int i = 0; i < cards.length; i++)
     	{
-    		System.out.println("card suit is " + cards[i].getSuit());
     		if (cards[i].getSuit() == 0)
     		{
     			numDiamonds++;
-    			System.out.println("numDiamonds " + numDiamonds);
     		}
     		else if (cards[i].getSuit() == 1)
     		{
     			numClubs++;
-    			System.out.println("numClubs " + numClubs);
     		}
     		else if (cards[i].getSuit() == 2)
     		{
     			numHearts++;
-    			System.out.println("numHearts " + numHearts);
     		}
     		else if (cards[i].getSuit() == 3)
     		{
     			numSpades++;
-    			System.out.println("numSpades " + numSpades);
     		}
     	}
-    	return (numDiamonds >= 5) || (numClubs >= 5) || 
-    			(numHearts >= 5) || (numSpades >= 5); // matching suits. is a flush, return true
+    	return (numDiamonds >= NUM_FOR_FLUSH) || (numClubs >= NUM_FOR_FLUSH) || 
+    			(numHearts >= NUM_FOR_FLUSH) || (numSpades >= NUM_FOR_FLUSH); // matching suits. is a flush, return true
     }
 }
 
