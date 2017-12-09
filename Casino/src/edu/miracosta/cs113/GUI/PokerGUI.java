@@ -254,7 +254,9 @@ public class PokerGUI extends JFrame
 		endRoundPanel.add(newRoundBtn, BorderLayout.CENTER);
 		add(endRoundPanel, BorderLayout.EAST);
 		
-		
+		//TODO: Maybe create some shuffle threshold in deck to check
+		//      after each round, instead of shuffle each time?
+		round.getTable().getDeck().shuffle();
 		
 		updateGUI();
 

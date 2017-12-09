@@ -93,6 +93,14 @@ public class Round
     {
     	return pot;
     }
+    
+    /**
+     * Get the table
+     */
+    public Table getTable()
+    {
+    	return table;
+    }
 
     /**
      * Move to the next player
