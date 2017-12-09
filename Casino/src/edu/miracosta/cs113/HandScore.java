@@ -313,6 +313,10 @@ public class HandScore
     	int numClubs = 0;
     	int numDiamonds = 0;
     	int numHearts = 0;
+    	int highestDiamond = 0;
+    	int highestClub = 0;
+    	int highestHeart = 0;
+    	int highestSpade = 0;
     	for (int i = 0; i < cards.length; i++)
     	{
     		if (cards[i] != null)
@@ -320,23 +324,59 @@ public class HandScore
 	    		if (cards[i].getSuit() == 0)
 	    		{
 	    			numDiamonds++;
+	    			if (cards[i].getValue() > highestDiamond)
+	    			{
+	    				highestDiamond = cards[i].getValue();
+	    			}
 	    		}
 	    		else if (cards[i].getSuit() == 1)
 	    		{
 	    			numClubs++;
+	    			if (cards[i].getValue() > highestClub)
+	    			{
+	    				highestClub = cards[i].getValue();
+	    			}
 	    		}
 	    		else if (cards[i].getSuit() == 2)
 	    		{
 	    			numHearts++;
+	    			if (cards[i].getValue() > highestHeart)
+	    			{
+	    				highestHeart = cards[i].getValue();
+	    			}
 	    		}
 	    		else if (cards[i].getSuit() == 3)
 	    		{
 	    			numSpades++;
+	    			if (cards[i].getValue() > highestSpade)
+	    			{
+	    				highestSpade = cards[i].getValue();
+	    			}
 	    		}
     		}
+    		
     	}
-    	return (numDiamonds >= NUM_FOR_FLUSH) || (numClubs >= NUM_FOR_FLUSH) || 
-    			(numHearts >= NUM_FOR_FLUSH) || (numSpades >= NUM_FOR_FLUSH); // matching suits. is a flush, return true
+    	if (numDiamonds >= NUM_FOR_FLUSH)
+		{
+			flushHighCardValue = highestDiamond;
+		}
+		else if (numClubs >= NUM_FOR_FLUSH)
+		{
+			flushHighCardValue = highestClub;
+		}
+		else if (numHearts >= NUM_FOR_FLUSH)
+		{
+			flushHighCardValue = highestHeart;
+		}
+		else if (numSpades >= NUM_FOR_FLUSH)
+		{
+			flushHighCardValue = highestSpade;
+		}
+		else 
+		{ // hand does not contain a flush, return false
+			return false;
+		}
+    	return true; // matching suits. is a flush, return true
     }
 }
 
