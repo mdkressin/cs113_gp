@@ -220,7 +220,7 @@ public class PokerGUI extends JFrame
 	
 	public void endRound()
 	{
-		//TODO: show cards, find winner, and award winnings logic
+		//TODO: show cards, adjust how the winner is found for better accuracy on similar hands
 		
 		Player bestPlayer = null;
 		
@@ -371,7 +371,6 @@ public class PokerGUI extends JFrame
 				//pause(10000);
 				
 				//TODO: Tweak decision making randomness
-				//      Remove  hard-coded values
 								
 				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
 				Random randNum  = new Random();
@@ -487,10 +486,16 @@ public class PokerGUI extends JFrame
 	    }
 	    else if (choice == 2) //Fold
 	    {
-	    		player.fold();
-	    		player.setLastAction("Folded");
-    			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
-
+	    		if (round.getLastBet() <= 0)
+	    		{
+	    			playerChoice(1);
+	    		}
+	    		else
+	    		{
+	    			player.fold();
+		    		player.setLastAction("Folded");
+	    			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
+	    		}
 	    }
 	    else if (choice == 3) //Raise
 	    {
