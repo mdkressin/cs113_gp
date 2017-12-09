@@ -75,6 +75,7 @@ public class PokerGUI extends JFrame
     private JButton foldBtn;
     private JButton raiseBtn;
     private JTextField raiseInput;
+    private JLabel raiseLabel;
     
     private PlayerGUI[] botGUIs;
     
@@ -137,16 +138,24 @@ public class PokerGUI extends JFrame
         raiseBtn = new JButton("Raise");
         setListener(raiseBtn, 3);
         
-    	raiseInput = new JTextField("$      ");
-    	raiseInput.setBackground(DARK_GREEN);
-    	raiseInput.setForeground(Color.WHITE);
+    	//raiseInput = new JTextField("$      ");
+        raiseInput = new JTextField("      ");
+    	raiseInput.setBackground(Color.WHITE);
+    	raiseInput.setForeground(Color.BLACK);
+    	
+    	raiseLabel = new JLabel("$");
+        raiseLabel.setLabelFor(raiseInput);
+        raiseLabel.setForeground(Color.WHITE);
+        raiseLabel.setEnabled(true);
         
         //Add human GUI and control buttons to user panel
         userPanel.add(humanGUI);
         userPanel.add(callBtn);
         userPanel.add(foldBtn);
         userPanel.add(raiseBtn);
+        userPanel.add(raiseLabel);
         userPanel.add(raiseInput);
+        
         
        
         //Add all panels
