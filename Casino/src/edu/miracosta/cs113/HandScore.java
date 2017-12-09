@@ -268,47 +268,6 @@ public class HandScore
      */
     private boolean detectFlush(Card[] cards)
     {
-    	/*
-        for (int i = 0; i < (cards.length - 1); i++)
-        {
-        	if  (cards[i] != null)
-        	{
-        		int tempFaceCount = 0;
-                Card previousCard = null;
-                for (Card c : cards)
-                {
-                	if (c != null)
-                	{
-                		if (previousCard == null)
-                        {
-                            tempFaceCount = 1;
-                        }
-                        else if ((cards[i].getSuit() == c.getSuit()) && (cards[i] != c))
-                        {
-                            tempFaceCount++;
-                        }
-                        previousCard = c;
-                	}
-                }
-                if (tempFaceCount >= numSameFace)
-                {
-                    numSameFace = tempFaceCount;
-                }
-                if (numSameFace >= NUM_FOR_FLUSH)
-                {
-                    flush = 1;
-                    flushHighCardValue = cards[i].getValue();
-                }
-        	}
-        }
-        if (flush > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        } */
     	int numSpades = 0;
     	int numClubs = 0;
     	int numDiamonds = 0;

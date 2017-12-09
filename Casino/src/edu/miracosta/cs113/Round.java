@@ -233,8 +233,8 @@ public class Round
         //Reset pot
         pot = 0;
 
-        //TODO: uncomment once flow works for first deck
-        //table.getDeck().shuffle();
+        //Shuffle and reset deck
+        table.getDeck().shuffle();
         
         //TODO big blind logic
         index = 0;

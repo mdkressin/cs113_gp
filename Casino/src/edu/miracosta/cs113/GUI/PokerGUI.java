@@ -168,7 +168,7 @@ public class PokerGUI extends JFrame
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		System.out.println("Table and human created, calling play()");
+		System.out.println("Table and human created, calling newRound()");
 		
 		//Start game
 		newRound();
@@ -204,7 +204,10 @@ public class PokerGUI extends JFrame
 		        case 4:  endRound();
 		        		 break;
 	    	}
-	    	//updateGUI();
+	    	if(stage != 4)
+	    	{
+	    		updateGUI();
+	    	}
     }
     
 	public void newRound() 
@@ -220,7 +223,7 @@ public class PokerGUI extends JFrame
 	
 	public void endRound()
 	{
-		//TODO: show cards, adjust how the winner is found for better accuracy on similar hands
+		//TODO: adjust how the winner is found for better accuracy on similar hands
 		
 		Player bestPlayer = null;
 		
@@ -253,11 +256,7 @@ public class PokerGUI extends JFrame
 		setNewRoundListener(newRoundBtn);
 		endRoundPanel.add(newRoundBtn, BorderLayout.CENTER);
 		add(endRoundPanel, BorderLayout.EAST);
-		
-		//TODO: Maybe create some shuffle threshold in deck to check
-		//      after each round, instead of shuffle each time?
-		round.getTable().getDeck().shuffle();
-		
+				
 		updateGUI();
 
 		for(int i = 1; i < round.players.size(); i++) 
@@ -366,12 +365,7 @@ public class PokerGUI extends JFrame
 			
 			//If the current player is a bot, run bot decision process
 			if(currentPlayer.isBot())
-			{
-				//System.out.println("\nNumber of bots still in hand: ");
-				
-				//Pause for 1 second, better user experience than instant move
-				//pause(10000);
-				
+			{	
 				//TODO: Tweak decision making randomness
 								
 				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
@@ -403,7 +397,6 @@ public class PokerGUI extends JFrame
 				break;
 			}
 			
-			//currentPlayer.toggleTurn(); //Toggle off current player
 			updateGUI();
 		    round.moveToNextPlayer();
 
@@ -513,11 +506,13 @@ public class PokerGUI extends JFrame
 		    		//TODO: if playerBet is lower than lastBet or empty, throw error and dialog
 		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", "")) + round.getLastBet();
 		    	}
+		    	
 		    	//Checking they have enough money for their choice
 		    	if (raiseAmount > player.getMoney())
 	    		{
 	    			raiseAmount = player.getMoney();
 	    		}
+		    	
 		    	round.raise(raiseAmount);
 		    	round.addToPot(raiseAmount);
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
