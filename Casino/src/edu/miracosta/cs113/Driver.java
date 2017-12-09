@@ -41,14 +41,16 @@ public class Driver
         
         
         // testing detectFlush
-        Card[] flush = new Card[5];
+        Card[] flush = new Card[7];
         flush[0] = new Card(3,3);
         flush[1] = new Card(2,3);
         flush[2] = new Card(5,3);
         flush[3] = new Card(10,3);
-        flush[4] = new Card(7,3);
+        flush[4] = new Card(7,2);
+        flush[5] = new Card(7,3);
+        flush[6] = new Card(8,1);
         HandScore h = new HandScore();
         System.out.println("\n\ntesting detect flush");
-       // System.out.println(h.detectFlush(flush));
+     //   System.out.println(h.detectFlush(flush));
     }
 }

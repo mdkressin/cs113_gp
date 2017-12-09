@@ -309,14 +309,36 @@ public class HandScore
         {
             return false;
         } */
-    	for (int i = 1; i < cards.length; i++)
+    	int numSpades = 0;
+    	int numClubs = 0;
+    	int numDiamonds = 0;
+    	int numHearts = 0;
+    	for (int i = 0; i < cards.length; i++)
     	{
-    		if (cards[i].getSuit() != cards[i-1].getSuit())
-    		{ // check for matching suits
-    			return false; // suits don't match, return false
+    		System.out.println("card suit is " + cards[i].getSuit());
+    		if (cards[i].getSuit() == 0)
+    		{
+    			numDiamonds++;
+    			System.out.println("numDiamonds " + numDiamonds);
+    		}
+    		else if (cards[i].getSuit() == 1)
+    		{
+    			numClubs++;
+    			System.out.println("numClubs " + numClubs);
+    		}
+    		else if (cards[i].getSuit() == 2)
+    		{
+    			numHearts++;
+    			System.out.println("numHearts " + numHearts);
+    		}
+    		else if (cards[i].getSuit() == 3)
+    		{
+    			numSpades++;
+    			System.out.println("numSpades " + numSpades);
     		}
     	}
-    	return true; // matching suits. is a flush, return true
+    	return (numDiamonds >= 5) || (numClubs >= 5) || 
+    			(numHearts >= 5) || (numSpades >= 5); // matching suits. is a flush, return true
     }
 }
 
