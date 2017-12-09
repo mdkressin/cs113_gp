@@ -7,6 +7,14 @@ public class Card implements Comparable<Card> {
     public static final String[] CARDS = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
     //String representation of the card's suit
     public static final String[] SUITS = { "diamonds", "clubs", "hearts", "spades" };
+    // constant class representation for value of a suit of diamonds.
+    public static final int DIAMONDS_SUIT = 0;
+    // constant class representation for value of a suit of clubs.
+    public static final int CLUBS_SUIT = 1;
+    // constant class representation for value of a suit of hearts.
+    public static final int HEARTS_SUIT = 2;
+    // constant class representation for value of a suit of spades.
+    public static final int SPADES_SUIT = 3;
 
     //Value of the value
     private final int value;

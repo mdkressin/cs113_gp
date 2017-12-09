@@ -321,7 +321,7 @@ public class HandScore
     	{
     		if (cards[i] != null)
     		{
-	    		if (cards[i].getSuit() == 0)
+	    		if (cards[i].getSuit() == Card.DIAMONDS_SUIT)
 	    		{
 	    			numDiamonds++;
 	    			if (cards[i].getValue() > highestDiamond)
@@ -329,7 +329,7 @@ public class HandScore
 	    				highestDiamond = cards[i].getValue();
 	    			}
 	    		}
-	    		else if (cards[i].getSuit() == 1)
+	    		else if (cards[i].getSuit() == Card.CLUBS_SUIT)
 	    		{
 	    			numClubs++;
 	    			if (cards[i].getValue() > highestClub)
@@ -337,7 +337,7 @@ public class HandScore
 	    				highestClub = cards[i].getValue();
 	    			}
 	    		}
-	    		else if (cards[i].getSuit() == 2)
+	    		else if (cards[i].getSuit() == Card.HEARTS_SUIT)
 	    		{
 	    			numHearts++;
 	    			if (cards[i].getValue() > highestHeart)
@@ -345,7 +345,7 @@ public class HandScore
 	    				highestHeart = cards[i].getValue();
 	    			}
 	    		}
-	    		else if (cards[i].getSuit() == 3)
+	    		else if (cards[i].getSuit() == Card.SPADES_SUIT)
 	    		{
 	    			numSpades++;
 	    			if (cards[i].getValue() > highestSpade)
@@ -356,6 +356,7 @@ public class HandScore
     		}
     		
     	}
+    	// check if hand contains flush and for flushHighCardValue
     	if (numDiamonds >= NUM_FOR_FLUSH)
 		{
 			flushHighCardValue = highestDiamond;
