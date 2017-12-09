@@ -217,6 +217,10 @@ public class PokerGUI extends JFrame
 		stage = 0;
 		round.setLastBetter(round.players.get(table.getBigBlind()));
 		round.startRound();
+		//Reactivate user buttons
+		callBtn.setEnabled(true);
+		foldBtn.setEnabled(true);
+		raiseBtn.setEnabled(true);
 		updateGUI();
     	//TODO: loop, stop when user money < 0
     }
@@ -256,6 +260,11 @@ public class PokerGUI extends JFrame
 		setNewRoundListener(newRoundBtn);
 		endRoundPanel.add(newRoundBtn, BorderLayout.CENTER);
 		add(endRoundPanel, BorderLayout.EAST);
+		
+		//Deactivate user buttons
+		callBtn.setEnabled(false);
+		foldBtn.setEnabled(false);
+		raiseBtn.setEnabled(false);
 				
 		updateGUI();
 
