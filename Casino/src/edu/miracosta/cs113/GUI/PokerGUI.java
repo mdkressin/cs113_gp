@@ -486,7 +486,7 @@ public class PokerGUI extends JFrame
 	    }
 	    else if (choice == 2) //Fold
 	    {
-	    		if (round.getLastBet() <= 0)
+	    		if (round.getLastBet() <= 0 && player.isBot())
 	    		{
 	    			playerChoice(1);
 	    		}
