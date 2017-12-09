@@ -379,10 +379,10 @@ public class PokerGUI extends JFrame
 				//Random value between 1 and 10 to make bot less predictable
 				int botRandomness = randNum.nextInt(10) + 1;
 				
-				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD))) //Fold
+				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD)) || (currentPlayer.getMoney() <= 0)) //Fold
 				{
 					System.out.println("\n" + currentPlayer.getName() + " folded");
-					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice)
+					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice) OR no money left
 				}
 				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= currentPlayer.getMoney())) //Call
 				{
