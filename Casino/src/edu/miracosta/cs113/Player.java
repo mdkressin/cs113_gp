@@ -68,7 +68,7 @@ public class Player
 	 * Sets player's status to "called"
 	 */
 	public void call(int amount) {
-		money = money - amount;
+		money -= amount;
 		hasCalled = true;
 	}
 
@@ -78,7 +78,7 @@ public class Player
      * @param amount of money
      */
     public void bet(int amount) {
-    		money = money - amount;
+    		money -= amount;
     		hasRaised = true;
     }
 

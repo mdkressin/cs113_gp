@@ -49,8 +49,9 @@ public class Round
      */
     public void setLastBet(int amount) 
     {
-    	lastBet = amount;
+    	lastBet += amount;
     }
+    
     
     /**
      * Get the last bet
@@ -252,6 +253,7 @@ public class Round
 		}
 		
     	lastBetter = players.get(table.getBigBlind());
+    	lastBet = 0;
 
 	}
     
