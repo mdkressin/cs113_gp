@@ -397,17 +397,14 @@ public class PokerGUI extends JFrame
 				break;
 			}
 			
-			//updateGUI();
 		    round.moveToNextPlayer();
 
 		    checkForPrematureEnd();
 			
-			//updateGUI();
 		}
 		
 		System.out.println("\nStopped cycling players");
 		
-		//updateGUI();
 		if(players.get(round.getIndex()) == round.getLastBetter())
 		{
 			nextStage();
@@ -501,12 +498,12 @@ public class PokerGUI extends JFrame
 		    	if (player.isBot())
 		    	{
 		    		//TODO: calculate bot raise amount
-		    		raiseAmount = (score.calculateScore(player.getHand().getCards())/2) + round.getLastBet();
+		    		raiseAmount = (score.calculateScore(player.getHand().getCards())/2);
 		    	}
 		    	else
 		    	{
 		    		//TODO: if playerBet is lower than lastBet or empty, throw error and dialog
-		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", "")) + round.getLastBet();
+		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
 		    	}
 		    	
 		    	//Checking they have enough money for their choice
@@ -516,7 +513,7 @@ public class PokerGUI extends JFrame
 	    		}
 		    	
 		    	round.raise(raiseAmount);
-		    	round.addToPot(raiseAmount);
+		    	//round.addToPot(raiseAmount); //Moving add to pot to raise
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
 	    		player.setLastAction("Raised " + raiseAmount);
 
