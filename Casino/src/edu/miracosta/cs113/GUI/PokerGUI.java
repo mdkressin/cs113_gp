@@ -204,7 +204,7 @@ public class PokerGUI extends JFrame
 		        case 4:  endRound();
 		        		 break;
 	    	}
-	    	if(stage != 4)
+	    	if(stage > 0 && stage < 4)
 	    	{
 	    		updateGUI();
 	    	}
@@ -212,7 +212,7 @@ public class PokerGUI extends JFrame
     
 	public void newRound() 
 	{	
-		resetGUI();
+		//resetGUI();
 
 		stage = 0;
 		round.setLastBetter(round.players.get(table.getBigBlind()));
@@ -320,7 +320,7 @@ public class PokerGUI extends JFrame
     private void updateUserPanel() 
     {
     	humanGUI.update(round.players.get(0));
-    	editControlButtons();
+    	updateControlButtons();
     }
 
     /**
@@ -397,7 +397,7 @@ public class PokerGUI extends JFrame
 				break;
 			}
 			
-			updateGUI();
+			//updateGUI();
 		    round.moveToNextPlayer();
 
 		    checkForPrematureEnd();
@@ -449,35 +449,37 @@ public class PokerGUI extends JFrame
 	public void playerChoice(int choice)
 	{
 		
-		//TODO: check for money < 0 and run appropriate fixes
-		//TODO: Bot responding to player raises is broken
-		//TODO: Neither bot or player should be able to fold when the call amount is $0
-		
-		
+		//TODO: check for money < 0 and run appropriate fixes		
 	
 		Player player = round.players.get(round.getIndex());
 		
 	    if (choice == 1) //Call
 	    {	    	
-	    	    if ((player.getMoney() < round.getLastBet()) && (player !=  round.getLastBetter()))
-	    	    {
-	    	    	playerChoice(2);
-	    	    }
-	    	    else
-	    	    {
-		    		if((round.getLastBet() <= 0) || (player == round.getLastBetter()))
-		    		{
-		    			player.setLastAction("Checked");
-		    		}
-		    		else
-		    		{
-		    			player.setLastAction("Called $" + round.getLastBet());
-		    			player.call(round.getLastBet());
-		    			round.addToPot(round.getLastBet());
-		    		}
-		    		
-		    		System.out.println(round.players.get(round.getIndex()).getName() + " called $" + round.getLastBet());
-	    	    }
+
+    		if((round.getLastBet() <= 0) || (player == round.getLastBetter()))
+    		{
+    			player.setLastAction("Checked");
+        		System.out.println(player.getName() + " checked");
+
+    		}
+    		else
+    		{
+    			//Total raising amount minus money player has already bet
+    			int callAmount = round.getLastBet() - player.getMoneyBet();
+    			
+    			if (player.getMoney() < callAmount)
+    			{
+    				callAmount = player.getMoney();
+    			}
+    			
+    			player.setLastAction("Called $" + callAmount);
+    			player.call(callAmount);
+    			round.addToPot(callAmount);
+    			
+        		System.out.println(player.getName() + " called $" + callAmount);
+
+    		}
+    			    
 	    }
 	    else if (choice == 2) //Fold
 	    {
@@ -578,7 +580,7 @@ public class PokerGUI extends JFrame
     /**
      * Change text for control buttons
      */
-    private void editControlButtons() 
+    private void updateControlButtons() 
     {
     	if(round.getLastBet() == 0) 
         {
@@ -586,7 +588,7 @@ public class PokerGUI extends JFrame
         } 
         else 
         {
-        	callBtn.setText("Call $" + round.getLastBet());
+        	callBtn.setText("Call $" + (round.getLastBet() - round.players.get(round.getIndex()).getMoneyBet()));
         }
 	}
     

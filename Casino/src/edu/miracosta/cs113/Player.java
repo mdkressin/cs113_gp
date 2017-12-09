@@ -25,6 +25,9 @@ public class Player
 	private boolean hasCalled;
 	private boolean hasRaised;
 	
+	//The amount this player has already bet during stage
+	private int moneyBet;
+	
 	//True only when 
 	private boolean isTurn;
 	
@@ -69,6 +72,7 @@ public class Player
 	 */
 	public void call(int amount) {
 		money -= amount;
+		moneyBet += amount;
 		hasCalled = true;
 	}
 
@@ -79,6 +83,7 @@ public class Player
      */
     public void bet(int amount) {
     		money -= amount;
+    		moneyBet += amount;
     		hasRaised = true;
     }
 
@@ -108,6 +113,7 @@ public class Player
 	public void resetStatus() {
 		hasCalled = false;
 		hasRaised = false;
+		moneyBet = 0;
 	}
 	
 	/**
@@ -119,6 +125,7 @@ public class Player
 		hasRaised = false;
 		hasFolded = false;
 		hand.removeAllCards();
+		moneyBet = 0;
 	}
 
 	public Hand getHand()
@@ -193,5 +200,8 @@ public class Player
 	public boolean isTurn() 
 	{
 		return isTurn;
+	}
+	public int getMoneyBet() {
+		return moneyBet;
 	}
 }

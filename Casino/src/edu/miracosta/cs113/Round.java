@@ -49,7 +49,7 @@ public class Round
      */
     public void setLastBet(int amount) 
     {
-    	lastBet += amount;
+    	lastBet = amount;
     }
     
     
@@ -136,9 +136,9 @@ public class Round
      */
     public void raise(int amount) 
     {
-    		players.get(index).bet(amount);
-	    	setLastBet(amount);
-	    	setLastBetter(players.get(index));
+		players.get(index).bet(amount + lastBet);
+    	setLastBet(amount + lastBet);
+    	setLastBetter(players.get(index));
     }
     
     /**
@@ -249,7 +249,16 @@ public class Round
 		for(Player player : players)
 		{
 			player.resetStatus();
-			//player.setLastAction(" ");
+			
+			//Reset player action label inbetween rounds unless they last checked or folded
+			if(player.getLastAction().equals("Checked") || player.getLastAction().equals("Folded"))
+			{
+				//Do nothing
+			}
+			else
+			{
+				player.setLastAction(" ");
+			}
 		}
 		
     	lastBetter = players.get(table.getBigBlind());

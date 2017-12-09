@@ -129,7 +129,7 @@ public class PlayerGUI extends JPanel
 			setCardImage("card_back.png", card2Label, player.isBot(), player.hasFolded());
 		}
 		
-		/* Abandon turn idicators
+		/* Turn idicators <- Swing components dont work in while loop :(
 		 * 
 		if(player.isTurn())
 		{
