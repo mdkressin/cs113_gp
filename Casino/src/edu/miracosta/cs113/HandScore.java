@@ -315,21 +315,24 @@ public class HandScore
     	int numHearts = 0;
     	for (int i = 0; i < cards.length; i++)
     	{
-    		if (cards[i].getSuit() == 0)
+    		if (cards[i] != null)
     		{
-    			numDiamonds++;
-    		}
-    		else if (cards[i].getSuit() == 1)
-    		{
-    			numClubs++;
-    		}
-    		else if (cards[i].getSuit() == 2)
-    		{
-    			numHearts++;
-    		}
-    		else if (cards[i].getSuit() == 3)
-    		{
-    			numSpades++;
+	    		if (cards[i].getSuit() == 0)
+	    		{
+	    			numDiamonds++;
+	    		}
+	    		else if (cards[i].getSuit() == 1)
+	    		{
+	    			numClubs++;
+	    		}
+	    		else if (cards[i].getSuit() == 2)
+	    		{
+	    			numHearts++;
+	    		}
+	    		else if (cards[i].getSuit() == 3)
+	    		{
+	    			numSpades++;
+	    		}
     		}
     	}
     	return (numDiamonds >= NUM_FOR_FLUSH) || (numClubs >= NUM_FOR_FLUSH) || 
