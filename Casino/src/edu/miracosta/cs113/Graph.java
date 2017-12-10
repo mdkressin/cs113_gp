@@ -8,8 +8,11 @@ import java.util.Iterator;
  * pairs of vertices. Each implementation of the Graph interface should provide a
  * constructor that specifies the number of vertices and whether or not the graph
  * is directed
+ * 
+ * @param <T> type that is a Vertex or one of its subclasses
+ * @param <E> The element type of the vertices in the graph
  */
-public interface Graph<E> {
+public interface Graph<T extends Vertex<E>, E> {
 	// Accessor Methods
 	/**
 	 * Return the number of vertices
@@ -27,7 +30,7 @@ public interface Graph<E> {
 	 * Insert a new edge into the graph
 	 * @param edge The new edge
 	 */
-	void insert(Edge edge);
+	void insert(Edge<T,E> edge);
 	
 	/**
 	 * Get the edge between two vertices.
@@ -36,12 +39,12 @@ public interface Graph<E> {
 	 * @return	The Edge between these two vertices or an Edge with a weight of 
 	 * 			Double.POSITIVE_INFINITY if there is no edge
 	 */
-	Edge getEdge(E source, E dest);
+	Edge<T,E> getEdge(T source, T dest);
 	
 	/**
 	 * Return an iterator to the edges connected to a given vertex.
 	 * @param source The source vertex
 	 * @return	An Iterator<Edge> to the vertices connected to the source
 	 */
-	Iterator<Edge> edgeIterator(int source);
+	Iterator<Edge<T,E>> edgeIterator(int source);
 }

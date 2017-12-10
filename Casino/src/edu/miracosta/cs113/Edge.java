@@ -4,15 +4,16 @@ package edu.miracosta.cs113;
  * Generic implementation of the Edge class from the text book. The Edge class will contain
  * the source vertex, the destination vertex, and the weight.
  *
- * @param <E>	The element type of the vertices in the graph
+ * @param <T> type that is a Vertex or one of its subclasses
+ * @param <E> The element type of the vertices in the graph
  */
-public class Edge<E extends Vertex>
+public class Edge<T extends Vertex<E>, E>
 {
 	// Data Fields
 	/** The destination vertex of an edge. */
-	private E dest;
+	private T dest;
 	/** The source vertex for an edge. */
-	private E source;
+	private T source;
 	/** The weight. */
 	private double weight;
 	
@@ -22,7 +23,7 @@ public class Edge<E extends Vertex>
 	 * @param source The source vertex
 	 * @param dest The destination vertex
 	 */
-	public Edge(E source, E dest)
+	public Edge(T source, T dest)
 	{
 		this.source = source;
 		this.dest = dest;
@@ -34,7 +35,7 @@ public class Edge<E extends Vertex>
 	 * @param dest The destination vertex
 	 * @param weight The weight of the edge
 	 */
-	public Edge(E source, E dest, double w)
+	public Edge(T source, T dest, double w)
 	{
 		this.source = source;
 		this.dest = dest;
@@ -60,14 +61,14 @@ public class Edge<E extends Vertex>
 		{
 			return false;
 		}
-		Edge other = (Edge) obj;
+		Edge<T,E> other = (Edge<T,E>) obj;
 		return (this.source.equals(other.source)) && (this.dest.equals(other.dest));
 	}
 	/**
 	 * Returns the destination vertex
 	 * @return The destination vertex
 	 */
-	public E getDest()
+	public T getDest()
 	{
 		return dest;
 	}
@@ -75,7 +76,7 @@ public class Edge<E extends Vertex>
 	 * Returns the source vertex
 	 * @return The source vertex
 	 */
-	public E getSource()
+	public T getSource()
 	{
 		return source;
 	}

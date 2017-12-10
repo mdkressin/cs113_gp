@@ -6,8 +6,10 @@ import java.util.StringTokenizer;
 
 /**
  * Abstract base class for poker graphs.
+ * @param <T> type that is a Vertex or one of its subclasses
+ * @param <E> The element type of the vertices in the graph
  */
-public abstract class AbstractPokerGraph<E> implements Graph {
+public abstract class AbstractPokerGraph<T extends Vertex<E>, E> implements Graph<T, E> {
 	// Data Fields
 	/** The number of vertices. */
 	private int numV;
@@ -134,7 +136,7 @@ public abstract class AbstractPokerGraph<E> implements Graph {
 		/* The destination vertex. */
 		Vertex<Hand> dest;
 		/* The edge to insert into the graph. */
-		Edge<Vertex> edge;
+		Edge<Vertex<Hand>,Hand> edge;
 		/* Create a deck to calculate hand possibilities .*/
 		CardDeck deck = new CardDeck();
 		Card[] handCards = currentHand.getCards();
@@ -168,7 +170,7 @@ public abstract class AbstractPokerGraph<E> implements Graph {
 					possibleHand.addCard(card);
 					createGraph(graph, possibleHand); // recursive call to calculate possible hands
 					dest = new Vertex<Hand>(possibleHand, vertexId++);
-					edge = new Edge<Vertex>(source,dest);
+					edge = new Edge<Vertex<Hand>,Hand>(source,dest);
 					graph.insert(edge);
 				}
 			}

@@ -9,12 +9,13 @@ import java.util.LinkedList;
  * uses an array of lists to represent edges. A ListPokerGraph is a generic implementation of
  * the ListGraph from the textbook.
  *
- * @param <E> The element type of the vertices
+ * @param <T> type that is a Vertex or one of its subclasses
+ * @param <E> The element type of the vertices in the graph
  */
-public class ListPokerGraph<E extends Vertex> extends AbstractPokerGraph {
+public class ListPokerGraph<T extends Vertex<E>, E> extends AbstractPokerGraph<T, E> {
 	// Data Fields
 	/** An array of Lists to contain the edges that originate with each vertex. */
-	private List<Edge>[] edges;
+	private List<Edge<T,E>>[] edges;
 	
 	// Constructor
 	/**
@@ -25,10 +26,10 @@ public class ListPokerGraph<E extends Vertex> extends AbstractPokerGraph {
 	public ListPokerGraph(int numV, boolean directed)
 	{
 		super(numV,directed);
-		edges = new List[numV];
+		edges = (List<Edge<T, E>>[]) new List[numV];
 		for (int i = 0; i < numV; i++)
 		{
-			edges[i] = new LinkedList<Edge>();
+			edges[i] = new LinkedList<Edge<T,E>>();
 		}
 	}
 	
@@ -37,15 +38,15 @@ public class ListPokerGraph<E extends Vertex> extends AbstractPokerGraph {
 	 * @param edge	The new edge
 	 */
 	@Override
-	public void insert(Edge edge) 
+	public void insert(Edge<T,E> edge) 
 	{
-		E vertex = (E) edge.getSource();
-		edges[vertex.getId()].add(edge);
+		T vertex = (T) edge.getSource();
+		edges[((T) vertex).getId()].add(edge);
 		//edges[edge.getSource()].add(edge);
 		
 		if (!isDirected())
 		{
-			edges[edge.getDest().getId()].add(new Edge(edge.getDest(), 
+			edges[edge.getDest().getId()].add(new Edge<T,E>(edge.getDest(), 
 												edge.getSource(), 
 												edge.getWeight()));
 		}
@@ -59,11 +60,11 @@ public class ListPokerGraph<E extends Vertex> extends AbstractPokerGraph {
 	 * @return the edge between these two vertices
 	 */
 	@Override
-	public Edge getEdge(Object source, Object dest) 
+	public Edge<T,E> getEdge(T source, T dest) 
 	{
-		Edge target = new Edge((E) source, (E) dest, Double.POSITIVE_INFINITY);
+		Edge<T,E> target = new Edge<T,E>(source,dest, Double.POSITIVE_INFINITY);
 		
-		for (Edge<E> edge : edges[((E) source).getId()])
+		for (Edge<T,E> edge : edges[source.getId()])
 		{
 			if(edge.equals(target))
 			{
@@ -80,7 +81,7 @@ public class ListPokerGraph<E extends Vertex> extends AbstractPokerGraph {
 	 * @return The iterator that goes through the graph starting at source
 	 */
 	@Override
-	public Iterator<Edge> edgeIterator(int source) 
+	public Iterator<Edge<T,E>> edgeIterator(int source) 
 	{
 		return edges[source].iterator();
 	}
@@ -91,8 +92,8 @@ public class ListPokerGraph<E extends Vertex> extends AbstractPokerGraph {
 	 * @param dest	The destination vertex
 	 * @return	true if there is an edge from source to dest.
 	 */
-	public boolean isEdge(E source, E dest)
+	public boolean isEdge(T source, T dest)
 	{
-		return edges[source.getId()].contains(new Edge<E>(source, dest));
+		return edges[source.getId()].contains(new Edge<T,E>(source, dest));
 	}
 }

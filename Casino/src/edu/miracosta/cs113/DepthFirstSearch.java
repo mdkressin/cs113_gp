@@ -1,23 +1,27 @@
 package edu.miracosta.cs113;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 
 /**
  * Class to implement the depth-first search algorithm
+ * 
+ * @param <T> type that is a Vertex or one of its subclasses
+ * @param <E> The element type of the vertices in the graph
  */
-public class DepthFirstSearch<E extends Vertex>
+public class DepthFirstSearch<T extends Vertex<E>, E>
 {
 	// Data Fields
 	/** A reference to the graph being searched. */
-	Graph graph;
+	private Graph<T,E> graph;
 	/** Array of parents in the depth-first search. */
-	private E[] parent;
+	private T[] parent;
 	/** Flag to indicate whether this vertex has been visited. */
 	private boolean[] visited;
 	/** The array that contains each vertex in discover order. */
-	private E[] discoveryOrder;
+	private T[] discoveryOrder;
 	/** The array that contains each vertex in finish order. */
-	private E[] finishOrder;
+	private T[] finishOrder;
 	/** The index that indicates the discovery order. */
 	private int discoverIndex = 0;
 	/** The index that indicates the finish order. */
@@ -28,14 +32,14 @@ public class DepthFirstSearch<E extends Vertex>
 	 * visiting the start vertices in ascending order.
 	 * @param graph	The graph
 	 */
-	public DepthFirstSearch(Graph graph) 
+	public DepthFirstSearch(Graph<T,E> graph) 
 	{
 		this.graph = graph;
 		int n = graph.getNumV();
-		parent = (E[]) new Object[n];
+		parent = (T[]) new Object[n];
 		visited = new boolean[n];
-		discoveryOrder = (E[]) new Object[n];
-		finishOrder = (E[]) new Object[n];
+		discoveryOrder = (T[]) new Object[n];
+		finishOrder = (T[]) new Object[n];
 		for (int i = 0; i < n; i++)
 		{
 			//parent[i] = -1;
@@ -56,14 +60,14 @@ public class DepthFirstSearch<E extends Vertex>
 	 * @param order	The array giving the order in which the start vertices
 	 * 				should be selected
 	 */
-	public DepthFirstSearch(Graph graph, E[] order)
+	public DepthFirstSearch(Graph graph, T[] order)
 	{
 		this.graph = graph;
 		int n = graph.getNumV();
-		parent = (E[]) new Object[n];
+		parent = (T[]) new Object[n];
 		visited = new boolean[n];
-		discoveryOrder = (E[]) new Object[n];
-		finishOrder = (E[]) new Object[n];
+		discoveryOrder = (T[]) new Object[n];
+		finishOrder = (T[]) new Object[n];
 		for (int i = 0; i < n; i++)
 		{
 			//parent[i] = -1;
@@ -82,16 +86,16 @@ public class DepthFirstSearch<E extends Vertex>
 	 * Recursively depth-first search the graph starting at vertex current.
 	 * @param current	The start vertex
 	 */
-	public void depthFirstSearch(E current)
+	public void depthFirstSearch(T current)
 	{
 		/* Mark the current vertex visited. */
 		visited[current.getId()] = true;
 		discoveryOrder[discoverIndex++] = current;
 		/* Examine each vertex adjacent to the current index. */
-		Iterator<Edge> itr = graph.edgeIterator(current.getId());
+		Iterator<Edge<T,E>> itr = graph.edgeIterator(current.getId());
 		while (itr.hasNext())
 		{
-			E neighbor = (E) itr.next().getDest();
+			T neighbor = (T) itr.next().getDest();
 			/* Process a neighbor that has not been visited */
 			if (!visited[neighbor.getId()])
 			{
@@ -107,11 +111,11 @@ public class DepthFirstSearch<E extends Vertex>
 	}
 	
 	// Accessors
-	public E[] getDiscoveryOrder()
+	public T[] getDiscoveryOrder()
 	{
 		return discoveryOrder;
 	}
-	public E[] getFinishOrder()
+	public T[] getFinishOrder()
 	{
 		return finishOrder;
 	}
