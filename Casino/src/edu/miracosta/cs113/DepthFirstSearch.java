@@ -1,6 +1,5 @@
 package edu.miracosta.cs113;
 
-import java.lang.reflect.Array;
 import java.util.Iterator;
 
 /**
