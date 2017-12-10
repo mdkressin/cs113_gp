@@ -136,6 +136,7 @@ public class Round
      */
     public void raise(int amount) 
     {
+    	pot += amount + lastBet;
 		players.get(index).bet(amount + lastBet);
     	setLastBet(amount + lastBet);
     	setLastBetter(players.get(index));
@@ -249,16 +250,6 @@ public class Round
 		for(Player player : players)
 		{
 			player.resetStatus();
-			
-			//Reset player action label inbetween rounds unless they last checked or folded
-			if(player.getLastAction().equals("Checked") || player.getLastAction().equals("Folded"))
-			{
-				//Do nothing
-			}
-			else
-			{
-				player.setLastAction(" ");
-			}
 		}
 		
     	lastBetter = players.get(table.getBigBlind());
