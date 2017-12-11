@@ -17,6 +17,9 @@ public class Round
     private int lastBet;
     
     private Table table;
+    
+    private int currentBigBlind;
+    private int currentSmallBlind;
 
     /**
      * Create a new round with constants from passed Table
@@ -31,9 +34,10 @@ public class Round
     	
         pot = 0;
         
+        index = 0;
         
-        //TODO: add Blind logic, right now it is always 0
-        index = table.getBigBlind();
+        setCurrentBigBlind(table.getBigBlind());
+        setCurrentSmallBlind(table.getSmallBlind());
     }
 
     /**
@@ -221,6 +225,7 @@ public class Round
      */
     public void resetRound()
     {
+    	table.incrementBlinds();
     	
     	lastBetter = players.get(table.getBigBlind());
     			
@@ -263,4 +268,20 @@ public class Round
     public ArrayList<Card> getCardsInPlay() {
     		return cardsInPlay;
     }
+
+	public int getCurrentBigBlind() {
+		return currentBigBlind;
+	}
+
+	public void setCurrentBigBlind(int currentBigBlind) {
+		this.currentBigBlind = currentBigBlind;
+	}
+
+	public int getCurrentSmallBlind() {
+		return currentSmallBlind;
+	}
+
+	public void setCurrentSmallBlind(int currentSmallBlind) {
+		this.currentSmallBlind = currentSmallBlind;
+	}
 }
