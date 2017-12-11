@@ -34,6 +34,7 @@ public class PlayerGUI extends JPanel
 	
 	private JLabel info;
 	private JLabel action;
+	private JLabel blind;
 
 	public PlayerGUI(Player player, boolean isBot) {
 		
@@ -68,9 +69,12 @@ public class PlayerGUI extends JPanel
 		action = new JLabel("");
 		formatLabel(action, new Font("Gill Sans MT", Font.PLAIN, 12), new Color(224, 224, 224));
 		
+		blind = new JLabel("");
+		
 		this.add(cards, BorderLayout.CENTER);
 		this.add(info, BorderLayout.SOUTH);
 		this.add(action, BorderLayout.NORTH);
+		this.add(blind, BorderLayout.EAST);
 	}
 	
 	
@@ -129,7 +133,7 @@ public class PlayerGUI extends JPanel
 			setCardImage("card_back.png", card2Label, player.isBot(), player.hasFolded());
 		}
 		
-		/* Turn idicators <- Swing components dont work in while loop :(
+		/* Turn indicators <- Swing components don't work in while loop :(
 		 * 
 		if(player.isTurn())
 		{
@@ -146,6 +150,11 @@ public class PlayerGUI extends JPanel
 		action.setText(player.getLastAction());
 	}
 	
+	/**
+	 * Show the player cards, called on round end
+	 * 
+	 * @param player Player who's cards to show
+	 */
 	public void showCards(Player player)
 	{
 		Card playerCard1 = player.getHand().getHoleCards()[0];
@@ -153,6 +162,28 @@ public class PlayerGUI extends JPanel
 		
 		setCardImage(playerCard1.getFilePath(), card1Label, false, player.hasFolded());
 		setCardImage(playerCard2.getFilePath(), card2Label, false, player.hasFolded());
+	}
+	
+	/**
+	 * Set blind image
+	 */
+	public void setBlindImage(Player player)
+	{
+		if(player.isBigBlind())
+		{
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/big_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+			blind.setIcon(imageIcon);
+		}
+		else if(player.isSmallBlind())
+		{
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/small_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+			blind.setIcon(imageIcon);
+		}
+		else
+		{
+			ImageIcon imageIcon = null;
+			blind.setIcon(imageIcon);
+		}
 	}
 	
 }
