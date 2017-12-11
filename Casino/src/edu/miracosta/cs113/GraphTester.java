@@ -135,6 +135,7 @@ public class GraphTester {
 		list.insert(new Edge<Hand>(v2,v5));
 		list.insert(new Edge<Hand>(v2,v6));
 		list.insert(new Edge<Hand>(v5,v6));
+		
 	}
 /*	@Test
 	public void testMatrixPokerGraphConstructor()
