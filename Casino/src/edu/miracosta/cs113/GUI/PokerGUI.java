@@ -348,7 +348,6 @@ public class PokerGUI extends JFrame
     		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
     	}
     }
-	
     
     /**
      * Iterates through each player 
@@ -362,7 +361,6 @@ public class PokerGUI extends JFrame
 		System.out.println("\nStarted cycling players --- start index: " + round.getIndex());
 		
 		boolean prematureEnd = false;
-
 				
 		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
