@@ -336,6 +336,7 @@ public class HandScore
 		{ // hand does not contain a flush, return false
 			return false;
 		}
+    	flush++;
     	return true; // matching suits. is a flush, return true
     }
 }

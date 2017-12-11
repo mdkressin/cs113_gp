@@ -51,6 +51,6 @@ public class Driver
         flush[6] = new Card(8,3);
         HandScore h = new HandScore();
         System.out.println("\n\ntesting detect flush");
-       // System.out.println(h.detectFlush(flush));
+        score.calculateScore(flush);
     }
 }
