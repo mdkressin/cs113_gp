@@ -31,6 +31,9 @@ public class Player
 	//True only when 
 	private boolean isTurn;
 	
+	private boolean isBigBlind;
+	private boolean isSmallBlind;
+	
 	public Player()
 	{
 		this.name = DEFAULT_NAME;
@@ -81,12 +84,17 @@ public class Player
      * 
      * @param amount of money
      */
-    public void bet(int amount) {
-    		money -= amount;
-    		moneyBet += amount;
-    		hasRaised = true;
+    public void bet(int amount) 
+    {
+		money -= amount;
+		moneyBet += amount;
+		hasRaised = true;
     }
-
+    
+    public void addBlind(int blind)
+    {
+    	money -= blind;
+    }
     /**
      * Set the last action string
      * 
@@ -203,5 +211,17 @@ public class Player
 	}
 	public int getMoneyBet() {
 		return moneyBet;
+	}
+	public boolean isBigBlind() {
+		return isBigBlind;
+	}
+	public void setBigBlind(boolean isBigBlind) {
+		this.isBigBlind = isBigBlind;
+	}
+	public boolean isSmallBlind() {
+		return isSmallBlind;
+	}
+	public void setSmallBlind(boolean isSmallBlind) {
+		this.isSmallBlind = isSmallBlind;
 	}
 }

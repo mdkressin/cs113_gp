@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public class Table
 {
+	public static final int BIG_BLIND = 10;
+	public static final int SMALL_BLIND = 5;
+	
 	private static final String[] BOT_NAMES = {"Kyle", "Matt", "Eric"};
 
     private int bigBlind;
