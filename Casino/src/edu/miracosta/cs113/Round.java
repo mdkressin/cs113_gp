@@ -17,9 +17,6 @@ public class Round
     private int lastBet;
     
     private Table table;
-    
-    private int currentBigBlind;
-    private int currentSmallBlind;
 
     /**
      * Create a new round with constants from passed Table
@@ -36,8 +33,8 @@ public class Round
         
         index = 0;
         
-        setCurrentBigBlind(table.getBigBlind());
-        setCurrentSmallBlind(table.getSmallBlind());
+    	players.get(table.getBigBlind()).setBigBlind(true);
+    	players.get(table.getSmallBlind()).setSmallBlind(true);
     }
 
     /**
@@ -155,10 +152,24 @@ public class Round
     	
         for (Player p : players)
         {
+        	//Deal initial cards to player
         	p.addToHand(table.getDeck().deal());
         	p.addToHand(table.getDeck().deal());
 
             System.out.println("Gave " + p.getHand() + " to " + p.getName());
+            
+            if(p.isBigBlind())
+            {
+            	p.setLastAction("Big Blind");
+            	p.addBlind(table.BIG_BLIND);
+            	addToPot(table.BIG_BLIND);
+            }
+            if(p.isSmallBlind())
+            {
+            	p.setLastAction("Small Blind");
+            	p.addBlind(table.SMALL_BLIND);
+            	addToPot(table.SMALL_BLIND);
+            }
         }
     }
 
@@ -225,7 +236,7 @@ public class Round
      */
     public void resetRound()
     {
-    	table.incrementBlinds();
+    	resetAndIncrementBlinds();
     	
     	lastBetter = players.get(table.getBigBlind());
     			
@@ -262,26 +273,23 @@ public class Round
 
 	}
     
+	/**
+	 * Clear previous blind holders, increment blinds, then set true
+	 * for new blind holders
+	 */
+	public void resetAndIncrementBlinds()
+	{
+    	players.get(table.getBigBlind()).setBigBlind(false);
+    	players.get(table.getSmallBlind()).setSmallBlind(false);
+    	table.incrementBlinds();
+    	players.get(table.getBigBlind()).setBigBlind(true);
+    	players.get(table.getSmallBlind()).setSmallBlind(true);
+	}
+	
     /**
      * Get cards on the board
      */
     public ArrayList<Card> getCardsInPlay() {
     		return cardsInPlay;
     }
-
-	public int getCurrentBigBlind() {
-		return currentBigBlind;
-	}
-
-	public void setCurrentBigBlind(int currentBigBlind) {
-		this.currentBigBlind = currentBigBlind;
-	}
-
-	public int getCurrentSmallBlind() {
-		return currentSmallBlind;
-	}
-
-	public void setCurrentSmallBlind(int currentSmallBlind) {
-		this.currentSmallBlind = currentSmallBlind;
-	}
 }
