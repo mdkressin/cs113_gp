@@ -2,6 +2,10 @@ package edu.miracosta.cs113;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import edu.miracosta.cs113.graph.HandVertex;
+import edu.miracosta.cs113.graph.PokerEdge;
+
 import java.util.Iterator;
 
 /**
@@ -87,7 +91,50 @@ public class GraphTester {
 	@Test
 	public void testInsertHand()
 	{
-		AbstractPokerGraph<Hand> list = new ListPokerGraph<Hand>(10, false);
+		CardDeck deck = new CardDeck();
+		Card[] cards1 = new Card[7];
+		Card[] cards2 = new Card[7];
+		Card[] cards3 = new Card[7];
+		Card[] cards4 = new Card[7];
+		Card[] cards5 = new Card[7];
+		Card[] cards6 = new Card[7];
+		Card[] cards7 = new Card[7];
+		for (int i = 0; i < 6; i++)
+		{
+			cards1[i] = deck.deal();
+			cards2[i] = deck.deal();
+			cards3[i] = deck.deal();
+			cards4[i] = deck.deal();
+			cards5[i] = deck.deal();
+			cards6[i] = deck.deal();
+			cards7[i] = deck.deal();
+		}
+		Hand hand1 = new Hand(cards1);
+		Hand hand2 = new Hand(cards2);
+		Hand hand3 = new Hand(cards3);
+		Hand hand4 = new Hand(cards4);
+		Hand hand5 = new Hand(cards5);
+		Hand hand6 = new Hand(cards6);
+		Hand hand7 = new Hand(cards7);
+		
+		AbstractPokerGraph<Hand> list = new ListPokerGraph<Hand>(7, false);
+		Vertex<Hand> v0 = new Vertex<Hand>(hand1,0);
+		Vertex<Hand> v1 = new Vertex<Hand>(hand2,1);
+		Vertex<Hand> v2 = new Vertex<Hand>(hand3,2);
+		Vertex<Hand> v3 = new Vertex<Hand>(hand4,3);
+		Vertex<Hand> v4 = new Vertex<Hand>(hand5,4);
+		Vertex<Hand> v5 = new Vertex<Hand>(hand6,5);
+		Vertex<Hand> v6 = new Vertex<Hand>(hand7,6);
+		list.insert(new Edge<Hand>(v0,v1));
+		list.insert(new Edge<Hand>(v0,v3));
+		list.insert(new Edge<Hand>(v0,v4));
+		list.insert(new Edge<Hand>(v0,v2));
+		list.insert(new Edge<Hand>(v1,v3));
+		list.insert(new Edge<Hand>(v1,v4));
+		list.insert(new Edge<Hand>(v3,v4));
+		list.insert(new Edge<Hand>(v2,v5));
+		list.insert(new Edge<Hand>(v2,v6));
+		list.insert(new Edge<Hand>(v5,v6));
 	}
 /*	@Test
 	public void testMatrixPokerGraphConstructor()

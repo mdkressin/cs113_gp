@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 
 /**
  * Abstract base class for poker graphs.
- * @param <T> type that is a Vertex or one of its subclasses
  * @param <E> The element type of the vertices in the graph
  */
 public abstract class AbstractPokerGraph<E> implements Graph<E> {
