@@ -88,7 +88,6 @@ public class dfsPokerTest {
 		{
 			System.out.println(dOrder2[i] + " " + fOrder2[i]);
 		}
-		
 	}
 /*	@Test
 	public void test2() {

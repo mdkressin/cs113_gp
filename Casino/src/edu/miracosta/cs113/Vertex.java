@@ -41,6 +41,11 @@ public class Vertex<E> {
 		return id;
 	}
 	
+	/**
+	 * Checks to see if two vertices are equal to each other
+	 * @param obj	The vertex to compare with
+	 * @return	true if the data and id of both vertices are equal, false otherwise
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -51,6 +56,10 @@ public class Vertex<E> {
 		Vertex<E> other = (Vertex<E>) obj;
 		return this.id == other.id && this.data.equals(other.data);
 	}
+	/**
+	 * Returns a string representation of the object
+	 * @return	string representation of the vertex's data
+	 */
 	@Override
 	public String toString()
 	{

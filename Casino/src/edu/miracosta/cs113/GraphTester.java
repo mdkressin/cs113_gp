@@ -53,9 +53,7 @@ public class GraphTester {
 		Assert.assertFalse(list == null);
 		int vertices = list.getNumV();
 		Assert.assertTrue(vertices == 7);
-		Assert.assertFalse(list.isDirected());
-		
-		
+		Assert.assertFalse(list.isDirected());	
 	}
 	@Test
 	public void test2()
