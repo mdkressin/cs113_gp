@@ -232,6 +232,7 @@ public class Round
 	    	resetAndIncrementBlinds();
 	    	
 	    	lastBetter = players.get(table.getBigBlind());
+	    	lastBet = 0;
     			
         for (Player player : players)
         {
