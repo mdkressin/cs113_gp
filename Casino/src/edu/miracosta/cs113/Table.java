@@ -34,6 +34,29 @@ public class Table
     }
 
     /**
+     * Move to the next player
+     * 
+     * TODO examine infinite recursion case when all players have folded
+     */
+    public void incrementBlinds()
+    {
+    	bigBlind++;
+    	smallBlind++;
+		
+		//If new index is out of bounds, set to 0
+		if (this.bigBlind > (players.size() - 1))
+        {
+            this.bigBlind = 0;
+        }
+		
+		//If new index is out of bounds, set to 0
+		if (this.smallBlind > (players.size() - 1))
+        {
+            this.smallBlind = 0;
+        }
+    }
+    
+    /**
      * Add the human player and create bots for the table
      * 
      * @param userPlayer Human Player
