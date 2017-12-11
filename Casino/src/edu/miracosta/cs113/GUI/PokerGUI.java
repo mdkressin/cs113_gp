@@ -543,7 +543,7 @@ public class PokerGUI extends JFrame
 	    		{
 	    			raiseAmount = player.getMoney();
 	    		}
-		    	
+		    
 		    	round.raise(raiseAmount);
 		    	//round.addToPot(raiseAmount); //Moving add to pot to raise
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
