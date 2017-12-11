@@ -74,7 +74,7 @@ public class PlayerGUI extends JPanel
 		this.add(cards, BorderLayout.CENTER);
 		this.add(info, BorderLayout.SOUTH);
 		this.add(action, BorderLayout.NORTH);
-		this.add(blind, BorderLayout.EAST);
+		this.add(blind, BorderLayout.WEST);
 	}
 	
 	
@@ -148,6 +148,24 @@ public class PlayerGUI extends JPanel
 		*/
 		
 		action.setText(player.getLastAction());
+		
+		
+		//Blind images
+		if(player.isBigBlind())
+		{
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/big_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+			blind.setIcon(imageIcon);
+		} 
+		else if(player.isSmallBlind())
+		{
+			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/small_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+			blind.setIcon(imageIcon);
+		}
+		else
+		{
+			ImageIcon imageIcon = null;
+			blind.setIcon(imageIcon);
+		}
 	}
 	
 	/**
@@ -162,28 +180,6 @@ public class PlayerGUI extends JPanel
 		
 		setCardImage(playerCard1.getFilePath(), card1Label, false, player.hasFolded());
 		setCardImage(playerCard2.getFilePath(), card2Label, false, player.hasFolded());
-	}
-	
-	/**
-	 * Set blind image
-	 */
-	public void setBlindImage(Player player)
-	{
-		if(player.isBigBlind())
-		{
-			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/big_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
-			blind.setIcon(imageIcon);
-		}
-		else if(player.isSmallBlind())
-		{
-			ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/small_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
-			blind.setIcon(imageIcon);
-		}
-		else
-		{
-			ImageIcon imageIcon = null;
-			blind.setIcon(imageIcon);
-		}
 	}
 	
 }

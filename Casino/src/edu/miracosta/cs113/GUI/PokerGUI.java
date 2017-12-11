@@ -329,10 +329,10 @@ public class PokerGUI extends JFrame
      */
     private void updateBotsPanel() 
     {
-    	//Iterate through each bot
-    	for(int i = 1; i < round.players.size(); i++) 
+	    	//Iterate through each bot
+	    	for(int i = 1; i < round.players.size(); i++) 
         {
-    		botGUIs[i-1].update(round.players.get(i));
+	    		botGUIs[i-1].update(round.players.get(i));
         }
 	}
     
@@ -341,8 +341,8 @@ public class PokerGUI extends JFrame
      */
     private void updateUserPanel() 
     {
-    	humanGUI.update(round.players.get(0));
-    	updateControlButtons();
+	    	humanGUI.update(round.players.get(0));
+	    	updateControlButtons();
     }
 
     /**
@@ -620,6 +620,7 @@ public class PokerGUI extends JFrame
         	callBtn.setText("Call $" + (round.getLastBet() - round.players.get(round.getIndex()).getMoneyBet()));
         }
 	}
+    
     
     /**
      * Helper method creates new JPanel with default styling

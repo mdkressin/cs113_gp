@@ -39,12 +39,11 @@ public class Table
     /**
      * Move to the next player
      * 
-     * TODO examine infinite recursion case when all players have folded
      */
     public void incrementBlinds()
     {
-    	bigBlind++;
-    	smallBlind++;
+	    	bigBlind++;
+	    	smallBlind++;
 		
 		//If new index is out of bounds, set to 0
 		if (this.bigBlind > (players.size() - 1))
