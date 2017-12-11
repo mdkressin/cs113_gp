@@ -208,6 +208,19 @@ public class PokerGUI extends JFrame
 	    	{
 	    		updateGUI();
 	    	}
+	    	
+	    	if (round.players.get(0).hasFolded())
+	    	{
+	    		try 
+	    		{
+					cyclePlayers();
+				} 
+	    		catch (Exception e) 
+	    		{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
     }
     
 	public void newRound() 
@@ -366,7 +379,10 @@ public class PokerGUI extends JFrame
 		{
 			int currentIndex = round.getIndex();
 			Player currentPlayer = players.get(currentIndex);
-			
+			if (!currentPlayer.isBot() && currentPlayer.hasFolded())
+	    	{
+	    		round.moveToNextPlayer();
+	    	}
 			//currentPlayer.toggleTurn(); //Toggle on current player turn
 			updateGUI();
 			
