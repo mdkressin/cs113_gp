@@ -15,6 +15,41 @@ import org.junit.Test;
  */
 public class DepthFirstSearchTest {
 
+	public static void main(String[] args)
+	{
+		AbstractPokerGraph<Integer> list = new ListPokerGraph<Integer>(7,false);
+		Vertex<Integer> v0 = new Vertex<Integer>(100,0);
+		Vertex<Integer> v1 = new Vertex<Integer>(200,1);
+		Vertex<Integer> v2 = new Vertex<Integer>(300,2);
+		Vertex<Integer> v3 = new Vertex<Integer>(400,3);
+		Vertex<Integer> v4 = new Vertex<Integer>(500,4);
+		Vertex<Integer> v5 = new Vertex<Integer>(600,5);
+		Vertex<Integer> v6 = new Vertex<Integer>(700,6);
+		list.insert(new Edge<Integer>(v0,v1));
+		list.insert(new Edge<Integer>(v0,v3));
+		list.insert(new Edge<Integer>(v0,v4));
+		list.insert(new Edge<Integer>(v0,v2));
+		list.insert(new Edge<Integer>(v1,v3));
+		list.insert(new Edge<Integer>(v1,v4));
+		list.insert(new Edge<Integer>(v3,v4));
+		list.insert(new Edge<Integer>(v2,v5));
+		list.insert(new Edge<Integer>(v2,v6));
+		list.insert(new Edge<Integer>(v5,v6));
+
+		DepthFirstSearch<Integer> dfs = new DepthFirstSearch<Integer>(list);
+		int[] dOrder = dfs.getDiscoveryOrder();
+		int[] fOrder = dfs.getFinishOrder();
+		System.out.println("Discovery and finish order undirected");
+		for (int i = 0; i < list.getNumV(); i++) 
+		{
+			System.out.println(dOrder[i] + "\t" + fOrder[i]);
+			ListPokerGraph<Integer> l = (ListPokerGraph<Integer>) list;
+			System.out.println(l.getVertex(dOrder[i]).toString() + "\t" +
+								l.getVertex(fOrder[i]).toString());
+		}
+
+	}
+	/*
 	@Test
 	public void test() {
 		// undirected graph
@@ -134,5 +169,6 @@ public class DepthFirstSearchTest {
 		}
 		
 	}
+	*/
 
 }

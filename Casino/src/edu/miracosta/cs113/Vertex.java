@@ -40,4 +40,20 @@ public class Vertex<E> {
 	{
 		return id;
 	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null || (getClass() != obj.getClass()))
+		{
+			return false;
+		}
+		Vertex<E> other = (Vertex<E>) obj;
+		return this.id == other.id && this.data.equals(other.data);
+	}
+	@Override
+	public String toString()
+	{
+		return data.toString();
+	}
 }

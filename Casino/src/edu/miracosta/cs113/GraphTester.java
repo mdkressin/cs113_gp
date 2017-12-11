@@ -45,7 +45,7 @@ public class GraphTester {
 	public void testListPokerGraphConstructor()
 	{
 		
-		AbstractPokerGraph<Vertex<Integer>,Integer> list = new ListPokerGraph<Vertex<Integer>,Integer>(7,false);
+		AbstractPokerGraph<Integer> list = new ListPokerGraph<Integer>(7,false);
 		Assert.assertFalse(list == null);
 		int vertices = list.getNumV();
 		Assert.assertTrue(vertices == 7);
@@ -56,38 +56,38 @@ public class GraphTester {
 	@Test
 	public void test2()
 	{
-		AbstractPokerGraph<Vertex<Integer>,Integer> list = new ListPokerGraph<Vertex<Integer>,Integer>(7,false);
+		AbstractPokerGraph<Integer> list = new ListPokerGraph<Integer>(7,false);
 		Vertex<Integer> v1 = new Vertex<Integer>(101,0);
 		Vertex<Integer> v2 = new Vertex<Integer>(201,1);
 		Vertex<Integer> v3 = new Vertex<Integer>(301,2);
 		Vertex<Integer> v4 = new Vertex<Integer>(401,3);
-		Edge<Vertex<Integer>,Integer> edge1 = new Edge<Vertex<Integer>,Integer>(v1, v2);
-		Edge<Vertex<Integer>,Integer> edge2 = new Edge<Vertex<Integer>,Integer>(v1, v3);
-		Edge<Vertex<Integer>,Integer> edge3 = new Edge<Vertex<Integer>,Integer>(v3, v4);
-		Edge<Vertex<Integer>,Integer> edge4 = new Edge<Vertex<Integer>,Integer>(v2, v4);
+		Edge<Integer> edge1 = new Edge<Integer>(v1, v2);
+		Edge<Integer> edge2 = new Edge<Integer>(v1, v3);
+		Edge<Integer> edge3 = new Edge<Integer>(v3, v4);
+		Edge<Integer> edge4 = new Edge<Integer>(v2, v4);
 		
 		
 		list.insert(edge1);
 		list.insert(edge2);
 		list.insert(edge3);
 		list.insert(edge4);
-		Assert.assertTrue(((ListPokerGraph<Vertex<Integer>,Integer>) list).isEdge(v1,v2));
-		Assert.assertTrue(((ListPokerGraph<Vertex<Integer>,Integer>) list).getEdge
+		Assert.assertTrue(((ListPokerGraph<Integer>) list).isEdge(v1,v2));
+		Assert.assertTrue(((ListPokerGraph<Integer>) list).getEdge
 														(v1, v2).equals(edge1));
-		Assert.assertTrue(((ListPokerGraph<Vertex<Integer>,Integer>) list).getEdge
+		Assert.assertTrue(((ListPokerGraph<Integer>) list).getEdge
 														(v3, v4).equals(edge3));
-		Assert.assertTrue(((ListPokerGraph<Vertex<Integer>,Integer>) list).isEdge(v2,v1));//testing if functions
+		Assert.assertTrue(((ListPokerGraph<Integer>) list).isEdge(v2,v1));//testing if functions
 																		// as undirected graph
 		// test with edge not in list
-		Assert.assertFalse(((ListPokerGraph<Vertex<Integer>,Integer>) list).isEdge(v1, v4));
-		Assert.assertFalse(((ListPokerGraph<Vertex<Integer>,Integer>) list).getEdge
+		Assert.assertFalse(((ListPokerGraph<Integer>) list).isEdge(v1, v4));
+		Assert.assertFalse(((ListPokerGraph<Integer>) list).getEdge
 													(v3, v4).equals(edge4));
 		
 	}
 	@Test
 	public void testInsertHand()
 	{
-		AbstractPokerGraph<Vertex<Hand>,Hand> list = new ListPokerGraph<Vertex<Hand>,Hand>(10, false);
+		AbstractPokerGraph<Hand> list = new ListPokerGraph<Hand>(10, false);
 	}
 /*	@Test
 	public void testMatrixPokerGraphConstructor()

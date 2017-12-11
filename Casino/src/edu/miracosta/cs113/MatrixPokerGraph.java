@@ -6,11 +6,11 @@ import java.util.Iterator;
  * A MatrixPokerGraph is an extension of the AbstractPokerGraph abstract class 
  * that uses a two-dimensional array to represent the graph.
  */
-public class MatrixPokerGraph<T extends Vertex<E>,E> extends AbstractPokerGraph<T,E> {
+public class MatrixPokerGraph<E> extends AbstractPokerGraph<E> {
 	/**
 	 * Creates an Iterator object for MatrixPokerGraph to use on arrays
 	 */
-	private class Iter<T extends Vertex<E>,E> implements Iterator<Edge<T,E>>
+	private class Iter<E> implements Iterator<Edge<E>>
 	{
 		Iter()
 		{
@@ -27,7 +27,7 @@ public class MatrixPokerGraph<T extends Vertex<E>,E> extends AbstractPokerGraph<
 		}
 
 		@Override
-		public Edge<T,E> next() {
+		public Edge<E> next() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -54,7 +54,7 @@ public class MatrixPokerGraph<T extends Vertex<E>,E> extends AbstractPokerGraph<
 	 * @param edge	The new edge
 	 */
 	@Override
-	public void insert(Edge<T,E> edge) {
+	public void insert(Edge<E> edge) {
 		// TODO Auto-generated method stub
 
 	}
@@ -67,7 +67,7 @@ public class MatrixPokerGraph<T extends Vertex<E>,E> extends AbstractPokerGraph<
 	 * @return the edge between these two vertices
 	 */
 	@Override
-	public Edge<T,E> getEdge(T source, T dest) {
+	public Edge<E> getEdge(Vertex<E> source, Vertex<E> dest) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -78,8 +78,8 @@ public class MatrixPokerGraph<T extends Vertex<E>,E> extends AbstractPokerGraph<
 	 * @return The iterator that goes through the graph starting at source
 	 */
 	@Override
-	public Iterator<Edge<T,E>> edgeIterator(int source) {
-		return new Iter<T,E>(source);
+	public Iterator<Edge<E>> edgeIterator(int source) {
+		return new Iter<E>(source);
 	}
 	
 	/**

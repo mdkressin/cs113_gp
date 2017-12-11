@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
  * @param <T> type that is a Vertex or one of its subclasses
  * @param <E> The element type of the vertices in the graph
  */
-public abstract class AbstractPokerGraph<T extends Vertex<E>, E> implements Graph<T, E> {
+public abstract class AbstractPokerGraph<E> implements Graph<E> {
 	// Data Fields
 	/** The number of vertices. */
 	private int numV;
@@ -129,26 +129,26 @@ public abstract class AbstractPokerGraph<T extends Vertex<E>, E> implements Grap
 	 * @param graph	The graph to build
 	 * @return	a graph containing possible hand combinations
 	 */
-	public static Graph createGraph(Graph graph, Hand currentHand) 
+	public static <E> Graph<Vertex<E>> createGraph(Graph<Vertex<E>> graph, E currentHand) 
 	{
 		/* The source vertex. */
-		Vertex<Hand> source = new Vertex<Hand>(currentHand, vertexId++);
+		Vertex<E> source = new Vertex<E>(currentHand, vertexId++);
 		/* The destination vertex. */
-		Vertex<Hand> dest;
+		Vertex<E> dest;
 		/* The edge to insert into the graph. */
-		Edge<Vertex<Hand>,Hand> edge;
+		Edge<E> edge;
 		/* Create a deck to calculate hand possibilities .*/
 		CardDeck deck = new CardDeck();
-		Card[] handCards = currentHand.getCards();
+		Card[] handCards = ((Hand) currentHand).getCards();
 		/* The current number of cards in the hand. */
-		int handSize = currentHand.size();
+		int handSize = ((Hand) currentHand).size();
 		/* Holds a reference to a card drawn from the deck. */
 		Card card;
 		try 
 		{
 			while (true)
 			{ // will exit once the deck runs out of cards by throwing an exception
-				Hand possibleHand = new Hand();// new hand combination
+				E possibleHand = (E) new Hand();// new hand combination
 				card = deck.deal(); // draw a card from the deck
 				boolean newCard = true; // flag for determining if card from deck is already in the hand
 				int i = 0;
@@ -164,14 +164,14 @@ public abstract class AbstractPokerGraph<T extends Vertex<E>, E> implements Grap
 				{
 					for (Card c : handCards)
 					{ // add the cards from the previous hand into the new possible hand
-						possibleHand.addCard(c);
+						((Hand) possibleHand).addCard(c);
 					}
 					// add the new card to the next possible hand
-					possibleHand.addCard(card);
+					((Hand) possibleHand).addCard(card);
 					createGraph(graph, possibleHand); // recursive call to calculate possible hands
-					dest = new Vertex<Hand>(possibleHand, vertexId++);
-					edge = new Edge<Vertex<Hand>,Hand>(source,dest);
-					graph.insert(edge);
+					dest = new Vertex<E>(possibleHand, vertexId++);
+					edge = new Edge<E>(source,dest);
+					graph.insert((Edge<Vertex<E>>) edge);
 				}
 			}
 		} catch (IllegalStateException e) 

@@ -7,13 +7,13 @@ package edu.miracosta.cs113;
  * @param <T> type that is a Vertex or one of its subclasses
  * @param <E> The element type of the vertices in the graph
  */
-public class Edge<T extends Vertex<E>, E>
+public class Edge<E>
 {
 	// Data Fields
 	/** The destination vertex of an edge. */
-	private T dest;
+	private Vertex<E> dest;
 	/** The source vertex for an edge. */
-	private T source;
+	private Vertex<E> source;
 	/** The weight. */
 	private double weight;
 	
@@ -23,7 +23,7 @@ public class Edge<T extends Vertex<E>, E>
 	 * @param source The source vertex
 	 * @param dest The destination vertex
 	 */
-	public Edge(T source, T dest)
+	public Edge(Vertex<E> source, Vertex<E> dest)
 	{
 		this.source = source;
 		this.dest = dest;
@@ -35,7 +35,7 @@ public class Edge<T extends Vertex<E>, E>
 	 * @param dest The destination vertex
 	 * @param weight The weight of the edge
 	 */
-	public Edge(T source, T dest, double w)
+	public Edge(Vertex<E> source, Vertex<E> dest, double w)
 	{
 		this.source = source;
 		this.dest = dest;
@@ -61,14 +61,14 @@ public class Edge<T extends Vertex<E>, E>
 		{
 			return false;
 		}
-		Edge<T,E> other = (Edge<T,E>) obj;
+		Edge<E> other = (Edge<E>) obj;
 		return (this.source.equals(other.source)) && (this.dest.equals(other.dest));
 	}
 	/**
 	 * Returns the destination vertex
 	 * @return The destination vertex
 	 */
-	public T getDest()
+	public Vertex<E> getDest()
 	{
 		return dest;
 	}
@@ -76,7 +76,7 @@ public class Edge<T extends Vertex<E>, E>
 	 * Returns the source vertex
 	 * @return The source vertex
 	 */
-	public T getSource()
+	public Vertex<E> getSource()
 	{
 		return source;
 	}
