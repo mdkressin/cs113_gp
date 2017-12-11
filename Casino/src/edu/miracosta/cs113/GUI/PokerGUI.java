@@ -360,12 +360,14 @@ public class PokerGUI extends JFrame
 		ArrayList<Player> players = round.players;
 				
 		System.out.println("\nStarted cycling players --- start index: " + round.getIndex());
+		
+		boolean prematureEnd = false;
+
 				
 		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
 			int currentIndex = round.getIndex();
 			Player currentPlayer = players.get(currentIndex);
-			
 			
 			//currentPlayer.toggleTurn(); //Toggle on current player turn
 			updateGUI();
@@ -408,13 +410,13 @@ public class PokerGUI extends JFrame
 			
 		    round.moveToNextPlayer();
 
-		    checkForPrematureEnd();
+		    prematureEnd = checkForPrematureEnd();
 			
 		}
 		
 		System.out.println("\nStopped cycling players");
 		
-		if(players.get(round.getIndex()) == round.getLastBetter())
+		if((players.get(round.getIndex()) == round.getLastBetter()) && !prematureEnd)
 		{
 			nextStage();
 		}
@@ -423,8 +425,10 @@ public class PokerGUI extends JFrame
     /**
      * End the round if only one player remains
      * (all other players have folded)
+     * 
+     * @return boolean True if round ended early
      */
-    public void checkForPrematureEnd()
+    public boolean checkForPrematureEnd()
     {
     	int numPlayersIn = 0;
 	    
@@ -439,6 +443,11 @@ public class PokerGUI extends JFrame
 	    if(numPlayersIn < 2)
 	    {
 	    	endRound();
+	    	return true;
+	    }
+	    else
+	    {
+	    	return false;
 	    }
     	
     }
