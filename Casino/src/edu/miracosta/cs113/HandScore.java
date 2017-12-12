@@ -5,6 +5,7 @@ public class HandScore
     //Score values
 	private int totalScore;
     private int score;
+    private final int MOST_CARDS      = 7;
     private final int PAIR            = 12;
     private final int THREE_OF_A_KIND = 47;
     private final int STRAIGHT        = 59;
@@ -68,7 +69,8 @@ public class HandScore
 			if (list.getVertex(dOrder[i]) != null)
 			{
 				System.out.println((list.getVertex(dOrder[i])).toString());
-				totalScore += calculateScore(list.getVertex(dOrder[i]).getData().getCards());
+				double numFromMax = MOST_CARDS - list.getVertex(dOrder[i]).getData().getCards().length;
+				totalScore += (1 / Math.pow(46, numFromMax)) * calculateScore(list.getVertex(dOrder[i]).getData().getCards());
 			}
 		}
     	
@@ -105,11 +107,13 @@ public class HandScore
      */
     private int getScore(Card[] cards)
     {
+    	/**
         System.out.println("NumPairs: "       + numPairs);
         System.out.println("NumThreeOfKind: " + numThreeOfKind);
         System.out.println("NumFourOfKind: "  + numFourOfKind);
         System.out.println("Straight: "       + straight);
         System.out.println("Flush: "          + flush);
+        */
         score += numFourOfKind   * FOUR_OF_A_KIND;
         score += (flush          * FLUSH)    + flushHighCardValue;
         score += (straight       * STRAIGHT) + straightHighCardValue;
