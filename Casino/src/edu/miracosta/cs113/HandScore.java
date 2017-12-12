@@ -3,6 +3,7 @@ package edu.miracosta.cs113;
 public class HandScore
 {
     //Score values
+	private int totalScore;
     private int score;
     private final int PAIR            = 12;
     private final int THREE_OF_A_KIND = 47;
@@ -39,6 +40,8 @@ public class HandScore
         this.straightHighCardValue = 0;
         this.flushHighCardValue    = 0;
 
+        this.totalScore     = 0;
+        this.score          = 0;
         this.numFourOfKind  = 0;
         this.flush          = 0;
         this.straight       = 0;
@@ -51,6 +54,7 @@ public class HandScore
     }
     public double totalScore(Card[] cards)
     {
+    	this.totalScore     = 0;
     	Hand hand = new Hand(cards);
     	Graph<Hand> possibleHands = new ListPokerGraph<Hand>(2116, false);
     	possibleHands = AbstractPokerGraph.possibleHandsGraph(possibleHands, hand);
@@ -64,10 +68,12 @@ public class HandScore
 			if (list.getVertex(dOrder[i]) != null)
 			{
 				System.out.println((list.getVertex(dOrder[i])).toString());
+				totalScore += calculateScore(list.getVertex(dOrder[i]).getData().getCards());
 			}
 		}
     	
-    	return 0;
+		System.out.println("TOTAL SCORE: " + totalScore);
+    	return totalScore;
     }
     /**
      * Calls methods to organize the cards, and detect any valuable hands
