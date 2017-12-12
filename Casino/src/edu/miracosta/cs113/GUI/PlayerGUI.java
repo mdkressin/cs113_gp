@@ -35,7 +35,8 @@ public class PlayerGUI extends JPanel
 	
 	private JLabel info;
 	private JLabel action;
-	private JLabel blind;
+	private JLabel bigBlind;
+	private JLabel smallBlind;
 
 	public PlayerGUI(Player player, boolean isBot) {
 		
@@ -70,12 +71,14 @@ public class PlayerGUI extends JPanel
 		action = new JLabel("");
 		formatLabel(action, new Font("Gill Sans MT", Font.PLAIN, 12), new Color(224, 224, 224));
 		
-		blind = new JLabel("");
+		bigBlind = new JLabel("");
+		smallBlind = new JLabel("");
 		
 		this.add(cards, BorderLayout.CENTER);
 		this.add(info, BorderLayout.SOUTH);
 		this.add(action, BorderLayout.NORTH);
-		this.add(blind, BorderLayout.WEST);
+		this.add(bigBlind, BorderLayout.WEST);
+		this.add(smallBlind, BorderLayout.WEST);
 	}
 	
 	
@@ -152,19 +155,22 @@ public class PlayerGUI extends JPanel
 		
 		
 		//Blind images
-		
-		ImageIcon blindIcon = null;
-		
 		if(player.isBigBlind())
 		{
-			blindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/big_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+			ImageIcon bigBlindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/big_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+			smallBlind.setIcon(bigBlindIcon);
 		} 
 		else if(player.isSmallBlind())
 		{
-			blindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/small_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+			ImageIcon smallBlindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/small_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
+			smallBlind.setIcon(smallBlindIcon);		
+		}
+		else
+		{
+			smallBlind.setIcon(null);
+			bigBlind.setIcon(null);
 		}
 
-		blind.setIcon(blindIcon);
 	}
 	
 	/**
