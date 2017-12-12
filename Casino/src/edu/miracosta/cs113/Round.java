@@ -148,22 +148,24 @@ public class Round
      */
     public void startRound()
     {
-    		System.out.println("\nInside startRound()");
+    	System.out.println("\nInside startRound()");
     	
         for (Player p : players)
         {
-	        	//Deal initial cards to player
-	        	p.addToHand(table.getDeck().deal());
-	        	p.addToHand(table.getDeck().deal());
+        	//Deal initial cards to player
+        	p.addToHand(table.getDeck().deal());
+        	p.addToHand(table.getDeck().deal());
 
             System.out.println("Gave " + p.getHand() + " to " + p.getName());
             
         }
         
-        players.get(table.getBigBlind()).addBlind(table.BIG_BLIND);
         players.get(table.getBigBlind()).setBigBlind(true);
-        players.get(table.getSmallBlind()).addBlind(table.SMALL_BLIND);
         players.get(table.getSmallBlind()).setSmallBlind(true);
+
+        players.get(table.getBigBlind()).addBlind(table.BIG_BLIND);
+        players.get(table.getSmallBlind()).addBlind(table.SMALL_BLIND);
+        
     }
 
     /**
@@ -229,10 +231,10 @@ public class Round
      */
     public void resetRound()
     {
-	    	resetAndIncrementBlinds();
-	    	
-	    	lastBetter = players.get(table.getBigBlind());
-	    	lastBet = 0;
+    	resetAndIncrementBlinds();
+    	
+    	lastBetter = players.get(table.getBigBlind());
+    	lastBet = 0;
     			
         for (Player player : players)
         {
@@ -248,7 +250,6 @@ public class Round
         //Shuffle and reset deck
         table.getDeck().shuffle();
         
-        //TODO big blind logic
         index = 0;
     }
     
@@ -262,8 +263,8 @@ public class Round
 			player.resetStatus();
 		}
 		
-	    	lastBetter = players.get(table.getBigBlind());
-	    	lastBet = 0;
+    	lastBetter = players.get(table.getBigBlind());
+    	lastBet = 0;
 
 	}
     
@@ -273,17 +274,18 @@ public class Round
 	 */
 	public void resetAndIncrementBlinds()
 	{
-	    	players.get(table.getBigBlind()).setBigBlind(false);
-	    	players.get(table.getSmallBlind()).setSmallBlind(false);
-	    	table.incrementBlinds();
-	    	players.get(table.getBigBlind()).setBigBlind(true);
-	    	players.get(table.getSmallBlind()).setSmallBlind(true);
+    	players.get(table.getBigBlind()).setBigBlind(false);
+    	players.get(table.getSmallBlind()).setSmallBlind(false);
+    	table.incrementBlinds();
+    	players.get(table.getBigBlind()).setBigBlind(true);
+    	players.get(table.getSmallBlind()).setSmallBlind(true);
 	}
 	
     /**
      * Get cards on the board
      */
-    public ArrayList<Card> getCardsInPlay() {
-    		return cardsInPlay;
+    public ArrayList<Card> getCardsInPlay() 
+    {
+		return cardsInPlay;
     }
 }
