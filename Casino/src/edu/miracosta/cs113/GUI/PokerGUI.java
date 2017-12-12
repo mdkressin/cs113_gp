@@ -47,8 +47,9 @@ public class PokerGUI extends JFrame
     private static final int BIG_BLIND   = 10; 
     private static final int START_MONEY = 500;
    
-    private final int BOT_THRESHOLD  = 10;
-    private final int CHANCE_TO_FOLD = 7;
+    private final int TOTAL_BOT_THRESHOLD = 75000; //Threshold for using totalScore
+    private final int BOT_THRESHOLD  = 10;         //Threshold for calculateScore
+    private final int CHANCE_TO_FOLD = 6;
     private final int CHANCE_TO_CALL = 6;
     
     private final Player humanPlayer;
@@ -430,10 +431,29 @@ public class PokerGUI extends JFrame
 			if(currentPlayer.isBot())
 			{	
 				int botScore = 0;
+				Random randNum  = new Random();
+				//Random value between 1 and 10 to make bot less predictable
+				int botRandomness = randNum.nextInt(10) + 1;
+				
 				//TODO: Tweak decision making randomness
 				if (round.getCardsInPlay().size() < 3)		
 				{
 					botScore = score.calculateScore(currentPlayer.getHand().getCards());
+					if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD)) || (currentPlayer.getMoney() <= 0)) //Fold
+					{
+						System.out.println("\n" + currentPlayer.getName() + " folded");
+						playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice) OR no money left
+					}
+					else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= currentPlayer.getMoney())) //Call
+					{
+						System.out.println("\n" + currentPlayer.getName() + " called");
+						playerChoice(1); //score is somewhat low(60% chance this affects choice)
+					}
+					else //Raise
+					{
+						System.out.println("\n" + currentPlayer.getName() + " raised");
+						playerChoice(3);
+					}
 				}
 				else
 				{
@@ -448,26 +468,24 @@ public class PokerGUI extends JFrame
 					cards[i++] = currentPlayer.getHand().getHoleCards()[0];
 					cards[i++] = currentPlayer.getHand().getHoleCards()[1];
 					botScore = (int) score.totalScore(cards);
+					
+					if ((botScore < TOTAL_BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore/1000) && (botRandomness <= CHANCE_TO_FOLD)) || (currentPlayer.getMoney() <= 0)) //Fold
+					{
+						System.out.println("\n" + currentPlayer.getName() + " folded");
+						playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice) OR no money left
+					}
+					else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= currentPlayer.getMoney())) //Call
+					{
+						System.out.println("\n" + currentPlayer.getName() + " called");
+						playerChoice(1); //score is somewhat low(60% chance this affects choice)
+					}
+					else //Raise
+					{
+						System.out.println("\n" + currentPlayer.getName() + " raised");
+						playerChoice(3);
+					}
 				}
-				Random randNum  = new Random();
-				//Random value between 1 and 10 to make bot less predictable
-				int botRandomness = randNum.nextInt(10) + 1;
-				
-				if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD)) || (currentPlayer.getMoney() <= 0)) //Fold
-				{
-					System.out.println("\n" + currentPlayer.getName() + " folded");
-					playerChoice(2); //score is very low OR bet is too high(70% chance this affects choice) OR no money left
-				}
-				else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= currentPlayer.getMoney())) //Call
-				{
-					System.out.println("\n" + currentPlayer.getName() + " called");
-					playerChoice(1); //score is somewhat low(60% chance this affects choice)
-				}
-				else //Raise
-				{
-					System.out.println("\n" + currentPlayer.getName() + " raised");
-					playerChoice(3);
-				}
+			
 				
 				updateGUI();
 			}
