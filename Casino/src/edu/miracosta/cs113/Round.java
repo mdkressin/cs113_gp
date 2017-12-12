@@ -259,7 +259,12 @@ public class Round
         //Shuffle and reset deck
         table.getDeck().shuffle();
         
-        index = 0;
+        //Player that starts round is after big blind
+        index = table.getBigBlind() + 1;
+        if(index > players.size() - 1)
+        {
+        	index = 0;
+        }
     }
     
     /**
