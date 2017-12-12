@@ -60,7 +60,6 @@ public class HandScore
 		int[] dOrder = dfs.getDiscoveryOrder();
 		
 		ListPokerGraph<Hand> list = (ListPokerGraph<Hand>) possibleHands;
-		
 		for (int i = 0; i < list.getNumV(); i++)
 		{
 			System.out.println("IN LOOP");
