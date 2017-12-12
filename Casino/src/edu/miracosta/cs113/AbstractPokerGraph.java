@@ -179,14 +179,16 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 					}
 					// add the new card to the next possible hand
 					((Hand) possibleHand).addCard(card);
-					possibleHandsGraph(graph, possibleHand); // recursive call to calculate possible hands
+					// recursive call to calculate possible hands
+					possibleHandsGraph(graph, possibleHand);
 					// check if graph is full
 					if (vertexId >= graph.getNumV())
 					{
-						return graph;
+						return graph; // cannot continue inserting into graph, return
 					}
 					dest = new Vertex<E>(possibleHand, vertexId++);
 					edge = new Edge<E>(source,dest);
+					// insert the edge into the graph
 					graph.insert((Edge<E>) edge);
 				}
 			}

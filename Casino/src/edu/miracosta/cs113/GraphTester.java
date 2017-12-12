@@ -169,15 +169,16 @@ public class GraphTester {
 		int[] fOrder = dfs.getFinishOrder();
 		
 		ListPokerGraph<Hand> list = (ListPokerGraph<Hand>) possibleHands;
+		System.out.println("discovered\tfinished");
 		for (int i = 0; i < list.getNumV(); i++) 
 		{
 			Vertex<Hand> v1 = list.getVertex(dOrder[i]);
 			Vertex<Hand> v2 = list.getVertex(fOrder[i]);
 			if (v1 != null && v2 != null)
 			{
-				System.out.println(dOrder[i] + "\t" + fOrder[i]);
-				System.out.println(list.getVertex(dOrder[i]).toString() + "\n" +
-									list.getVertex(fOrder[i]).toString());
+				System.out.println("\t" + dOrder[i] + "\t" + fOrder[i]);
+			//	System.out.println(list.getVertex(dOrder[i]).toString() + "\n" +
+				//					list.getVertex(fOrder[i]).toString());
 			}
 		}
 	}
