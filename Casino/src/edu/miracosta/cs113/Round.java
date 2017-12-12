@@ -174,6 +174,13 @@ public class Round
         
 		players.get(table.getBigBlind()).setLastAction("Big Blind: $" + Table.BIG_BLIND);
 		players.get(table.getSmallBlind()).setLastAction("Small Blind: $" + Table.SMALL_BLIND);
+		
+		//Player that starts round is after big blind
+        index = table.getBigBlind() + 1;
+        if(index > players.size() - 1)
+        {
+        	index = 0;
+        }
 
     }
 
