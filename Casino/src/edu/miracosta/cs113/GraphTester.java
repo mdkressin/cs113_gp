@@ -155,7 +155,7 @@ public class GraphTester {
 		System.out.println("\nTesting method possibleHandsGraph()");
 		CardDeck deck = new CardDeck();
 		deck.shuffle();
-		Card[] cards = new Card[6];
+		Card[] cards = new Card[3];
 		for (int i = 0; i < cards.length; i++)
 		{
 			cards[i] = deck.deal();

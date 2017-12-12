@@ -52,12 +52,8 @@ public class HandScore
     public double totalScore(Card[] cards)
     {
     	Hand hand = new Hand(cards);
-<<<<<<< HEAD
     	//hand.addCards(cards);
-=======
-    	
->>>>>>> branch 'master' of https://github.com/MiraCostaCS113/MW_GroupC.git
-    	Graph<Hand> possibleHands = new ListPokerGraph<Hand>(21166, false);
+    	Graph<Hand> possibleHands = new ListPokerGraph<Hand>(2116, false);
     	possibleHands = AbstractPokerGraph.possibleHandsGraph(possibleHands, hand);
     	
     	DepthFirstSearch<Hand> dfs = new DepthFirstSearch<Hand>(possibleHands);
@@ -66,9 +62,10 @@ public class HandScore
 		ListPokerGraph<Hand> list = (ListPokerGraph<Hand>) possibleHands;
 		for (int i = 0; i < list.getNumV(); i++)
 		{
-			System.out.println("IN LOOP");
-			///System.out.println(list.getVertex(dOrder[i]).getData().toString());
-			System.out.println(dOrder[i]);
+			if (list.getVertex(dOrder[i]) != null)
+			{
+				System.out.println((list.getVertex(dOrder[i])).toString());
+			}
 		}
     	
     	return 0;
