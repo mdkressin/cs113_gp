@@ -52,7 +52,6 @@ public class HandScore
     public double totalScore(Card[] cards)
     {
     	Hand hand = new Hand(cards);
-    	//hand.addCards(cards);
     	Graph<Hand> possibleHands = new ListPokerGraph<Hand>(2116, false);
     	possibleHands = AbstractPokerGraph.possibleHandsGraph(possibleHands, hand);
     	
