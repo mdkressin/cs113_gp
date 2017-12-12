@@ -237,6 +237,17 @@ public class PokerGUI extends JFrame
 		round.startRound();
 
 		updateGUI();
+
+		if(round.getIndex() != 0)
+        {
+        	try {
+				cyclePlayers();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
+		
+		updateGUI();
 		
     	//TODO: loop, stop when user money < 0
     }
