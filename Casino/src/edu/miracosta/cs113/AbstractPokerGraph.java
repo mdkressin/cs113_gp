@@ -128,8 +128,14 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 	 * @param graph	The graph to build
 	 * @return	a graph containing possible hand combinations
 	 */
-	public static <E> Graph<Vertex<E>> createGraph(Graph<Vertex<E>> graph, E currentHand) 
+	public static <E> Graph<Vertex<E>> possibleHandsGraph(Graph<Vertex<E>> graph, E currentHand) 
 	{
+		// base case - graph is full
+		if (vertexId >= graph.getNumV())
+		{
+			return graph;
+		}
+		
 		/* The source vertex. */
 		Vertex<E> source = new Vertex<E>(currentHand, vertexId++);
 		/* The destination vertex. */
@@ -143,6 +149,13 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 		int handSize = ((Hand) currentHand).size();
 		/* Holds a reference to a card drawn from the deck. */
 		Card card;
+		
+		// base case (largest hand size is 7
+		if (handSize >= Hand.MAX_HAND_SIZE)
+		{
+			return graph;
+		}
+		
 		try 
 		{
 			while (true)
@@ -167,7 +180,12 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 					}
 					// add the new card to the next possible hand
 					((Hand) possibleHand).addCard(card);
-					createGraph(graph, possibleHand); // recursive call to calculate possible hands
+					possibleHandsGraph(graph, possibleHand); // recursive call to calculate possible hands
+					// check if graph is full
+					if (vertexId >= graph.getNumV())
+					{
+						return graph;
+					}
 					dest = new Vertex<E>(possibleHand, vertexId++);
 					edge = new Edge<E>(source,dest);
 					graph.insert((Edge<Vertex<E>>) edge);

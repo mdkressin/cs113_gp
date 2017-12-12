@@ -147,6 +147,21 @@ public class GraphTester {
 		}
 
 	}
+	
+	@Test
+	public void testCreateGraph()
+	{
+		CardDeck deck = new CardDeck();
+		deck.shuffle();
+		Card[] cards = new Card[6];
+		for (int i = 0; i < cards.length; i++)
+		{
+			cards[i] = deck.deal();
+		}
+		Hand hand = new Hand(cards);
+		Graph<Vertex<Hand>> possibleHands = new ListPokerGraph<Vertex<Hand>>(47,false);
+		possibleHands = AbstractPokerGraph.possibleHandsGraph(possibleHands,hand);
+	}
 /*	
     @Test
 	public void testMatrixPokerGraphConstructor()

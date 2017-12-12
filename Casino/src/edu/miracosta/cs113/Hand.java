@@ -14,12 +14,14 @@ public class Hand {
     /** The current number of cards in this hand. */
     private int numCards = 0;
     
+    public static final int MAX_HAND_SIZE = 7;
+    
     /**
      * Empty constructor creates an empty array 
      * for cards
      */
     public Hand() {
-    	cards = new Card[7];
+    	cards = new Card[MAX_HAND_SIZE];
     }
     
     /**
@@ -111,7 +113,7 @@ public class Hand {
         if (cards == null) {
             throw new IllegalArgumentException("No cards in the array");
         }
-        if (cards.length > 7) {
+        if (cards.length > MAX_HAND_SIZE) {
             throw new IllegalArgumentException("Too many cards");
         }
         for (Card card : cards) {

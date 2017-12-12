@@ -40,6 +40,8 @@ public class ListPokerGraph<E> extends AbstractPokerGraph<E> {
 	@Override
 	public void insert(Edge<E> edge) 
 	{
+		System.out.println("Test insert: source id = " + edge.getSource().getId() +
+							"; dest id = " + edge.getDest().getId());
 		Vertex<E> vertex = edge.getSource();
 		edges[vertex.getId()].add(edge);
 		//edges[edge.getSource()].add(edge);
