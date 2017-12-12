@@ -229,12 +229,15 @@ public class PokerGUI extends JFrame
 
 		stage = 0;
 		round.setLastBetter(round.players.get(table.getBigBlind()));
-		round.startRound();
 		//Reactivate user buttons
 		callBtn.setEnabled(true);
 		foldBtn.setEnabled(true);
 		raiseBtn.setEnabled(true);
+
+		round.startRound();
+
 		updateGUI();
+		
     	//TODO: loop, stop when user money < 0
     }
 	
@@ -375,6 +378,12 @@ public class PokerGUI extends JFrame
 		
 		boolean prematureEnd = false;
 				
+		//Deal with case when last better folds
+		if(round.getLastBetter().hasFolded())
+		{
+			
+		}
+		
 		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
 			int currentIndex = round.getIndex();
@@ -638,7 +647,8 @@ public class PokerGUI extends JFrame
      */
     private void updateControlButtons() 
     {
-    	if(round.getLastBet() == 0) 
+    	//If last bet = 0 or player already put last bet in this round
+    	if(round.getLastBet() == 0 || round.getLastBet() -  round.players.get(round.getIndex()).getMoneyBet() == 0) 
         {
     		callBtn.setText("Check");
         } 

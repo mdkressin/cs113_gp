@@ -93,7 +93,8 @@ public class Player
     
     public void addBlind(int blind)
     {
-    		money -= blind;
+    	money -= blind;
+    	moneyBet += blind;
     }
     /**
      * Set the last action string

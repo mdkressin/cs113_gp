@@ -50,7 +50,7 @@ public class Round
      */
     public void setLastBet(int amount) 
     {
-    	lastBet = amount;
+    	lastBet += amount;
     }
     
     
@@ -137,10 +137,10 @@ public class Round
      */
     public void raise(int amount) 
     {
-    		pot += amount + lastBet;
+    	pot += amount + lastBet;
 		players.get(index).bet(amount + lastBet);
-    		setLastBet(amount + lastBet);
-    		setLastBetter(players.get(index));
+		setLastBet(amount + lastBet);
+		setLastBetter(players.get(index));
     }
     
     /**
@@ -164,8 +164,17 @@ public class Round
         players.get(table.getSmallBlind()).setSmallBlind(true);
 
         players.get(table.getBigBlind()).addBlind(table.BIG_BLIND);
-        players.get(table.getSmallBlind()).addBlind(table.SMALL_BLIND);
+        addToPot(table.BIG_BLIND);
+
+        players.get(table.getSmallBlind()).addBlind(table.SMALL_BLIND);   
+        addToPot(table.SMALL_BLIND);
         
+        //Ante up
+        setLastBet(table.BIG_BLIND);
+        
+		players.get(table.getBigBlind()).setLastAction("Big Blind: $" + Table.BIG_BLIND);
+		players.get(table.getSmallBlind()).setLastAction("Small Blind: $" + Table.SMALL_BLIND);
+
     }
 
     /**

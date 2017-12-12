@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import edu.miracosta.cs113.Card;
 import edu.miracosta.cs113.Player;
+import edu.miracosta.cs113.Table;
 
 /**
  * GUI for each player
@@ -151,24 +152,19 @@ public class PlayerGUI extends JPanel
 		
 		
 		//Blind images
+		
+		ImageIcon blindIcon = null;
+		
 		if(player.isBigBlind())
 		{
-			System.out.println(player.getName() + " is big blind");
-			ImageIcon bigBlindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/big_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
-			blind.setIcon(bigBlindIcon);
+			blindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/big_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
 		} 
 		else if(player.isSmallBlind())
 		{
-			System.out.println(player.getName() + " is small blind");
-			ImageIcon smallBlindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/small_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
-			blind.setIcon(smallBlindIcon);
+			blindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/small_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
 		}
-		else
-		{
-			System.out.println(player.getName() + " is no blind");
-			ImageIcon noBlindIcon = null;
-			blind.setIcon(noBlindIcon);
-		}
+
+		blind.setIcon(blindIcon);
 	}
 	
 	/**
