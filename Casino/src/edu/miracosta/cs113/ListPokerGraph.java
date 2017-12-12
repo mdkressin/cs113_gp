@@ -40,8 +40,6 @@ public class ListPokerGraph<E> extends AbstractPokerGraph<E> {
 	@Override
 	public void insert(Edge<E> edge) 
 	{
-		System.out.println("Test insert: source id = " + edge.getSource().getId() +
-							"; dest id = " + edge.getDest().getId());
 		Vertex<E> vertex = edge.getSource();
 		edges[vertex.getId()].add(edge);
 		//edges[edge.getSource()].add(edge);
@@ -99,8 +97,17 @@ public class ListPokerGraph<E> extends AbstractPokerGraph<E> {
 		return edges[source.getId()].contains(new Edge<E>(source, dest));
 	}
 	
+	/**
+	 * Get the vertex associated with the id
+	 * @param id	the id of the vertex you wish to get
+	 * @return	the vertex with the associated id if it exists, else return null
+	 */
 	public Vertex<E> getVertex(int id)
 	{
-		return edges[id].get(0).getSource();
+		if (!edges[id].isEmpty())
+		{
+			return edges[id].get(0).getSource();
+		}
+		return null;
 	}
 }

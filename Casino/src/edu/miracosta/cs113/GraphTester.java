@@ -138,6 +138,7 @@ public class GraphTester {
 		int[] dOrder = dfs.getDiscoveryOrder();
 		int[] fOrder = dfs.getFinishOrder();
 		
+		/* printing dfs traversal
 		ListPokerGraph<Hand> l = (ListPokerGraph<Hand>) list;
 		for (int i = 0; i < list.getNumV(); i++) 
 		{
@@ -145,12 +146,13 @@ public class GraphTester {
 			System.out.println(l.getVertex(dOrder[i]).toString() + "\n" +
 								l.getVertex(fOrder[i]).toString());
 		}
-
+		*/
 	}
 	
 	@Test
-	public void testCreateGraph()
+	public void testPossibleHandsGraph()
 	{
+		System.out.println("\nTesting method possibleHandsGraph()");
 		CardDeck deck = new CardDeck();
 		deck.shuffle();
 		Card[] cards = new Card[6];
@@ -159,8 +161,25 @@ public class GraphTester {
 			cards[i] = deck.deal();
 		}
 		Hand hand = new Hand(cards);
-		Graph<Vertex<Hand>> possibleHands = new ListPokerGraph<Vertex<Hand>>(47,false);
+		Graph<Hand> possibleHands = new ListPokerGraph<Hand>(47,false);
 		possibleHands = AbstractPokerGraph.possibleHandsGraph(possibleHands,hand);
+		
+		DepthFirstSearch<Hand> dfs = new DepthFirstSearch<Hand>(possibleHands);
+		int[] dOrder = dfs.getDiscoveryOrder();
+		int[] fOrder = dfs.getFinishOrder();
+		
+		ListPokerGraph<Hand> list = (ListPokerGraph<Hand>) possibleHands;
+		for (int i = 0; i < list.getNumV(); i++) 
+		{
+			Vertex<Hand> v1 = list.getVertex(dOrder[i]);
+			Vertex<Hand> v2 = list.getVertex(fOrder[i]);
+			if (v1 != null && v2 != null)
+			{
+				System.out.println(dOrder[i] + "\t" + fOrder[i]);
+				System.out.println(list.getVertex(dOrder[i]).toString() + "\n" +
+									list.getVertex(fOrder[i]).toString());
+			}
+		}
 	}
 /*	
     @Test

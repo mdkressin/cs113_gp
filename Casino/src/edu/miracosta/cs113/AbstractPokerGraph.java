@@ -128,10 +128,15 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 	 * @param graph	The graph to build
 	 * @return	a graph containing possible hand combinations
 	 */
-	public static <E> Graph<Vertex<E>> possibleHandsGraph(Graph<Vertex<E>> graph, E currentHand) 
+	public static <E> Graph<E> possibleHandsGraph(Graph<E> graph, E currentHand) 
 	{
 		// base case - graph is full
 		if (vertexId >= graph.getNumV())
+		{
+			return graph;
+		}
+		// base case - reached largest hand size (7)
+		if (((Hand) currentHand).size() >= Hand.MAX_HAND_SIZE)
 		{
 			return graph;
 		}
@@ -149,12 +154,6 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 		int handSize = ((Hand) currentHand).size();
 		/* Holds a reference to a card drawn from the deck. */
 		Card card;
-		
-		// base case (largest hand size is 7
-		if (handSize >= Hand.MAX_HAND_SIZE)
-		{
-			return graph;
-		}
 		
 		try 
 		{
@@ -188,7 +187,7 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 					}
 					dest = new Vertex<E>(possibleHand, vertexId++);
 					edge = new Edge<E>(source,dest);
-					graph.insert((Edge<Vertex<E>>) edge);
+					graph.insert((Edge<E>) edge);
 				}
 			}
 		} catch (IllegalStateException e) 

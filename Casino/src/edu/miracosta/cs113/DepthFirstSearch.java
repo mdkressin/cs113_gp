@@ -5,7 +5,6 @@ import java.util.Iterator;
 /**
  * Class to implement the depth-first search algorithm
  * 
- * @param <T> type that is a Vertex or one of its subclasses
  * @param <E> The element type of the vertices in the graph
  */
 public class DepthFirstSearch<E>
