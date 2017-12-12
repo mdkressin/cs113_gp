@@ -51,15 +51,15 @@ public class HandScore
     }
     public double totalScore(Card[] cards)
     {
-    	Hand hand = new Hand();
-    	hand.addCards(cards);
+    	Hand hand = new Hand(cards);
+    	
     	Graph<Hand> possibleHands = new ListPokerGraph<Hand>(21166, false);
     	possibleHands = AbstractPokerGraph.possibleHandsGraph(possibleHands, hand);
+    	
     	DepthFirstSearch<Hand> dfs = new DepthFirstSearch<Hand>(possibleHands);
 		int[] dOrder = dfs.getDiscoveryOrder();
 		
 		ListPokerGraph<Hand> list = (ListPokerGraph<Hand>) possibleHands;
-		
 		for (int i = 0; i < list.getNumV(); i++)
 		{
 			System.out.println("IN LOOP");
