@@ -551,7 +551,7 @@ public class PokerGUI extends JFrame
     			player.setLastAction("Checked");
         		System.out.println(player.getName() + " checked");
         		
-        		if(player.isBigBlind())
+        		if(player.isBigBlind() && player == round.getLastBetter())
         		{
         			nextStage();
         		}
