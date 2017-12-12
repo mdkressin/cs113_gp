@@ -159,7 +159,7 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 		{
 			while (true)
 			{ // will exit once the deck runs out of cards by throwing an exception
-				E possibleHand = (E) new Hand();// new hand combination
+				E possibleHand;// new hand combination
 				card = deck.deal(); // draw a card from the deck
 				boolean newCard = true; // flag for determining if card from deck is already in the hand
 				int i = 0;
@@ -173,12 +173,16 @@ public abstract class AbstractPokerGraph<E> implements Graph<E> {
 				}
 				if (newCard)
 				{
+					// create card array to hold the new hand
+					Card[] cards = new Card[handSize+1];
+					int j = 0;
 					for (Card c : handCards)
 					{ // add the cards from the previous hand into the new possible hand
-						((Hand) possibleHand).addCard(c);
+						cards[j] = c;
+						j++;
 					}
-					// add the new card to the next possible hand
-					((Hand) possibleHand).addCard(card);
+					cards[j] = card; // add new (possible) card
+					possibleHand = (E) new Hand(cards);
 					// recursive call to calculate possible hands
 					possibleHandsGraph(graph, possibleHand);
 					// check if graph is full
