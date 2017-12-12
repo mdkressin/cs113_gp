@@ -432,9 +432,26 @@ public class PokerGUI extends JFrame
 			//If the current player is a bot, run bot decision process
 			if(currentPlayer.isBot())
 			{	
+				int botScore = 0;
 				//TODO: Tweak decision making randomness
-								
-				int botScore = score.calculateScore(currentPlayer.getHand().getCards());
+				if (round.getCardsInPlay().size() < 3)		
+				{
+					botScore = score.calculateScore(currentPlayer.getHand().getCards());
+				}
+				else
+				{
+					ArrayList<Card> inPlay = round.getCardsInPlay();
+					Card[] cards = new Card[inPlay.size() + 2];
+					int i = 0;
+					for (Card c : inPlay)
+					{
+						cards[i] = c;
+						i++;
+					}
+					cards[i++] = currentPlayer.getHand().getHoleCards()[0];
+					cards[i++] = currentPlayer.getHand().getHoleCards()[1];
+					botScore = (int) score.totalScore(cards);
+				}
 				Random randNum  = new Random();
 				//Random value between 1 and 10 to make bot less predictable
 				int botRandomness = randNum.nextInt(10) + 1;
