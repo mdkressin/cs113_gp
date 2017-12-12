@@ -490,7 +490,10 @@ public class PokerGUI extends JFrame
 		
 		if((players.get(round.getIndex()) == round.getLastBetter()) && !prematureEnd)
 		{
-			nextStage();
+			if(players.get(round.getIndex()).hasRaised())
+			{
+				nextStage();
+			}
 		}
     }
     
@@ -547,6 +550,11 @@ public class PokerGUI extends JFrame
     		{
     			player.setLastAction("Checked");
         		System.out.println(player.getName() + " checked");
+        		
+        		if(player.isBigBlind())
+        		{
+        			nextStage();
+        		}
 
     		}
     		else
