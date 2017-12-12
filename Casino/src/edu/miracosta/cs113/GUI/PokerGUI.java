@@ -379,11 +379,32 @@ public class PokerGUI extends JFrame
 		{
 			int currentIndex = round.getIndex();
 			Player currentPlayer = players.get(currentIndex);
+			
+			//Dealing with case where lastBetter and folded
+			//Find the first player who hasn't folded and set them as new lastBetter
+			if(currentPlayer.hasFolded() && round.getLastBetter() == currentPlayer)
+			{
+				for(int k = table.getBigBlind(); k < 100; k++)
+				{
+					if(k > players.size() - 1)
+					{
+						k = 0;
+					}
+					if(!players.get(k).hasFolded())
+					{
+						round.setLastBetter(players.get(k));
+						break;
+					}
+				}
+			}
+			
+			
+			//If the human player folded, skip them here to avoid the break; statement
 			if (!currentPlayer.isBot() && currentPlayer.hasFolded())
 	    	{
 	    		round.moveToNextPlayer();
 	    	}
-			//currentPlayer.toggleTurn(); //Toggle on current player turn
+			
 			updateGUI();
 			
 			System.out.println("Current player: " + currentPlayer.getName() + " ---- index: " + currentIndex);
