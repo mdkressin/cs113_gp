@@ -52,7 +52,11 @@ public class HandScore
     public double totalScore(Card[] cards)
     {
     	Hand hand = new Hand(cards);
+<<<<<<< HEAD
+    	//hand.addCards(cards);
+=======
     	
+>>>>>>> branch 'master' of https://github.com/MiraCostaCS113/MW_GroupC.git
     	Graph<Hand> possibleHands = new ListPokerGraph<Hand>(21166, false);
     	possibleHands = AbstractPokerGraph.possibleHandsGraph(possibleHands, hand);
     	

@@ -34,7 +34,6 @@ public class DepthFirstSearch<E>
 	{
 		this.graph = graph;
 		int n = graph.getNumV();
-		System.out.println("TEST: DFS n = " + n);
 		parent = new int[n];
 		visited = new boolean[n];
 		discoveryOrder = new int[n];
