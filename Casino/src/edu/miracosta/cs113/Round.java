@@ -113,7 +113,7 @@ public class Round
      */
     public Player moveToNextPlayer()
     {
-    	System.out.println("Moving to next player... index: " + index);
+    		System.out.println("Moving to next player... index: " + index);
 		//Move to next player
 		index++;
 		
@@ -134,7 +134,36 @@ public class Round
         {
     			return players.get(index);
         }
-
+    }
+    
+    /**
+     * Move to the next player
+     * 
+     * TODO examine infinite recursion case when all players have folded
+     * 
+     * @return Player landed on
+     */
+    public Player findNextPlayer(int currentIndex)
+    {
+    		System.out.println("Moving to next player... index: " + index);
+		int i = currentIndex;
+		i++;
+		
+		//If new index is out of bounds, set to 0
+		if (i > (players.size() - 1))
+        {
+            i = 0;
+        }
+    		
+    		//If this player folded, recursively call this method to move to the next player
+        if (players.get(i).hasFolded())
+        {
+            return findNextPlayer(i);
+        }
+        else
+        {
+    			return players.get(i);
+        }
     }
     
     /**
@@ -155,7 +184,7 @@ public class Round
      */
     public void startRound()
     {
-    	System.out.println("\nInside startRound()");
+    		System.out.println("\nInside startRound()");
     	
         for (Player p : players)
         {
@@ -186,7 +215,7 @@ public class Round
         index = table.getBigBlind() + 1;
         if(index > players.size() - 1)
         {
-        	index = 0;
+        		index = 0;
         }
 
     }
@@ -254,10 +283,10 @@ public class Round
      */
     public void resetRound()
     {
-    	resetAndIncrementBlinds();
+    		resetAndIncrementBlinds();
     	
-    	lastBetter = players.get(table.getBigBlind());
-    	lastBet = 0;
+	    	lastBetter = players.get(table.getBigBlind());
+	    	lastBet = 0;
     			
         for (Player player : players)
         {
@@ -277,7 +306,7 @@ public class Round
         index = table.getBigBlind() + 1;
         if(index > players.size() - 1)
         {
-        	index = 0;
+        		index = 0;
         }
     }
     
@@ -291,8 +320,15 @@ public class Round
 			player.resetStatus();
 		}
 		
-    	lastBetter = players.get(table.getBigBlind());
-    	lastBet = 0;
+	    	lastBetter = players.get(table.getBigBlind());
+	    	lastBet = 0;
+	    	
+	    	//Player that starts betting
+        index = table.getBigBlind() + 1;
+        if(index > players.size() - 1)
+        {
+        		index = 0;
+        }
 
 	}
     
