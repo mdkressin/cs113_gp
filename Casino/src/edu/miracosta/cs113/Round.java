@@ -108,8 +108,10 @@ public class Round
      * Move to the next player
      * 
      * TODO examine infinite recursion case when all players have folded
+     * 
+     * @return Player landed on
      */
-    public void moveToNextPlayer()
+    public Player moveToNextPlayer()
     {
     	System.out.println("Moving to next player... index: " + index);
 		//Move to next player
@@ -123,11 +125,16 @@ public class Round
     		
 		System.out.println("Moved to next player... index: " + index);
 
-    	//If this player folded, recursively call this method to move to the next player
+    		//If this player folded, recursively call this method to move to the next player
         if (players.get(index).hasFolded())
         {
-            moveToNextPlayer();
+            return moveToNextPlayer();
         }
+        else
+        {
+    			return players.get(index);
+        }
+
     }
     
     /**

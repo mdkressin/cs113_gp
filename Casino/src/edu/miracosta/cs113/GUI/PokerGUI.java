@@ -255,7 +255,8 @@ public class PokerGUI extends JFrame
 	public void endRound()
 	{
 		//TODO: adjust how the winner is found for better accuracy on similar hands
-		
+		System.out.println("\nInside endRound()");
+
 		Player bestPlayer = null;
 		
 		for (Player p : round.players)
@@ -294,12 +295,13 @@ public class PokerGUI extends JFrame
 		raiseBtn.setEnabled(false);
 				
 		updateGUI();
-
+		
 		for(int i = 1; i < round.players.size(); i++) 
         {
+    			System.out.println("-----show cards called");
 			if(!round.players.get(i).hasFolded())
 			{
-	    		botGUIs[i-1].showCards(round.players.get(i));
+	    			botGUIs[i-1].showCards(round.players.get(i));
 			}
         }
 		
@@ -313,9 +315,9 @@ public class PokerGUI extends JFrame
      */
     public void updateGUI() 
     {
-    	//System.out.println("UPDATE GUI CALLED");
+    		System.out.println("updateGUI() called");
     	
-    	//Bots panel
+    	 	//Bots panel
         updateBotsPanel();
         
         //Dealer panel
@@ -389,11 +391,6 @@ public class PokerGUI extends JFrame
 		
 		boolean prematureEnd = false;
 				
-		//Deal with case when last better folds
-		if(round.getLastBetter().hasFolded())
-		{
-			
-		}
 		
 		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
@@ -421,9 +418,9 @@ public class PokerGUI extends JFrame
 			
 			//If the human player folded, skip them here to avoid the break; statement
 			if (!currentPlayer.isBot() && currentPlayer.hasFolded())
-	    	{
-	    		round.moveToNextPlayer();
-	    	}
+	    		{
+	    			round.moveToNextPlayer();
+	    		}
 			
 			updateGUI();
 			
@@ -482,28 +479,18 @@ public class PokerGUI extends JFrame
 			
 		    round.moveToNextPlayer();
 
-		    prematureEnd = checkForPrematureEnd();
+		    checkForPrematureEnd();
 			
 		}
 		
 		System.out.println("\nStopped cycling players");
-		
-		if((players.get(round.getIndex()) == round.getLastBetter()) && !prematureEnd)
-		{
-			if(players.get(round.getIndex()).hasRaised())
-			{
-				nextStage();
-			}
-		}
     }
     
     /**
      * End the round if only one player remains
      * (all other players have folded)
-     * 
-     * @return boolean True if round ended early
      */
-    public boolean checkForPrematureEnd()
+    public void checkForPrematureEnd()
     {
     	int numPlayersIn = 0;
 	    
@@ -517,13 +504,9 @@ public class PokerGUI extends JFrame
 	    
 	    if(numPlayersIn < 2)
 	    {
-	    	endRound();
-	    	return true;
+	    		endRound();
 	    }
-	    else
-	    {
-	    	return false;
-	    }
+
     	
     }
 
@@ -545,35 +528,42 @@ public class PokerGUI extends JFrame
 		
 	    if (choice == 1) //Call
 	    {	    	
-
-    		if((round.getLastBet() <= 0) || (player == round.getLastBetter()))
-    		{
-    			player.setLastAction("Checked");
-        		System.out.println(player.getName() + " checked");
-        		
-        		if(player.isBigBlind() && player == round.getLastBetter())
-        		{
-        			nextStage();
-        		}
-
-    		}
-    		else
-    		{
-    			//Total raising amount minus money player has already bet
-    			int callAmount = round.getLastBet() - player.getMoneyBet();
-    			
-    			if (player.getMoney() < callAmount)
-    			{
-    				callAmount = player.getMoney();
-    			}
-    			
-    			player.setLastAction("Called $" + callAmount);
-    			player.call(callAmount);
-    			round.addToPot(callAmount);
-    			
-        		System.out.println(player.getName() + " called $" + callAmount);
-
-    		}
+	
+	    		if((round.getLastBet() <= 0) || (player == round.getLastBetter()))
+	    		{
+	    			player.setLastAction("Checked");
+	        		System.out.println(player.getName() + " checked");
+	        		
+	        		if(player == round.getLastBetter())
+	        		{
+		    			System.out.println("Detected current player checked and was last better: Calling nextStage()");
+	        			nextStage();
+	        		}
+	
+	    		}
+	    		else
+	    		{
+	    			//Total raising amount minus money player has already bet
+	    			int callAmount = round.getLastBet() - player.getMoneyBet();
+	    			
+	    			if (player.getMoney() < callAmount)
+	    			{
+	    				callAmount = player.getMoney();
+	    			}
+	    			
+	    			player.setLastAction("Called $" + callAmount);
+	    			player.call(callAmount);
+	    			round.addToPot(callAmount);
+	    			
+	        		System.out.println(player.getName() + " called $" + callAmount);
+	    		}
+	    		
+	    		//If the next player is last better, skip to next round
+	    		if(round.moveToNextPlayer() == round.getLastBetter() && stage != 0)
+	    		{
+	    			System.out.println("Detected next player is last better: Calling nextStage()");
+	    			nextStage();
+	    		}
     			    
 	    }
 	    else if (choice == 2) //Fold
@@ -587,6 +577,12 @@ public class PokerGUI extends JFrame
     			player.fold();
 	    		player.setLastAction("Folded");
     			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
+    			
+    			//If the player that folded was the last better
+    			if(round.getLastBetter() == player)
+    			{
+    				round.setLastBetter(round.moveToNextPlayer());
+    			}
     		}
 	    }
 	    else if (choice == 3) //Raise
@@ -649,7 +645,7 @@ public class PokerGUI extends JFrame
                 //round.players.get(round.getIndex()).toggleTurn(); //Toggle on user turn
                 updateGUI();
                 
-                round.moveToNextPlayer();
+                //round.moveToNextPlayer();
                 
                 updateGUI();
                 
