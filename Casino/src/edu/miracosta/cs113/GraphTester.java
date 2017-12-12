@@ -97,7 +97,7 @@ public class GraphTester {
 		Card[] cards5 = new Card[7];
 		Card[] cards6 = new Card[7];
 		Card[] cards7 = new Card[7];
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 7; i++)
 		{
 			cards1[i] = deck.deal();
 			cards2[i] = deck.deal();
@@ -134,8 +134,21 @@ public class GraphTester {
 		list.insert(new Edge<Hand>(v2,v6));
 		list.insert(new Edge<Hand>(v5,v6));
 		
+		DepthFirstSearch<Hand> dfs = new DepthFirstSearch<Hand>(list);
+		int[] dOrder = dfs.getDiscoveryOrder();
+		int[] fOrder = dfs.getFinishOrder();
+		
+		ListPokerGraph<Hand> l = (ListPokerGraph<Hand>) list;
+		for (int i = 0; i < list.getNumV(); i++) 
+		{
+			System.out.println(dOrder[i] + "\t" + fOrder[i]);
+			System.out.println(l.getVertex(dOrder[i]).toString() + "\n" +
+								l.getVertex(fOrder[i]).toString());
+		}
+
 	}
-/*	@Test
+/*	
+    @Test
 	public void testMatrixPokerGraphConstructor()
 	{
 		AbstractPokerGraph matrix = new MatrixPokerGraph(7,false);

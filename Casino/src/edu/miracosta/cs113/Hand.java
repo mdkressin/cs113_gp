@@ -32,6 +32,7 @@ public class Hand {
      *             If the array is null or the number of cards is invalid.
      */
     public Hand(Card[] cards) {
+    	this.cards = new Card[cards.length];
         addCards(cards);
     }
     

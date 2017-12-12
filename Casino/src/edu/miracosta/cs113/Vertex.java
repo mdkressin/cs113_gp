@@ -42,7 +42,8 @@ public class Vertex<E> {
 	}
 	
 	/**
-	 * Checks to see if two vertices are equal to each other
+	 * Checks to see if the data of two vertices are equal to each other
+	 * pre: vertex id's are unique (not used in comparison)
 	 * @param obj	The vertex to compare with
 	 * @return	true if the data and id of both vertices are equal, false otherwise
 	 */
@@ -54,7 +55,7 @@ public class Vertex<E> {
 			return false;
 		}
 		Vertex<E> other = (Vertex<E>) obj;
-		return this.id == other.id && this.data.equals(other.data);
+		return this.data.equals(other.data);
 	}
 	/**
 	 * Returns a string representation of the object
