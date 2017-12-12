@@ -533,43 +533,49 @@ public class PokerGUI extends JFrame
 	    }
 	    else if (choice == 2) //Fold
 	    {
-	    		if (round.getLastBet() <= 0 && player.isBot())
-	    		{
-	    			playerChoice(1);
-	    		}
-	    		else
-	    		{
-	    			player.fold();
-		    		player.setLastAction("Folded");
-	    			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
-	    		}
+    		if (round.getLastBet() <= 0 && player.isBot())
+    		{
+    			playerChoice(1);
+    		}
+    		else
+    		{
+    			player.fold();
+	    		player.setLastAction("Folded");
+    			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
+    		}
 	    }
 	    else if (choice == 3) //Raise
 	    {
-	    		int raiseAmount = 0;
-	    		
-		    	if (player.isBot())
-		    	{
-		    		//TODO: calculate bot raise amount
-		    		raiseAmount = (score.calculateScore(player.getHand().getCards())/2);
-		    	}
-		    	else
-		    	{
-		    		//TODO: if playerBet is lower than lastBet or empty, throw error and dialog
-		    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
-		    	}
-		    	
-		    	//Checking they have enough money for their choice
-		    	if (raiseAmount > player.getMoney())
-	    		{
-	    			raiseAmount = player.getMoney();
-	    		}
-		    
+    		int raiseAmount = 0;
+    		
+	    	if (player.isBot())
+	    	{
+	    		//TODO: calculate bot raise amount
+	    		raiseAmount = (score.calculateScore(player.getHand().getCards())/2);
+	    	}
+	    	else
+	    	{
+	    		//TODO: if playerBet is lower than lastBet or empty, throw error and dialog
+	    		raiseAmount = Integer.parseInt(raiseInput.getText().replaceAll("[\\D]", ""));
+	    	}
+	    	
+	    	//Checking they have enough money for their choice
+	    	if (raiseAmount > player.getMoney())
+    		{
+    			raiseAmount = player.getMoney();
+    		}
+	    	
+	    	if(round.getLastBet() > raiseAmount)
+	    	{
+	    		playerChoice(1);
+	    	}
+	    	else
+	    	{
 		    	round.raise(raiseAmount);
 		    	//round.addToPot(raiseAmount); //Moving add to pot to raise
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
 	    		player.setLastAction("Raised " + raiseAmount);
-
+	    	}
 	    }
 	    
 	    updateGUI();
