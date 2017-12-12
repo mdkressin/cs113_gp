@@ -153,16 +153,19 @@ public class PlayerGUI extends JPanel
 		//Blind images
 		if(player.isBigBlind())
 		{
+			System.out.println(player.getName() + " is big blind");
 			ImageIcon bigBlindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/big_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
 			blind.setIcon(bigBlindIcon);
 		} 
 		else if(player.isSmallBlind())
 		{
+			System.out.println(player.getName() + " is small blind");
 			ImageIcon smallBlindIcon = new ImageIcon(new ImageIcon("src/edu/miracosta/cs113/assets/small_blind.png").getImage().getScaledInstance(50,50, Image.SCALE_DEFAULT));
 			blind.setIcon(smallBlindIcon);
 		}
 		else
 		{
+			System.out.println(player.getName() + " is no blind");
 			ImageIcon noBlindIcon = null;
 			blind.setIcon(noBlindIcon);
 		}
