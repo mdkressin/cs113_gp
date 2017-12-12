@@ -49,6 +49,25 @@ public class HandScore
         this.numInRow       = 0;
         this.numSameFace    = 0;
     }
+    public double totalScore(Card[] cards)
+    {
+    	Hand hand = new Hand();
+    	hand.addCards(cards);
+    	Graph<Hand> possibleHands = new ListPokerGraph<Hand>(21166, false);
+    	possibleHands = AbstractPokerGraph.possibleHandsGraph(possibleHands, hand);
+    	DepthFirstSearch<Hand> dfs = new DepthFirstSearch<Hand>(possibleHands);
+		int[] dOrder = dfs.getDiscoveryOrder();
+		
+		ListPokerGraph<Hand> list = (ListPokerGraph<Hand>) possibleHands;
+		for (int i = 0; i < list.getNumV(); i++)
+		{
+			System.out.println("IN LOOP");
+			///System.out.println(list.getVertex(dOrder[i]).getData().toString());
+			System.out.println(dOrder[i]);
+		}
+    	
+    	return 0;
+    }
     /**
      * Calls methods to organize the cards, and detect any valuable hands
      * @param cards Cards to be checked
