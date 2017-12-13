@@ -168,7 +168,7 @@ public class Round
      */
     public void raise(int amount) 
     {
-    		pot += amount + lastBet;
+    	pot += amount + lastBet;
 		players.get(index).bet(amount + lastBet);
 		setLastBet(amount + lastBet);
 		setLastBetter(players.get(index));
