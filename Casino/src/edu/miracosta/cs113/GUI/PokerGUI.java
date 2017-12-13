@@ -189,7 +189,6 @@ public class PokerGUI extends JFrame
 	public void nextStage() 
     {
     		System.out.println("\nMove to next stage");
-    		round.setLastBet(0);
     		round.stageReset();
     		
 	    	stage++;
@@ -203,7 +202,7 @@ public class PokerGUI extends JFrame
 		        case 3:  round.river();
 		                 break;
 		        case 4:  endRound();
-		        		 break;
+		        		 	break;
 	    	}
 	    	if(stage > 0 && stage < 4)
 	    	{
@@ -316,7 +315,7 @@ public class PokerGUI extends JFrame
      */
     public void updateGUI() 
     {
-    		System.out.println("updateGUI() called");
+    		//System.out.println("updateGUI() called");
     	
     	 	//Bots panel
         updateBotsPanel();
@@ -366,17 +365,17 @@ public class PokerGUI extends JFrame
      * Updates the pot and cards shown of dealer panel
      */
 	public void updateDealerPanel() 
-    {
-    	potLabel.setText("Pot: $" + round.getPot());
-    	
-    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
-    	// Or maybe not because we call clear() every round which is nice
-    	ArrayList<Card> dealerCards = round.getCardsInPlay();
-    	
-    	for(int i = 0; i < dealerCards.size(); i++)
-    	{
-    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
-    	}
+	    {
+	    	potLabel.setText("Pot: $" + round.getPot());
+	    	
+	    	//TODO: Change dealers cards (cardsInPlay of Round) to array[5]
+	    	// Or maybe not because we call clear() every round which is nice
+	    	ArrayList<Card> dealerCards = round.getCardsInPlay();
+	    	
+	    	for(int i = 0; i < dealerCards.size(); i++)
+	    	{
+	    		setCardImage(dealerCards.get(i).getFilePath(), dealerCardLabels[i]);
+	    	}
     }
     
     /**
@@ -483,8 +482,6 @@ public class PokerGUI extends JFrame
 						playerChoice(3);
 					}
 				}
-			
-				
 				updateGUI();
 			}
 			else
@@ -493,20 +490,17 @@ public class PokerGUI extends JFrame
 				break;
 			}
 			
-		    round.moveToNextPlayer();
-
-		    checkForPrematureEnd();
+			round.moveToNextPlayer();	
 			
-		}
+		    checkForPrematureEnd();
+		    
+		} // End while loop
+				
+		System.out.println("\nStopped cycling players");		
 		
-		System.out.println("\nStopped cycling players");
+		System.out.println("Detected this player is last better: Calling nextStage()");
+		nextStage();
 		
-		//If the next player is last better, skip to next round
-		if(round.findNextPlayer(round.getIndex()) == round.getLastBetter())
-		{
-			System.out.println("Detected next player is last better: Calling nextStage()");
-			nextStage();
-		}
     }
     
     /**
@@ -515,18 +509,19 @@ public class PokerGUI extends JFrame
      */
     public void checkForPrematureEnd()
     {
-    	int numPlayersIn = 0;
+    		int numPlayersIn = 0;
 	    
 	    for(Player p : round.players)
 	    {
-	    	if(!p.hasFolded())
-	    	{
-	    		numPlayersIn++;
-	    	}
+		    	if(!p.hasFolded())
+		    	{
+		    		numPlayersIn++;
+		    	}
 	    }
 	    
 	    if(numPlayersIn < 2)
 	    {
+			System.out.println("\nAll players except " + numPlayersIn + " folded, calling endRound()");
 	    		endRound();
 	    }
 
@@ -556,6 +551,7 @@ public class PokerGUI extends JFrame
 	    		{
 	    			player.setLastAction("Checked");
 	        		System.out.println(player.getName() + " checked");
+	
 	    		}
 	    		else
 	    		{
@@ -586,11 +582,11 @@ public class PokerGUI extends JFrame
 	    		player.setLastAction("Folded");
     			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
     			
-    			//If the player that folded was the last better
-    			if(round.getLastBetter() == player)
-    			{
-    				round.setLastBetter(round.findNextPlayer(round.getIndex()));
-    			}
+    			//If the player that folded was the last better, set to next player
+    			//if(round.getLastBetter() == player)
+    			//{
+    			//	round.setLastBetter(round.findNextPlayer(round.getIndex()));
+    			//}
     		}
 	    }
 	    else if (choice == 3) //Raise
@@ -621,6 +617,7 @@ public class PokerGUI extends JFrame
 	    	else
 	    	{
 		    	round.raise(raiseAmount);
+		    	round.setLastBetter(player);
 		    	//round.addToPot(raiseAmount); //Moving add to pot to raise
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
 	    		player.setLastAction("Raised " + raiseAmount);
@@ -653,7 +650,7 @@ public class PokerGUI extends JFrame
                 //round.players.get(round.getIndex()).toggleTurn(); //Toggle on user turn
                 updateGUI();
                 
-                //round.moveToNextPlayer();
+                round.moveToNextPlayer();
                 
                 updateGUI();
                 

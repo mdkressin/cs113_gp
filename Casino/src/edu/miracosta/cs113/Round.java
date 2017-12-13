@@ -25,16 +25,16 @@ public class Round
      */
     public Round(Table table)
     {
-    	this.table = table;
-    	
-    	players = table.players;
-    	
+	    	this.table = table;
+	    	
+	    	players = table.players;
+	    	
         pot = 0;
         
         index = 0;
         
-    	players.get(table.getBigBlind()).setBigBlind(true);
-    	players.get(table.getSmallBlind()).setSmallBlind(true);
+	    	players.get(table.getBigBlind()).setBigBlind(true);
+	    	players.get(table.getSmallBlind()).setSmallBlind(true);
     }
 
     /**
@@ -109,30 +109,25 @@ public class Round
      * 
      * TODO examine infinite recursion case when all players have folded
      * 
-     * @return Player landed on
      */
-    public Player moveToNextPlayer()
+    public void moveToNextPlayer()
     {
-    		System.out.println("Moving to next player... index: " + index);
+    		System.out.println("Moving to next player... index: " + this.index);
 		//Move to next player
-		index++;
+		this.index++;
 		
 		//If new index is out of bounds, set to 0
 		if (this.index > (players.size() - 1))
         {
-            this.index = 0;
+			this.index = 0;
         }
     		
-		System.out.println("Moved to next player... index: " + index);
+		System.out.println("Moved to next player... index: " + this.index);
 
     		//If this player folded, recursively call this method to move to the next player
-        if (players.get(index).hasFolded())
+        if (players.get(this.index).hasFolded())
         {
-            return moveToNextPlayer();
-        }
-        else
-        {
-    			return players.get(index);
+            moveToNextPlayer();
         }
     }
     
@@ -145,7 +140,7 @@ public class Round
      */
     public Player findNextPlayer(int currentIndex)
     {
-    		System.out.println("Moving to next player... index: " + index);
+    		System.out.println("Finding next player... index: " + index);
 		int i = currentIndex;
 		i++;
 		
@@ -173,7 +168,7 @@ public class Round
      */
     public void raise(int amount) 
     {
-    	pot += amount + lastBet;
+    		pot += amount + lastBet;
 		players.get(index).bet(amount + lastBet);
 		setLastBet(amount + lastBet);
 		setLastBetter(players.get(index));
