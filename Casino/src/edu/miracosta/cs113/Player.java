@@ -265,6 +265,7 @@ public class Player
 		{
 			ArrayList<Card> inPlay = round.getCardsInPlay();
 			Card[] cards = new Card[inPlay.size() + 2];
+			
 			int i = 0;
 			for (Card c : inPlay)
 			{
