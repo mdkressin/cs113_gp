@@ -315,7 +315,7 @@ public class Round
 			player.resetStatus();
 		}
 		
-	    	lastBetter = players.get(table.getBigBlind());
+	    	//lastBetter = players.get(table.getBigBlind());
 	    	lastBet = 0;
 	    	
 	    	//Player that starts betting

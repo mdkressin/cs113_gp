@@ -202,7 +202,7 @@ public class PokerGUI extends JFrame
 		        case 3:  round.river();
 		                 break;
 		        case 4:  endRound();
-		        		 	break;
+		        		 	 break;
 	    	}
 	    	if(stage > 0 && stage < 4)
 	    	{
@@ -249,7 +249,6 @@ public class PokerGUI extends JFrame
 		
 		updateGUI();
 		
-    	//TODO: loop, stop when user money < 0
     }
 	
 	public void endRound()
@@ -332,12 +331,12 @@ public class PokerGUI extends JFrame
      */
     public void resetGUI() 
     {
-    	endRoundPanel.removeAll();
-    	remove(endRoundPanel);
-    	for(int j = 0; j < 5; j++)
-    	{
-    		dealerCardLabels[j].setIcon(null);
-    	}
+	    	endRoundPanel.removeAll();
+	    	remove(endRoundPanel);
+	    	for(int j = 0; j < 5; j++)
+	    	{
+	    		dealerCardLabels[j].setIcon(null);
+	    	}
     }
     
     /**
@@ -499,10 +498,8 @@ public class PokerGUI extends JFrame
 		System.out.println("\nStopped cycling players");		
 		
 		System.out.println("Detected this player is last better: Calling nextStage()");
-		if(stage != 0)
-		{
-			nextStage();
-		}
+
+		nextStage();
 		
     }
     
@@ -555,6 +552,7 @@ public class PokerGUI extends JFrame
 	    			player.setLastAction("Checked");
 	        		System.out.println(player.getName() + " checked");
 	        		System.out.println("Detected this player is last better: Calling nextStage()");
+	        		
 	        		if(stage == 0 && (round.players.get(round.getIndex()) == round.getLastBetter()))
 	        		{
 	        			nextStage();
@@ -655,13 +653,8 @@ public class PokerGUI extends JFrame
             		//Call player choice
                 playerChoice(action);
                 
-                //round.players.get(round.getIndex()).toggleTurn(); //Toggle on user turn
-                updateGUI();
-                
                 round.moveToNextPlayer();
-                
-                updateGUI();
-                
+                                
                 try 
                 {
 					cyclePlayers();
