@@ -523,10 +523,10 @@ public class PokerGUI extends JFrame
     			System.out.println(round.players.get(round.getIndex()).getName() + " folded: " + round.players.get(round.getIndex()).hasFolded());
     			
     			//If the player that folded was the last better, set to next player
-    			//if(round.getLastBetter() == player)
-    			//{
-    			//	round.setLastBetter(round.findNextPlayer(round.getIndex()));
-    			//}
+    			if(round.getLastBetter() == player)
+    			{
+    				round.setLastBetter(round.findNextPlayer(round.getIndex()));
+    			}
     		}
 	    }
 	    else if (choice == 3) //Raise
