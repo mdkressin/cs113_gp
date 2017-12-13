@@ -278,10 +278,10 @@ public class Round
      */
     public void resetRound()
     {
-    		resetAndIncrementBlinds();
-    	
-	    	lastBetter = players.get(table.getBigBlind());
-	    	lastBet = 0;
+		resetAndIncrementBlinds();
+	
+    	lastBetter = players.get(table.getBigBlind() + 1);
+    	lastBet = 0;
     			
         for (Player player : players)
         {
@@ -298,7 +298,7 @@ public class Round
         table.getDeck().shuffle();
         
         //Player that starts round is after big blind
-        index = table.getBigBlind() + 1;
+        index = table.getBigBlind();
         if(index > players.size() - 1)
         {
         		index = 0;
@@ -324,6 +324,7 @@ public class Round
         {
         		index = 0;
         }
+        lastBetter = players.get(index);
 
 	}
     

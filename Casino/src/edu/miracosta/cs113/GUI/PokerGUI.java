@@ -223,7 +223,7 @@ public class PokerGUI extends JFrame
 		//resetGUI();
 
 		stage = 0;
-		round.setLastBetter(round.players.get(table.getBigBlind()));
+		round.setLastBetter(round.players.get(table.getBigBlind() + 1));
 		//Reactivate user buttons
 		callBtn.setEnabled(true);
 		foldBtn.setEnabled(true);
@@ -383,38 +383,18 @@ public class PokerGUI extends JFrame
 				
 		System.out.println("\nStarted cycling players --- start index: " + round.getIndex());
 		
-		boolean prematureEnd = false;
 				
 		while(players.get(round.getIndex()) != round.getLastBetter()) 
 		{
 			int currentIndex = round.getIndex();
 			Player currentPlayer = players.get(currentIndex);
 			
-			//Dealing with case where lastBetter and folded
-			//Find the first player who hasn't folded and set them as new lastBetter
-			/*
-			if(currentPlayer.hasFolded() && round.getLastBetter() == currentPlayer)
-			{
-				for(int k = table.getBigBlind(); k < 100; k++)
-				{
-					if(k > players.size() - 1)
-					{
-						k = 0;
-					}
-					if(!players.get(k).hasFolded())
-					{
-						round.setLastBetter(players.get(k));
-						break;
-					}
-				}
-			}*/
-			
 			
 			//If the human player folded, skip them here to avoid the break; statement
 			if (!currentPlayer.isBot() && currentPlayer.hasFolded())
-	    		{
-	    			round.moveToNextPlayer();
-	    		}
+    		{
+    			round.moveToNextPlayer();
+    		}
 			
 			System.out.println("Current player: " + currentPlayer.getName() + " ---- index: " + currentIndex);
 			
@@ -423,24 +403,35 @@ public class PokerGUI extends JFrame
 			{	
 				playerChoice(currentPlayer.makeDecision(round));
 				updateGUI();
+				round.moveToNextPlayer();	
 			}
 			else
 			{
 				//If it's the human player, get out of this loop and wait for their move
 				break;
 			}
-			
-			round.moveToNextPlayer();	
-			
+						
 		    checkForPrematureEnd();
 		    
 		} // End while loop
 				
 		System.out.println("\nStopped cycling players");		
 		
-		System.out.println("Detected this player is last better: Calling nextStage()");
 
-		nextStage();
+		//On break, if player is bot, call nextStage()
+		if(round.players.get(round.getIndex()).isBot())
+		{
+			System.out.println("This player is a bot and while loop was exited: calling nextStage()");
+			nextStage();
+		}
+		else
+		{
+			if(round.players.get(round.getIndex()) == round.getLastBetter())
+			{
+				System.out.println("This player is human and they are the last better: calling nextStage()");
+				nextStage();
+			}
+		}
 		
     }
     
