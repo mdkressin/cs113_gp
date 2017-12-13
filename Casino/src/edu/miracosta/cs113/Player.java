@@ -1,8 +1,14 @@
 package edu.miracosta.cs113;
 
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Player 
 {
+    private final int TOTAL_BOT_THRESHOLD = 75000; //Threshold for using totalScore
+    private final int BOT_THRESHOLD  = 10;         //Threshold for calculateScore
+    private final int CHANCE_TO_FOLD = 6;
+    private final int CHANCE_TO_CALL = 6;
 	//Constants
 	private final String DEFAULT_NAME = "Default";
 	private final int DEFAULT_MONEY = 500;
@@ -224,5 +230,66 @@ public class Player
 	}
 	public void setSmallBlind(boolean isSmallBlind) {
 		this.isSmallBlind = isSmallBlind;
+	}
+	
+	public int makeDecision(Round round)
+	{
+		HandScore score = new HandScore();
+		int botScore = 0;
+		Random randNum  = new Random();
+		//Random value between 1 and 10 to make bot less predictable
+		int botRandomness = randNum.nextInt(10) + 1;
+		
+		//TODO: Tweak decision making randomness
+		if (round.getCardsInPlay().size() < 3)		
+		{
+			botScore = score.calculateScore(hand.getCards());
+			
+			if ((botScore < BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD)) || (money <= 0)) //Fold
+			{
+				System.out.println("\n" + name + " folded");
+				return 2;
+			}
+			else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= money)) //Call
+			{
+				System.out.println("\n" + name + " called");
+				return 3;
+			}
+			else //Raise
+			{
+				System.out.println("\n" + name + " raised");
+				return 3;
+			}
+		}
+		else
+		{
+			ArrayList<Card> inPlay = round.getCardsInPlay();
+			Card[] cards = new Card[inPlay.size() + 2];
+			int i = 0;
+			for (Card c : inPlay)
+			{
+				cards[i] = c;
+				i++;
+			}
+			cards[i++] = hand.getHoleCards()[0];
+			cards[i++] = hand.getHoleCards()[1];
+			botScore = (int) score.totalScore(cards);
+			
+			if ((botScore < TOTAL_BOT_THRESHOLD/2) || ((round.getLastBet() >= botScore/1000) && (botRandomness <= CHANCE_TO_FOLD)) || (money <= 0)) //Fold
+			{
+				System.out.println("\n" + name + " folded");
+				return 2;
+			}
+			else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= money)) //Call
+			{
+				System.out.println("\n" + name + " called");
+				return 1;
+			}
+			else //Raise
+			{
+				System.out.println("\n" + name + " raised");
+				return 3;
+			}
+		}
 	}
 }
