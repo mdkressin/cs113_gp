@@ -223,7 +223,7 @@ public class PokerGUI extends JFrame
 		//resetGUI();
 
 		stage = 0;
-		round.setLastBetter(round.players.get(table.getBigBlind() + 1));
+		round.setLastBetter(round.players.get(table.getBigBlind()));
 		//Reactivate user buttons
 		callBtn.setEnabled(true);
 		foldBtn.setEnabled(true);
