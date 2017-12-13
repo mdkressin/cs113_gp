@@ -483,9 +483,9 @@ public class PokerGUI extends JFrame
 	        		System.out.println(player.getName() + " checked");
 	        		
 	        		//On initial betting phase, big blind checking should go to next stage
-	        		if(stage == 0 && player.isBigBlind())
+	        		if(player.isBigBlind())
 	        		{
-	        			System.out.println("Big blind checked on stage = 0: calling nextStage(");
+	        			System.out.println("Big blind checked: calling nextStage(");
 	        			nextStage();
 	        		}
 
@@ -506,6 +506,7 @@ public class PokerGUI extends JFrame
 	    			round.addToPot(callAmount);
 	    			
 	        		System.out.println(player.getName() + " called $" + callAmount);
+	        		updateGUI();
 	    		}   
 	    }
 	    else if (choice == 2) //Fold
@@ -558,7 +559,7 @@ public class PokerGUI extends JFrame
 		    	round.setLastBetter(player);
 		    	//round.addToPot(raiseAmount); //Moving add to pot to raise
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
-	    		player.setLastAction("Raised " + raiseAmount);
+	    		player.setLastAction("Raised $" + raiseAmount);
 	    	}
 	    }
 	    
