@@ -499,7 +499,10 @@ public class PokerGUI extends JFrame
 		System.out.println("\nStopped cycling players");		
 		
 		System.out.println("Detected this player is last better: Calling nextStage()");
-		nextStage();
+		if(stage != 0)
+		{
+			nextStage();
+		}
 		
     }
     
@@ -551,6 +554,11 @@ public class PokerGUI extends JFrame
 	    		{
 	    			player.setLastAction("Checked");
 	        		System.out.println(player.getName() + " checked");
+	        		System.out.println("Detected this player is last better: Calling nextStage()");
+	        		if(stage == 0 && (round.players.get(round.getIndex()) == round.getLastBetter()))
+	        		{
+	        			nextStage();
+	        		}
 	
 	    		}
 	    		else
