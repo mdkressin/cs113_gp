@@ -245,7 +245,7 @@ public class Player
 		{
 			botScore = score.calculateScore(hand.getCards());
 			
-			if ((botScore < BOT_THRESHOLD/2) && ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD)) || (money <= 0)) //Fold
+			if (((botScore < BOT_THRESHOLD/2) && ((round.getLastBet() >= botScore) && (botRandomness <= CHANCE_TO_FOLD))) || (money <= 0)) //Fold
 			{
 				System.out.println("\n" + name + " folded");
 				return 2;
@@ -275,12 +275,12 @@ public class Player
 			cards[i++] = hand.getHoleCards()[1];
 			botScore = (int) score.totalScore(cards);
 			
-			if ((botScore < TOTAL_BOT_THRESHOLD/2) && ((round.getLastBet() >= botScore/1000) && (botRandomness <= CHANCE_TO_FOLD)) || (money <= 0)) //Fold
+			if (((botScore < TOTAL_BOT_THRESHOLD/2) && ((round.getLastBet() >= botScore/1000) && (botRandomness <= CHANCE_TO_FOLD))) || (money <= 0)) //Fold
 			{
 				System.out.println("\n" + name + " folded");
 				return 2;
 			}
-			else if ((botScore < TOTAL_BOT_THRESHOLD) && (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= money)) //Call
+			else if (((botScore < TOTAL_BOT_THRESHOLD) && (botRandomness <= CHANCE_TO_CALL)) || (round.getLastBet() >= money)) //Call
 			{
 				System.out.println("\n" + name + " called");
 				return 1;
