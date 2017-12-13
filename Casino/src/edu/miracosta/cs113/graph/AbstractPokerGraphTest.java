@@ -6,7 +6,7 @@ import org.junit.Test;
 import edu.miracosta.cs113.Hand;
 
 public class AbstractPokerGraphTest {
-
+/*
 	@Test
 	public void testListPokerGraphConstructor()
 	{
@@ -46,5 +46,5 @@ public class AbstractPokerGraphTest {
 		Assert.assertFalse(((ListPokerGraph) list).isEdge(v1, v4));
 		Assert.assertFalse(((ListPokerGraph) list).getEdge(v3, v4).equals(edge4));
 	}
-
+*/
 }

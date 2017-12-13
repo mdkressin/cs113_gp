@@ -1,7 +1,8 @@
 package edu.miracosta.cs113;
 
 /**
- * Vertex class that constructs nodes to place into a graph data structure. 
+ * Vertex class that constructs nodes to place into a graph data structure. The id of the
+ * vertex is expected to be unique inside a graph data structure.
  * @author Matt
  *
  * @param <E>	The element of the data at the vertex

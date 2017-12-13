@@ -9,7 +9,6 @@ import java.util.LinkedList;
  * uses an array of lists to represent edges. A ListPokerGraph is a generic implementation of
  * the ListGraph from the textbook.
  *
- * @param <T> type that is a Vertex or one of its subclasses
  * @param <E> The element type of the vertices in the graph
  */
 public class ListPokerGraph<E> extends AbstractPokerGraph<E> {
