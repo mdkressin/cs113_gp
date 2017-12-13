@@ -279,8 +279,16 @@ public class Round
     public void resetRound()
     {
 		resetAndIncrementBlinds();
-	
-    	lastBetter = players.get(table.getBigBlind() + 1);
+		
+		int index = table.getBigBlind() + 1;
+		if (index < players.size())
+		{
+			lastBetter = players.get(index);
+		}
+		else 
+		{
+			lastBetter = players.get(0);
+		}
     	lastBet = 0;
     			
         for (Player player : players)
