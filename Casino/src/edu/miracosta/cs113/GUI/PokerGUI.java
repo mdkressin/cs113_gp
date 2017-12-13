@@ -407,6 +407,7 @@ public class PokerGUI extends JFrame
 			}
 			else
 			{
+				updateGUI();
 				//If it's the human player, get out of this loop and wait for their move
 				break;
 			}

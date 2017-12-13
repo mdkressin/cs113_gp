@@ -289,7 +289,8 @@ public class Round
 		{
 			lastBetter = players.get(0);
 		}
-    	lastBet = 0;
+		
+    		lastBet = 0;
     			
         for (Player player : players)
         {
