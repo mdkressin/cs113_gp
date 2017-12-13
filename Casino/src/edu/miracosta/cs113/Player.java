@@ -280,7 +280,7 @@ public class Player
 				System.out.println("\n" + name + " folded");
 				return 2;
 			}
-			else if ((botScore < BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= money)) //Call
+			else if ((botScore < TOTAL_BOT_THRESHOLD) || (botRandomness <= CHANCE_TO_CALL) || (round.getLastBet() >= money)) //Call
 			{
 				System.out.println("\n" + name + " called");
 				return 1;
