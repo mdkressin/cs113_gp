@@ -183,39 +183,39 @@ public class PokerGUI extends JFrame
      */
 	public void nextStage() 
     {
-    		System.out.println("\nMove to next stage");
-    		round.stageReset();
-    		
-	    	stage++;
-	    	
-	    	switch (stage) 
-	    	{
-		        case 1:  round.flop();
-		                 break;
-		        case 2:  round.turn();
-		                 break;
-		        case 3:  round.river();
-		                 break;
-		        case 4:  endRound();
-		        		 	 break;
-	    	}
-	    	if(stage > 0 && stage < 4)
-	    	{
-	    		updateGUI();
-	    	}
-	    	
-	    	if (round.players.get(0).hasFolded())
-	    	{
-	    		try 
-	    		{
-				cyclePlayers();
-			} 
-	    		catch (Exception e) 
-	    		{
+		System.out.println("\nMove to next stage");
+		round.stageReset();
+		
+    	stage++;
+    	
+    	switch (stage) 
+    	{
+	        case 1:  round.flop();
+	                 break;
+	        case 2:  round.turn();
+	                 break;
+	        case 3:  round.river();
+	                 break;
+	        case 4:  endRound();
+	        		 	 break;
+    	}
+    	if(stage > 0 && stage < 4)
+    	{
+    		updateGUI();
+    	}
+    	
+    	if (round.players.get(0).hasFolded())
+    	{
+    		try 
+    		{
+    			cyclePlayers();
+    		} 
+    		catch (Exception e) 
+    		{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-	    }
+    		}
+    	}
     }
     
 	public void newRound() 
@@ -426,7 +426,7 @@ public class PokerGUI extends JFrame
 		}
 		else
 		{
-			if(round.players.get(round.getIndex()) == round.getLastBetter())
+			if(round.players.get(round.getIndex()) == round.getLastBetter() && stage != 0)
 			{
 				System.out.println("This player is human and they are the last better: calling nextStage()");
 				nextStage();
@@ -477,10 +477,17 @@ public class PokerGUI extends JFrame
 	    if (choice == 1) //Call
 	    {	    	
 	
-	    		if((round.getLastBet() <= 0))
+	    		if((round.getLastBet() - player.getMoneyBet() <= 0))
 	    		{
 	    			player.setLastAction("Checked");
 	        		System.out.println(player.getName() + " checked");
+	        		
+	        		//On initial betting phase, big blind checking should go to next stage
+	        		if(stage == 0 && player.isBigBlind())
+	        		{
+	        			System.out.println("Big blind checked on stage = 0: calling nextStage(");
+	        			nextStage();
+	        		}
 
 	
 	    		}

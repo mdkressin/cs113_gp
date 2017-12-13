@@ -179,7 +179,7 @@ public class Round
      */
     public void startRound()
     {
-    		System.out.println("\nInside startRound()");
+    	System.out.println("\nInside startRound()");
     	
         for (Player p : players)
         {
@@ -210,7 +210,7 @@ public class Round
         index = table.getBigBlind() + 1;
         if(index > players.size() - 1)
         {
-        		index = 0;
+        	index = 0;
         }
 
     }
