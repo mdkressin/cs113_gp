@@ -556,7 +556,7 @@ public class PokerGUI extends JFrame
 	    	}
 	    	else
 	    	{
-		    	round.raise(raiseAmount);
+		    	round.raise(raiseAmount - player.getMoneyBet());
 		    	round.setLastBetter(player);
 		    	//round.addToPot(raiseAmount); //Moving add to pot to raise
 	    		System.out.println(round.players.get(round.getIndex()).getName() + " raised $" + raiseAmount);
